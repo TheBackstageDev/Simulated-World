@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\build\CMakeFiles\b638c6dbaea810ffb4fa3b37adb5b3ea\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{9647EE15-202A-38C7-9B72-3E15BD29710A}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
