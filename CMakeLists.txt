@@ -11,9 +11,7 @@ set(LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/lib")
 
 include_directories(${INCLUDE_DIR})
 
-set(SOURCES
- ${SOURCE_FOLDER}/main.cpp 
-)
+file(GLOB_RECURSE SOURCES "${SOURCE_FOLDER}/*.cpp")
 
 add_executable(Main ${SOURCES})
 

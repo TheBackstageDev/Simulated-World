@@ -1,22 +1,21 @@
-#include <raylib.h>
+#include "Headers/System/Simulation.hpp"
+
+#include <stdexcept>
+#include <iostream>
 
 int main()
-{
-    constexpr int width = 800;
-    constexpr int height = 800;
+{    
+    System::Simulation app;
 
-
-    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
-    InitWindow(width, height, "Raylib Window");
-
-    while (!WindowShouldClose())
+    try
     {
-        BeginDrawing();
-
-        ClearBackground(BLACK);
-
-        EndDrawing();
+        app.init();
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << "\n";
+        return EXIT_FAILURE;
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }

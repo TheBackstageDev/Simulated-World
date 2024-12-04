@@ -24,7 +24,7 @@ events:
       The output was:
       0
       Vers├úo do MSBuild 17.10.4+10fbfbf2e para .NET Framework
-      Compila├º├úo de 04/12/2024 00:16:49 iniciada.
+      Compila├º├úo de 04/12/2024 17:43:32 iniciada.
       
       Projeto "C:\\Users\\cleve\\OneDrive\\Documents\\GitHub\\Simulated-World\\build\\CMakeFiles\\3.29.3\\CompilerIdC\\CompilerIdC.vcxproj" no n├│ 1 (destinos padr├úo).
       PrepareForBuild:
@@ -53,7 +53,7 @@ events:
           0 Aviso(s)
           0 Erro(s)
       
-      Tempo Decorrido 00:00:01.19
+      Tempo Decorrido 00:00:01.05
       
       
       Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CompilerIdC.exe"
@@ -79,7 +79,7 @@ events:
       The output was:
       0
       Vers├úo do MSBuild 17.10.4+10fbfbf2e para .NET Framework
-      Compila├º├úo de 04/12/2024 00:16:50 iniciada.
+      Compila├º├úo de 04/12/2024 17:43:33 iniciada.
       
       Projeto "C:\\Users\\cleve\\OneDrive\\Documents\\GitHub\\Simulated-World\\build\\CMakeFiles\\3.29.3\\CompilerIdCXX\\CompilerIdCXX.vcxproj" no n├│ 1 (destinos padr├úo).
       PrepareForBuild:
@@ -108,7 +108,7 @@ events:
           0 Aviso(s)
           0 Erro(s)
       
-      Tempo Decorrido 00:00:00.87
+      Tempo Decorrido 00:00:00.82
       
       
       Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CompilerIdCXX.exe"
@@ -127,8 +127,8 @@ events:
     checks:
       - "Detecting C compiler ABI info"
     directories:
-      source: "C:/Users/cleve/OneDrive/Documents/GitHub/Simulated-World/build/CMakeFiles/CMakeScratch/TryCompile-w5l4tv"
-      binary: "C:/Users/cleve/OneDrive/Documents/GitHub/Simulated-World/build/CMakeFiles/CMakeScratch/TryCompile-w5l4tv"
+      source: "C:/Users/cleve/OneDrive/Documents/GitHub/Simulated-World/build/CMakeFiles/CMakeScratch/TryCompile-wxqfvt"
+      binary: "C:/Users/cleve/OneDrive/Documents/GitHub/Simulated-World/build/CMakeFiles/CMakeScratch/TryCompile-wxqfvt"
     cmakeVariables:
       CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
       CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
@@ -137,40 +137,40 @@ events:
       variable: "CMAKE_C_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: 'C:/Users/cleve/OneDrive/Documents/GitHub/Simulated-World/build/CMakeFiles/CMakeScratch/TryCompile-w5l4tv'
+        Change Dir: 'C:/Users/cleve/OneDrive/Documents/GitHub/Simulated-World/build/CMakeFiles/CMakeScratch/TryCompile-wxqfvt'
         
-        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_1f475.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_7e1e4.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
         Vers├úo do MSBuild 17.10.4+10fbfbf2e para .NET Framework
-        Compila├º├úo de 04/12/2024 00:16:52 iniciada.
+        Compila├º├úo de 04/12/2024 17:43:35 iniciada.
         
-        Projeto "C:\\Users\\cleve\\OneDrive\\Documents\\GitHub\\Simulated-World\\build\\CMakeFiles\\CMakeScratch\\TryCompile-w5l4tv\\cmTC_1f475.vcxproj" no n├│ 1 (destinos padr├úo).
+        Projeto "C:\\Users\\cleve\\OneDrive\\Documents\\GitHub\\Simulated-World\\build\\CMakeFiles\\CMakeScratch\\TryCompile-wxqfvt\\cmTC_7e1e4.vcxproj" no n├│ 1 (destinos padr├úo).
         PrepareForBuild:
-          Criando o diret├│rio "cmTC_1f475.dir\\Debug\\".
+          Criando o diret├│rio "cmTC_7e1e4.dir\\Debug\\".
           Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
-          Criando o diret├│rio "C:\\Users\\cleve\\OneDrive\\Documents\\GitHub\\Simulated-World\\build\\CMakeFiles\\CMakeScratch\\TryCompile-w5l4tv\\Debug\\".
-          Criando o diret├│rio "cmTC_1f475.dir\\Debug\\cmTC_1f475.tlog\\".
+          Criando o diret├│rio "C:\\Users\\cleve\\OneDrive\\Documents\\GitHub\\Simulated-World\\build\\CMakeFiles\\CMakeScratch\\TryCompile-wxqfvt\\Debug\\".
+          Criando o diret├│rio "cmTC_7e1e4.dir\\Debug\\cmTC_7e1e4.tlog\\".
         InitializeBuildStatus:
-          Criando "cmTC_1f475.dir\\Debug\\cmTC_1f475.tlog\\unsuccessfulbuild" porque "AlwaysCreate" foi especificado.
-          Tocando "cmTC_1f475.dir\\Debug\\cmTC_1f475.tlog\\unsuccessfulbuild".
+          Criando "cmTC_7e1e4.dir\\Debug\\cmTC_7e1e4.tlog\\unsuccessfulbuild" porque "AlwaysCreate" foi especificado.
+          Tocando "cmTC_7e1e4.dir\\Debug\\cmTC_7e1e4.tlog\\unsuccessfulbuild".
         ClCompile:
-          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\bin\\HostX86\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_1f475.dir\\Debug\\\\" /Fd"cmTC_1f475.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-3.29\\Modules\\CMakeCCompilerABI.c"
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\bin\\HostX86\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_7e1e4.dir\\Debug\\\\" /Fd"cmTC_7e1e4.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-3.29\\Modules\\CMakeCCompilerABI.c"
           Microsoft (R) C/C++ Optimizing Compiler Version 19.40.33811 for x64
           Copyright (C) Microsoft Corporation.  All rights reserved.
-          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_1f475.dir\\Debug\\\\" /Fd"cmTC_1f475.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-3.29\\Modules\\CMakeCCompilerABI.c"
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_7e1e4.dir\\Debug\\\\" /Fd"cmTC_7e1e4.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-3.29\\Modules\\CMakeCCompilerABI.c"
           CMakeCCompilerABI.c
         Link:
-          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\bin\\HostX86\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Users\\cleve\\OneDrive\\Documents\\GitHub\\Simulated-World\\build\\CMakeFiles\\CMakeScratch\\TryCompile-w5l4tv\\Debug\\cmTC_1f475.exe" /INCREMENTAL /ILK:"cmTC_1f475.dir\\Debug\\cmTC_1f475.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/cleve/OneDrive/Documents/GitHub/Simulated-World/build/CMakeFiles/CMakeScratch/TryCompile-w5l4tv/Debug/cmTC_1f475.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/cleve/OneDrive/Documents/GitHub/Simulated-World/build/CMakeFiles/CMakeScratch/TryCompile-w5l4tv/Debug/cmTC_1f475.lib" /MACHINE:X64  /machine:x64 cmTC_1f475.dir\\Debug\\CMakeCCompilerABI.obj
-          cmTC_1f475.vcxproj -> C:\\Users\\cleve\\OneDrive\\Documents\\GitHub\\Simulated-World\\build\\CMakeFiles\\CMakeScratch\\TryCompile-w5l4tv\\Debug\\cmTC_1f475.exe
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\bin\\HostX86\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Users\\cleve\\OneDrive\\Documents\\GitHub\\Simulated-World\\build\\CMakeFiles\\CMakeScratch\\TryCompile-wxqfvt\\Debug\\cmTC_7e1e4.exe" /INCREMENTAL /ILK:"cmTC_7e1e4.dir\\Debug\\cmTC_7e1e4.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/cleve/OneDrive/Documents/GitHub/Simulated-World/build/CMakeFiles/CMakeScratch/TryCompile-wxqfvt/Debug/cmTC_7e1e4.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/cleve/OneDrive/Documents/GitHub/Simulated-World/build/CMakeFiles/CMakeScratch/TryCompile-wxqfvt/Debug/cmTC_7e1e4.lib" /MACHINE:X64  /machine:x64 cmTC_7e1e4.dir\\Debug\\CMakeCCompilerABI.obj
+          cmTC_7e1e4.vcxproj -> C:\\Users\\cleve\\OneDrive\\Documents\\GitHub\\Simulated-World\\build\\CMakeFiles\\CMakeScratch\\TryCompile-wxqfvt\\Debug\\cmTC_7e1e4.exe
         FinalizeBuildStatus:
-          Excluindo o arquivo "cmTC_1f475.dir\\Debug\\cmTC_1f475.tlog\\unsuccessfulbuild".
-          Tocando "cmTC_1f475.dir\\Debug\\cmTC_1f475.tlog\\cmTC_1f475.lastbuildstate".
-        Projeto de compila├º├úo pronto "C:\\Users\\cleve\\OneDrive\\Documents\\GitHub\\Simulated-World\\build\\CMakeFiles\\CMakeScratch\\TryCompile-w5l4tv\\cmTC_1f475.vcxproj" (destinos padr├úo).
+          Excluindo o arquivo "cmTC_7e1e4.dir\\Debug\\cmTC_7e1e4.tlog\\unsuccessfulbuild".
+          Tocando "cmTC_7e1e4.dir\\Debug\\cmTC_7e1e4.tlog\\cmTC_7e1e4.lastbuildstate".
+        Projeto de compila├º├úo pronto "C:\\Users\\cleve\\OneDrive\\Documents\\GitHub\\Simulated-World\\build\\CMakeFiles\\CMakeScratch\\TryCompile-wxqfvt\\cmTC_7e1e4.vcxproj" (destinos padr├úo).
         
         Compila├º├úo com ├¬xito.
             0 Aviso(s)
             0 Erro(s)
         
-        Tempo Decorrido 00:00:01.26
+        Tempo Decorrido 00:00:00.97
         
       exitCode: 0
   -
@@ -210,8 +210,8 @@ events:
     checks:
       - "Detecting CXX compiler ABI info"
     directories:
-      source: "C:/Users/cleve/OneDrive/Documents/GitHub/Simulated-World/build/CMakeFiles/CMakeScratch/TryCompile-zvd615"
-      binary: "C:/Users/cleve/OneDrive/Documents/GitHub/Simulated-World/build/CMakeFiles/CMakeScratch/TryCompile-zvd615"
+      source: "C:/Users/cleve/OneDrive/Documents/GitHub/Simulated-World/build/CMakeFiles/CMakeScratch/TryCompile-ah9p7h"
+      binary: "C:/Users/cleve/OneDrive/Documents/GitHub/Simulated-World/build/CMakeFiles/CMakeScratch/TryCompile-ah9p7h"
     cmakeVariables:
       CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /W3 /GR /EHsc"
       CMAKE_CXX_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
@@ -221,40 +221,40 @@ events:
       variable: "CMAKE_CXX_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: 'C:/Users/cleve/OneDrive/Documents/GitHub/Simulated-World/build/CMakeFiles/CMakeScratch/TryCompile-zvd615'
+        Change Dir: 'C:/Users/cleve/OneDrive/Documents/GitHub/Simulated-World/build/CMakeFiles/CMakeScratch/TryCompile-ah9p7h'
         
-        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_a72b3.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_01548.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
         Vers├úo do MSBuild 17.10.4+10fbfbf2e para .NET Framework
-        Compila├º├úo de 04/12/2024 00:16:53 iniciada.
+        Compila├º├úo de 04/12/2024 17:43:36 iniciada.
         
-        Projeto "C:\\Users\\cleve\\OneDrive\\Documents\\GitHub\\Simulated-World\\build\\CMakeFiles\\CMakeScratch\\TryCompile-zvd615\\cmTC_a72b3.vcxproj" no n├│ 1 (destinos padr├úo).
+        Projeto "C:\\Users\\cleve\\OneDrive\\Documents\\GitHub\\Simulated-World\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ah9p7h\\cmTC_01548.vcxproj" no n├│ 1 (destinos padr├úo).
         PrepareForBuild:
-          Criando o diret├│rio "cmTC_a72b3.dir\\Debug\\".
+          Criando o diret├│rio "cmTC_01548.dir\\Debug\\".
           Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
-          Criando o diret├│rio "C:\\Users\\cleve\\OneDrive\\Documents\\GitHub\\Simulated-World\\build\\CMakeFiles\\CMakeScratch\\TryCompile-zvd615\\Debug\\".
-          Criando o diret├│rio "cmTC_a72b3.dir\\Debug\\cmTC_a72b3.tlog\\".
+          Criando o diret├│rio "C:\\Users\\cleve\\OneDrive\\Documents\\GitHub\\Simulated-World\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ah9p7h\\Debug\\".
+          Criando o diret├│rio "cmTC_01548.dir\\Debug\\cmTC_01548.tlog\\".
         InitializeBuildStatus:
-          Criando "cmTC_a72b3.dir\\Debug\\cmTC_a72b3.tlog\\unsuccessfulbuild" porque "AlwaysCreate" foi especificado.
-          Tocando "cmTC_a72b3.dir\\Debug\\cmTC_a72b3.tlog\\unsuccessfulbuild".
+          Criando "cmTC_01548.dir\\Debug\\cmTC_01548.tlog\\unsuccessfulbuild" porque "AlwaysCreate" foi especificado.
+          Tocando "cmTC_01548.dir\\Debug\\cmTC_01548.tlog\\unsuccessfulbuild".
         ClCompile:
-          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\bin\\HostX86\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"cmTC_a72b3.dir\\Debug\\\\" /Fd"cmTC_a72b3.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TP /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-3.29\\Modules\\CMakeCXXCompilerABI.cpp"
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\bin\\HostX86\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"cmTC_01548.dir\\Debug\\\\" /Fd"cmTC_01548.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TP /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-3.29\\Modules\\CMakeCXXCompilerABI.cpp"
           Microsoft (R) C/C++ Optimizing Compiler Version 19.40.33811 for x64
           Copyright (C) Microsoft Corporation.  All rights reserved.
-          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"cmTC_a72b3.dir\\Debug\\\\" /Fd"cmTC_a72b3.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TP /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-3.29\\Modules\\CMakeCXXCompilerABI.cpp"
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"cmTC_01548.dir\\Debug\\\\" /Fd"cmTC_01548.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TP /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-3.29\\Modules\\CMakeCXXCompilerABI.cpp"
           CMakeCXXCompilerABI.cpp
         Link:
-          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\bin\\HostX86\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Users\\cleve\\OneDrive\\Documents\\GitHub\\Simulated-World\\build\\CMakeFiles\\CMakeScratch\\TryCompile-zvd615\\Debug\\cmTC_a72b3.exe" /INCREMENTAL /ILK:"cmTC_a72b3.dir\\Debug\\cmTC_a72b3.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/cleve/OneDrive/Documents/GitHub/Simulated-World/build/CMakeFiles/CMakeScratch/TryCompile-zvd615/Debug/cmTC_a72b3.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/cleve/OneDrive/Documents/GitHub/Simulated-World/build/CMakeFiles/CMakeScratch/TryCompile-zvd615/Debug/cmTC_a72b3.lib" /MACHINE:X64  /machine:x64 cmTC_a72b3.dir\\Debug\\CMakeCXXCompilerABI.obj
-          cmTC_a72b3.vcxproj -> C:\\Users\\cleve\\OneDrive\\Documents\\GitHub\\Simulated-World\\build\\CMakeFiles\\CMakeScratch\\TryCompile-zvd615\\Debug\\cmTC_a72b3.exe
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\bin\\HostX86\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Users\\cleve\\OneDrive\\Documents\\GitHub\\Simulated-World\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ah9p7h\\Debug\\cmTC_01548.exe" /INCREMENTAL /ILK:"cmTC_01548.dir\\Debug\\cmTC_01548.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/cleve/OneDrive/Documents/GitHub/Simulated-World/build/CMakeFiles/CMakeScratch/TryCompile-ah9p7h/Debug/cmTC_01548.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/cleve/OneDrive/Documents/GitHub/Simulated-World/build/CMakeFiles/CMakeScratch/TryCompile-ah9p7h/Debug/cmTC_01548.lib" /MACHINE:X64  /machine:x64 cmTC_01548.dir\\Debug\\CMakeCXXCompilerABI.obj
+          cmTC_01548.vcxproj -> C:\\Users\\cleve\\OneDrive\\Documents\\GitHub\\Simulated-World\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ah9p7h\\Debug\\cmTC_01548.exe
         FinalizeBuildStatus:
-          Excluindo o arquivo "cmTC_a72b3.dir\\Debug\\cmTC_a72b3.tlog\\unsuccessfulbuild".
-          Tocando "cmTC_a72b3.dir\\Debug\\cmTC_a72b3.tlog\\cmTC_a72b3.lastbuildstate".
-        Projeto de compila├º├úo pronto "C:\\Users\\cleve\\OneDrive\\Documents\\GitHub\\Simulated-World\\build\\CMakeFiles\\CMakeScratch\\TryCompile-zvd615\\cmTC_a72b3.vcxproj" (destinos padr├úo).
+          Excluindo o arquivo "cmTC_01548.dir\\Debug\\cmTC_01548.tlog\\unsuccessfulbuild".
+          Tocando "cmTC_01548.dir\\Debug\\cmTC_01548.tlog\\cmTC_01548.lastbuildstate".
+        Projeto de compila├º├úo pronto "C:\\Users\\cleve\\OneDrive\\Documents\\GitHub\\Simulated-World\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ah9p7h\\cmTC_01548.vcxproj" (destinos padr├úo).
         
         Compila├º├úo com ├¬xito.
             0 Aviso(s)
             0 Erro(s)
         
-        Tempo Decorrido 00:00:00.79
+        Tempo Decorrido 00:00:00.96
         
       exitCode: 0
   -
