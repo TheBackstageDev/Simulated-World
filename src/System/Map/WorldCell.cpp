@@ -2,5 +2,9 @@
 
 namespace World
 {
-    
+    GridCell::GridCell(std::string name, float elevation) : name(name), elevation(elevation)
+    {
+    }
+
+    GridCell::~GridCell() {}
 } // namespace World
