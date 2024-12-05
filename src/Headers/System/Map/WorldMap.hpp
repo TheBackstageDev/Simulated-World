@@ -25,6 +25,6 @@ namespace World
         int getHeight() { return cellSize * PLANET_MAP_HEIGHT * PLANET_CELL_MULTIPLIER; }
         int getWidth() { return cellSize * PLANET_MAP_HEIGHT * PLANET_MAP_RATIO * PLANET_CELL_MULTIPLIER; }
 
-        void drawMap();
+        void drawMap(const Camera2D &camera);
     };
 } // namespace World

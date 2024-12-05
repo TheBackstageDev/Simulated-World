@@ -9,6 +9,7 @@ namespace System
     {
     private:
         World::WorldGenerator WorldGen{};
+        Camera2D camera{0};
     public:
         Simulation();
         ~Simulation();

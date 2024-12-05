@@ -14,9 +14,9 @@ namespace World
         WorldGenerator();
         ~WorldGenerator();
 
-        void GenerateWorld(int seed, int res, int freq);
+        void GenerateWorld(int seed, int res, int freq, int CellSize);
+        void renderMap( const Camera2D &camera ) { map->drawMap(camera); }
         bool doesMapExist() { return map != nullptr; }
-
-        void renderMap() { map->drawMap(); }
+        WorldMap* getMap() { return map; }
     };
 } // namespace MapGen
