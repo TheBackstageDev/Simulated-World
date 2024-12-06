@@ -1,4 +1,5 @@
 #include "../src/Headers/System/Simulation.hpp"
+#include "../src/Headers/System/InputHandler.hpp"
 
 #include <iostream>
 
@@ -9,14 +10,14 @@ namespace System
         std::random_device rd;
         int seed = rd();
 
-        const int CellSize = 5;
+        const float CellSize = 1.f;
 
-        WorldGen.GenerateWorld(seed, 10, 5, 5);
+        WorldGen.GenerateWorld(seed, 10, 5, CellSize);
 
         camera.target = {0.0f, 0.0f};
         camera.offset = {0.0f, 0.0f};
         camera.rotation = 0.0f;
-        camera.zoom = 1.0f;
+        camera.zoom = 2.0f;
 
         SetConfigFlags(FLAG_WINDOW_RESIZABLE);
         InitWindow(800, 500, "Simulation");
@@ -42,19 +43,10 @@ namespace System
 
     void Simulation::runSimulation()
     {
-        if (IsKeyDown(KEY_W))
-            camera.target.y -= 10 / camera.zoom;
-        if (IsKeyDown(KEY_S))
-            camera.target.y += 10 / camera.zoom;
-        if (IsKeyDown(KEY_A))
-            camera.target.x -= 10 / camera.zoom;
-        if (IsKeyDown(KEY_D))
-            camera.target.x += 10 / camera.zoom;
+        System_Input::handleCameraInput(camera);
 
-        camera.zoom += GetMouseWheelMove() * 0.1f;
-        if (camera.zoom < 0.1f)
-            camera.zoom = 0.1f;
-
+        BeginMode2D(camera);
         WorldGen.renderMap(camera);
+        EndMode2D();
     }
 } // namespace System

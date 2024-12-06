@@ -8,7 +8,8 @@ namespace World
 
     WorldGenerator::~WorldGenerator() {}
 
-    void WorldGenerator::GenerateWorld(int seed, int res, int freq, int CellSize)
+
+    void WorldGenerator::GenerateWorld(int seed, int res, int freq, float CellSize)
     {
         perlinNoise = siv::PerlinNoise(seed);
         map = new WorldMap(CellSize);

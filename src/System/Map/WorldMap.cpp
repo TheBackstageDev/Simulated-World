@@ -1,16 +1,15 @@
 #include "../src/Headers/System/Map/WorldMap.hpp"
-
-#include <cmath>
+#include "../src/Headers/Utils/CameraUtils.hpp"
 
 namespace World
 {
-    WorldMap::WorldMap(const int cellSize) : cellSize(cellSize)
+    WorldMap::WorldMap(const float cellSize) : cellSize(cellSize)
     {
-        Map.resize(cellSize * PLANET_MAP_HEIGHT * PLANET_CELL_MULTIPLIER); // for the height
+        Map.resize(getHeight()); // for the height
 
         for (auto &row : Map)
         {
-            row.resize(cellSize * PLANET_MAP_RATIO * PLANET_MAP_HEIGHT * PLANET_CELL_MULTIPLIER); // for the width
+            row.resize(getWidth()); // for the width
         }
     }
 
@@ -28,19 +27,25 @@ namespace World
         {
             for (int y = 0; y < getHeight(); ++y)
             {
-                auto& CurrentCell = Map[y][x];
-                float CurrentElevation = CurrentCell.getElevation();
+                float posX = x * cellSize;
+                float posY = y * cellSize;
 
-                unsigned char colorValue = static_cast<unsigned char>(CurrentElevation * 255.0f);
-                Color cellColor = {colorValue, colorValue, colorValue, 255};
-                
-                // For fitting the window size
-                int posX = static_cast<int>((x * cellSize - camera.target.x) * scale + camera.offset.x);
-                int posY = static_cast<int>((y * cellSize - camera.target.y) * scale + camera.offset.y);
-                int width = static_cast<int>(1 + cellSize * scale);
-                int height = static_cast<int>(1 + cellSize * scale);
+                if (System::isPositionInsideCamera(camera, {posX, posY}))
+                {
+                    auto &CurrentCell = Map[y][x];
+                    float CurrentElevation = CurrentCell.getElevation();
 
-                DrawRectangle(posX, posY, width, height, cellColor);
+                    unsigned char colorValue = static_cast<unsigned char>(CurrentElevation * 255.0f);
+                    Color cellColor = {colorValue, colorValue, colorValue, 255};
+
+                    // For fitting the window size
+                    int drawPosX = static_cast<int>((posX - camera.target.x) * scale + camera.offset.x);
+                    int darwPosY = static_cast<int>((posY - camera.target.y) * scale + camera.offset.y);
+                    int width = static_cast<int>(1 + cellSize * scale);
+                    int height = static_cast<int>(1 + cellSize * scale);
+
+                    DrawRectangle(drawPosX, darwPosY, width, height, cellColor);
+                }
             }
         }
     }
