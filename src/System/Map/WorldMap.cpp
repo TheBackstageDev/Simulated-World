@@ -1,5 +1,6 @@
 #include "../src/Headers/System/Map/WorldMap.hpp"
 #include "../src/Headers/Utils/CameraUtils.hpp"
+#include "../src/Headers/Utils/WindowUtils.hpp"
 
 namespace World
 {
@@ -17,11 +18,7 @@ namespace World
 
     void WorldMap::drawMap(const Camera2D &camera)
     {
-        int screenWidth = GetScreenWidth();
-        int screenHeight = GetScreenHeight();
-        float scaleX = static_cast<float>(screenWidth) / (getWidth() * cellSize);
-        float scaleY = static_cast<float>(screenHeight) / (getHeight() * cellSize);
-        float scale = std::min(scaleX, scaleY) * camera.zoom;
+        float scale = System_Utils::getCurrentWindowScaleOffset({getWidth() * cellSize, getHeight() * cellSize}) * camera.zoom;
 
         for (int x = 0; x < getWidth(); ++x)
         {
@@ -40,11 +37,11 @@ namespace World
 
                     // For fitting the window size
                     int drawPosX = static_cast<int>((posX - camera.target.x) * scale + camera.offset.x);
-                    int darwPosY = static_cast<int>((posY - camera.target.y) * scale + camera.offset.y);
+                    int drawPosY = static_cast<int>((posY - camera.target.y) * scale + camera.offset.y);
                     int width = static_cast<int>(1 + cellSize * scale);
                     int height = static_cast<int>(1 + cellSize * scale);
 
-                    DrawRectangle(drawPosX, darwPosY, width, height, cellColor);
+                    DrawRectangle(drawPosX, drawPosY, width, height, cellColor);
                 }
             }
         }

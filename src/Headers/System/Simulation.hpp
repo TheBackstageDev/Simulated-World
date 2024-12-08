@@ -2,6 +2,7 @@
 
 #include <raylib.h>
 #include "./Map/WorldGeneration.hpp"
+#include "./User_Interface/InterfaceHandler.hpp"
 
 namespace System
 {
@@ -9,6 +10,8 @@ namespace System
     {
     private:
         World::WorldGenerator WorldGen{};
+        Interface::InterfaceHandler interfaceHand{};
+
         Camera2D camera{0};
     public:
         Simulation();

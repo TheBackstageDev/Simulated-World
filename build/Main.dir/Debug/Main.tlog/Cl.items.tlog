@@ -3,4 +3,7 @@ C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\src\System\Map\WorldCel
 C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\src\System\Map\WorldGeneration.cpp;C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\build\Main.dir\Debug\WorldGeneration.obj
 C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\src\System\Map\WorldMap.cpp;C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\build\Main.dir\Debug\WorldMap.obj
 C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\src\System\Simulation.cpp;C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\build\Main.dir\Debug\Simulation.obj
+C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\src\System\User_Interface\InterfaceHandler.cpp;C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\build\Main.dir\Debug\InterfaceHandler.obj
+C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\src\System\User_Interface\Menu.cpp;C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\build\Main.dir\Debug\Menu.obj
+C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\src\Utils\WindowUtils.cpp;C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\build\Main.dir\Debug\WindowUtils.obj
 C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\src\main.cpp;C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\build\Main.dir\Debug\main.obj

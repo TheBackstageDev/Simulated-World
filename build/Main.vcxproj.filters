@@ -16,6 +16,15 @@
     <ClCompile Include="C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\src\System\Simulation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\src\System\User_Interface\InterfaceHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\src\System\User_Interface\Menu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\src\Utils\WindowUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

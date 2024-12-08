@@ -23,7 +23,7 @@ namespace World
             {
                 float nx = static_cast<float>(x) / map_width * freq;
                 float ny = static_cast<float>(y) / map_height * freq;
-                float elevation = perlinNoise.octave2D(nx, ny, 10);
+                float elevation = perlinNoise.normalizedOctave2D(nx, ny, 10);
                 GridCell cell(std::string(std::to_string(x) + std::to_string(y)), elevation);
                 map->setCell(x, y, cell);
             }
