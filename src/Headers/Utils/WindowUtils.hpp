@@ -12,6 +12,7 @@ namespace System_Utils
 
     void updateScales();
     float getCurrentWindowScaleOffset(Vector2 referenceSize);
+    float getScaleOffset(Vector2 referenceSizeA, Vector2 referenceSizeB);
     Vector2 getScreenCenter();
     void scaleRectangle(Rectangle &rect);
 } // namespace System

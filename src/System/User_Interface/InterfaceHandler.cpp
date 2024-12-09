@@ -6,13 +6,24 @@
 
 namespace Interface
 {
+    SimulationMode InterfaceHandler::currentSimulationMode = Menu;
+
     InterfaceHandler::InterfaceHandler() {}
 
     void InterfaceHandler::runInterface()
     {
         if (IsWindowResized() || IsWindowMaximized())
             System_Utils::updateScales();
-            
-        menu.runMenu();
+
+        switch (currentSimulationMode)
+        {
+        case Menu:
+            menu.runMenu();
+            if (menu.getCurrentMode() == 2)
+                currentSimulationMode = Running;
+            break;
+        default:
+            break;
+        }
     }
 } // namespace Interface

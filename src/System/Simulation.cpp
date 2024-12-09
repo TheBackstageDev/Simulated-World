@@ -2,6 +2,7 @@
 #include "../src/Headers/System/InputHandler.hpp"
 #include "../src/Headers/System/User_Interface/InterfaceHandler.hpp"
 #include "../src/Headers/Utils/WindowUtils.hpp"
+#include "../src/Headers/Utils/WorldDefinitions.hpp"
 
 #include <iostream>
 
@@ -9,13 +10,6 @@ namespace System
 {
     Simulation::Simulation()
     {
-        std::random_device rd;
-        int seed = rd();
-
-        const float CellSize = 1.f;
-
-        WorldGen.GenerateWorld(seed, 10, 5, CellSize);
-
         camera.target = {0.0f, 0.0f};
         camera.offset = {0.0f, 0.0f};
         camera.rotation = 0.0f;

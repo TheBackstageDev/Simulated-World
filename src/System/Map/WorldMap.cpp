@@ -46,4 +46,28 @@ namespace World
             }
         }
     }
+
+    Image WorldMap::getMapImage(std::vector<std::vector<GridCell>> &map, int mapWidth, int mapHeight, int cellSize)
+    {
+        Image mapImage = GenImageColor(mapWidth * cellSize, mapHeight * cellSize, RAYWHITE);
+
+        ImageDrawRectangle(&mapImage, 0, 0, mapWidth * cellSize, mapHeight * cellSize, WHITE);
+
+        for (int y = 0; y < mapHeight; ++y)
+        {
+            for (int x = 0; x < mapWidth; ++x)
+            {
+                auto &currentCell = map[y][x];
+                float currentElevation = currentCell.getElevation();
+
+                unsigned char colorValue = static_cast<unsigned char>(currentElevation * 255.0f);
+                Color cellColor = {colorValue, colorValue, colorValue, 255};
+
+                ImageDrawRectangle(&mapImage, x * cellSize, y * cellSize, cellSize, cellSize, cellColor);
+            }
+        }
+
+        return mapImage;
+    }
+
 } // namespace World

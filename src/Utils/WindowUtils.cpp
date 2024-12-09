@@ -20,6 +20,13 @@ namespace System_Utils
         return std::min(scaleX, scaleY);
     }
 
+    float System_Utils::getScaleOffset(Vector2 referenceSizeA, Vector2 referenceSizeB)
+    {
+        float scaleX = static_cast<float>(referenceSizeA.x) / referenceSizeB.x;
+        float scaleY = static_cast<float>(referenceSizeA.y) / referenceSizeB.y;
+        return std::min(scaleX, scaleY);
+    }
+
     Vector2 System_Utils::getScreenCenter()
     {
         return {(float)GetScreenWidth() / 2, (float)GetScreenHeight() / 2};

@@ -15,12 +15,12 @@ namespace Interface
     private:
         MenuInterface menu{};
 
-        SimulationMode currentMode;
+        static SimulationMode currentSimulationMode;
     public:
         InterfaceHandler();
 
         void runInterface();
-        SimulationMode getCurrentMode() { return currentMode; }
+        SimulationMode getCurrentMode() { return currentSimulationMode; }
     };
 
 } // namespace Interface

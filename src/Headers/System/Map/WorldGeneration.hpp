@@ -1,6 +1,7 @@
 #pragma once
 
 #include "WorldMap.hpp"
+#include "../src/Headers/Utils/WorldDefinitions.hpp"
 #include "../PerlinNoise.hpp"
 
 namespace World
@@ -8,15 +9,17 @@ namespace World
     class WorldGenerator
     {
     private:
-        siv::PerlinNoise perlinNoise;
-        WorldMap* map{nullptr};
+        static siv::PerlinNoise perlinNoise;
+        static WorldMap* map;
     public:
         WorldGenerator();
         ~WorldGenerator();
 
-        void GenerateWorld(int seed, int res, int freq, float CellSize);
+        static void GenerateWorld(int seed, float res, float freq, float CellSize);
         void renderMap( const Camera2D &camera ) { map->drawMap(camera); }
         bool doesMapExist() { return map != nullptr; }
         WorldMap* getMap() { return map; }
+
+        static Image getMapImage() { return map->getMapImage(map->getMapData(), map->getWidth(), map->getHeight(), System_Utils::Cellsize); }
     };
 } // namespace MapGen

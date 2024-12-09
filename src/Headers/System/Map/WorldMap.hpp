@@ -6,7 +6,7 @@
 
 #define PLANET_MAP_RATIO 2 // Ratio beetwen the Height and Width of the Map Rectangle
 #define TOTAL_MAP_HEIGHT 256    // Height in Grids, Based on the Cartesian
-#define TOTAL_MAP_WIDTH (TOTAL_MAP_HEIGHT * PLANET_MAP_RATIO) // Total width of the map based on the ratio
+#define TOTAL_MAP_WIDTH (TOTAL_MAP_HEIGHT * PLANET_MAP_RATIO) 
 
 namespace World
 {
@@ -15,7 +15,6 @@ namespace World
     private:
         const float cellSize;
         std::vector<std::vector<GridCell>> Map;
-        
     public:
         WorldMap(const float cellSize);
         ~WorldMap();
@@ -23,9 +22,13 @@ namespace World
         GridCell &getCell(int x, int y) { return Map[y][x]; };
         void setCell(int x, int y, const GridCell cell) { Map[y][x] = cell; }
 
-        int getHeight() const { return TOTAL_MAP_HEIGHT / cellSize; }
-        int getWidth() const { return TOTAL_MAP_WIDTH / cellSize; }
+        int getHeight() { return TOTAL_MAP_HEIGHT / cellSize; }
+        int getWidth() { return TOTAL_MAP_WIDTH / cellSize; }
 
         void drawMap(const Camera2D &camera);
+        float getCellSize() { return cellSize; } 
+        std::vector<std::vector<GridCell>> getMapData() { return Map; }
+
+        static Image getMapImage(std::vector<std::vector<GridCell>> &map, int mapWidth, int mapHeight, int cellSize); 
     };
 } // namespace World

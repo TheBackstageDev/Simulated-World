@@ -2,6 +2,9 @@
 
 namespace World
 {
+    WorldMap *World::WorldGenerator::map = nullptr;
+    siv::PerlinNoise World::WorldGenerator::perlinNoise{0};
+
     WorldGenerator::WorldGenerator()
     {
     }
@@ -9,8 +12,9 @@ namespace World
     WorldGenerator::~WorldGenerator() {}
 
 
-    void WorldGenerator::GenerateWorld(int seed, int res, int freq, float CellSize)
+    void WorldGenerator::GenerateWorld(int seed, float res, float freq, float CellSize)
     {
+        delete map;
         perlinNoise = siv::PerlinNoise(seed);
         map = new WorldMap(CellSize);
 
