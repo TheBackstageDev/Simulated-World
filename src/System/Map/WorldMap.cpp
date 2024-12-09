@@ -32,8 +32,7 @@ namespace World
                     auto &CurrentCell = Map[y][x];
                     float CurrentElevation = CurrentCell.getElevation();
 
-                    unsigned char colorValue = static_cast<unsigned char>(CurrentElevation * 255.0f);
-                    Color cellColor = {colorValue, colorValue, colorValue, 255};
+                    Color cellColor = CurrentCell.getColor();
 
                     // For fitting the window size
                     int drawPosX = static_cast<int>((posX - camera.target.x) * scale + camera.offset.x);

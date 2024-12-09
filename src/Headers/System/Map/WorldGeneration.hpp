@@ -20,6 +20,6 @@ namespace World
         bool doesMapExist() { return map != nullptr; }
         WorldMap* getMap() { return map; }
 
-        static Image getMapImage() { return map->getMapImage(map->getMapData(), map->getWidth(), map->getHeight(), System_Utils::Cellsize); }
+        static Image getMapImage() { return map->getMapImage(map->getMapData(), map->getWidth(), map->getHeight(), 1); }
     };
 } // namespace MapGen

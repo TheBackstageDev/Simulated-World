@@ -55,6 +55,8 @@ namespace Interface
         }
     }
 
+    static bool seedInitialized = false;
+
     void MenuInterface::drawLobby()
     {
         drawMapDisplay();
@@ -67,14 +69,20 @@ namespace Interface
         DrawRectangleLines(settingsArea.x, settingsArea.y, settingsArea.width, settingsArea.height, RAYWHITE);
         DrawText("SETTINGS", settingsArea.x + 10, settingsArea.y + 10, 20, RAYWHITE);
 
-        static float res{0.5f};              
-        static float freq{0.5f};     
-        static float cellsize{1.f};       
-        static char seedBuffer[32] = "90254";
+        static float res{0.5f};
+        static float freq{0.5f};
+        static char seedBuffer[32];
+
+        if (!seedInitialized)
+        {
+            std::random_device rd;
+            snprintf(seedBuffer, sizeof(seedBuffer), "%d", rd());
+            seedInitialized = true;
+        }
 
         GuiLabel({settingsArea.x + 10, settingsArea.y + 40, 50 * System_Utils::scaleX, 20 * System_Utils::scaleY}, "CELL SIZE");
-        GuiSlider({settingsArea.x + 70, settingsArea.y + 40, 200 * System_Utils::scaleX, 20 * System_Utils::scaleY}, "0.1", "10.0", &cellsize, 0.0f, 15.0f);
-        GuiLabel({settingsArea.x + 170, settingsArea.y + 40, 50 * System_Utils::scaleX, 20 * System_Utils::scaleY}, TextFormat(" %.1f", cellsize));
+        GuiSlider({settingsArea.x + 70, settingsArea.y + 40, 200 * System_Utils::scaleX, 20 * System_Utils::scaleY}, "0.1", "10.0", &System_Utils::Cellsize, 0.0f, 15.0f);
+        GuiLabel({settingsArea.x + 170, settingsArea.y + 40, 50 * System_Utils::scaleX, 20 * System_Utils::scaleY}, TextFormat(" %.1f", System_Utils::Cellsize));
 
         GuiLabel({settingsArea.x + 10, settingsArea.y + 70, 50 * System_Utils::scaleX, 20 * System_Utils::scaleY}, "RES");
         GuiSlider({settingsArea.x + 70, settingsArea.y + 70, 200 * System_Utils::scaleX, 20 * System_Utils::scaleY}, "0.0", "15.0", &res, 0.0f, 15.0f);
@@ -91,7 +99,7 @@ namespace Interface
         {
             int seed = atoi(seedBuffer);
 
-            World::WorldGenerator::GenerateWorld(seed, res, freq, cellsize);
+            World::WorldGenerator::GenerateWorld(seed, res, freq, System_Utils::Cellsize);
 
             if (mapTexture.id != 0)
                 UnloadTexture(mapTexture);
@@ -108,7 +116,7 @@ namespace Interface
 
         if (GuiButton({20, (float)GetScreenHeight() - 40, 100, 30}, "Back to Menu"))
         {
-            currentMode = 0; 
+            currentMode = 0;
 
             if (mapTexture.id != 0)
                 UnloadTexture(mapTexture);
