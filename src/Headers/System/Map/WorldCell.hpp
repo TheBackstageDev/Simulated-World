@@ -12,6 +12,7 @@ namespace World
         Forest,
         Desert,
         Mountain,
+        Hill,
         Tundra,
         Grassland,
         Savanna,

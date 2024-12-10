@@ -14,6 +14,11 @@ namespace World
 
     WorldGenerator::~WorldGenerator() {}
 
+    void WorldGenerator::GenerateRivers(int seed, float res, float freq, float CellSize)
+    {
+
+    }
+
     void WorldGenerator::GenerateWorld(int seed, float res, float freq, float CellSize)
     {
         delete map;
@@ -22,6 +27,10 @@ namespace World
 
         int map_height = map->getHeight();
         int map_width = map->getWidth();
+
+        //Amp means frequency of variation
+        float hillFreq = freq * 0.5f;
+        float mountainFreq = freq * 0.5f;
 
         for (int y = 0; y < map_height; ++y)
         {
@@ -34,6 +43,11 @@ namespace World
                 ny *= freq;
 
                 float elevation = perlinNoise.normalizedOctave2D(nx, ny, 10) * 2;
+
+                //Hills and Mountains
+                float hillElevation = perlinNoise.normalizedOctave2D(nx * hillFreq, ny * hillFreq, 10) / 2;
+                float mountainElevation = perlinNoise.normalizedOctave2D(nx * mountainFreq, ny * mountainFreq, 10) / 2;
+                elevation += hillElevation + mountainElevation;
 
                 float latitude = static_cast<float>(y) / map_height;
                 float latitudeFactor = 1.0f - abs(2.0f * latitude - 1.0f);

@@ -31,11 +31,18 @@ namespace World
         {
             biome = Biome::Beach;
         }
-        else if (elevation > 0.8f)
+        else if (elevation > 0.6f)
         {
-            biome = Biome::Mountain;
+            if (elevation > 0.8f)
+            {
+                biome = Biome::Mountain;
+            }
+            else 
+            {
+                biome = Biome::Hill;
+            }
         }
-        else if (temperature < 0.2f)
+        else if (temperature < 0.3f)
         {
             biome = Biome::Tundra;
         }
@@ -47,11 +54,11 @@ namespace World
         {
             biome = Biome::Forest;
         }
-        else if (temperature > 0.5f && humidity < 0.4f)
+        else if (temperature > 0.45f && humidity < 0.4f)
         {
             biome = Biome::Savanna;
         }
-        else if (temperature < 0.3)
+        else if (temperature < 0.2)
         {
             biome = Biome::Arctic;
         }
@@ -79,9 +86,11 @@ namespace World
         case Biome::Desert:
             return {237, 201, 175, 255}; // Sand
         case Biome::Mountain:
-            return {255, 255, 255, 255}; // Gray
+            return {255, 255, 255, 255}; // White
+        case Biome::Hill:
+            return {155, 155, 155, 255};
         case Biome::Tundra:
-            return {192, 192, 192, 255}; // Light Gray
+            return {192, 192, 210, 255}; // Light Gray
         case Biome::Grassland:
             return {124, 252, 0, 255}; // Lawn Green
         case Biome::Savanna:
@@ -89,7 +98,7 @@ namespace World
         case Biome::Arctic:
             return {173, 216, 230, 255}; // Light Blue (Icy color)
         default:
-            return {255, 255, 255, 255}; // Default White
+            return {0, 0, 0, 255}; // Default White
         }
     }
 

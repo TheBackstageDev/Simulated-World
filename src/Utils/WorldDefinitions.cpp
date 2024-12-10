@@ -16,6 +16,8 @@ namespace World
             return "Desert";
         case Biome::Mountain:
             return "Mountain";
+        case Biome::Hill:
+            return "Hill";
         case Biome::Tundra:
             return "Tundra";
         case Biome::Grassland:
