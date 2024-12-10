@@ -28,6 +28,9 @@
     <ClCompile Include="C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\src\Utils\WindowUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\src\Utils\WorldDefinitions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

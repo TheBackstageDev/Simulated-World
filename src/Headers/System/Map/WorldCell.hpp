@@ -5,6 +5,19 @@
 
 namespace World
 {
+    enum class Biome
+    {
+        Ocean,
+        Beach,
+        Forest,
+        Desert,
+        Mountain,
+        Tundra,
+        Grassland,
+        Savanna,
+        Arctic,
+    };
+
     class GridCell
     {
     private:
@@ -14,6 +27,11 @@ namespace World
         float elevation;
         float temperature;
         float humidity;
+        Biome biome;
+
+        void determineBiome();
+        Color interpolateColor() const;
+
     public:
         GridCell(std::string name, float elevation, float temperature, float humidity);
         GridCell() : name(""), elevation(0.0f) {}
@@ -25,6 +43,7 @@ namespace World
         float getElevation() { return this->elevation; }
         float getTemperature() { return this->temperature; } 
         float getHumidity() { return this->humidity;}
+        Biome getBiome() const;
 
         Color getColor() const;
     };

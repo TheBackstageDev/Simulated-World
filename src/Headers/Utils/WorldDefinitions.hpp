@@ -1,6 +1,16 @@
 #pragma once
 
-namespace System_Utils
+#include <string>
+#include "../src/Headers/System/Map/WorldGeneration.hpp"
+
+namespace World
 {
-    static float Cellsize{1.f};
-} // namespace Utils
+    //Height Defines
+    #define SEA_LEVEL 0.05f
+
+    //WorldMap Defines
+    static float Cellsize{1.0f}; // in KM
+
+    std::string biomeToString(Biome biome);
+
+} // namespace System_Utils

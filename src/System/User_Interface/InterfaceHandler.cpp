@@ -55,16 +55,25 @@ namespace Interface
             isCellSelected = true;
         }
 
-        // Display the properties of the selected cell
         if (isCellSelected && !selectedCell.getName().empty())
         {
-            Rectangle cellInfoArea = {10, GetScreenHeight() / 2 + 20, GetScreenWidth() - 20, GetScreenHeight() / 2 - 30};
+            float rectWidth = GetScreenWidth() * 0.25f;
+            float rectHeight = GetScreenHeight() * 0.25f;
+            float rectX = 10;
+            float rectY = GetScreenHeight() - rectHeight - 10;
+
+            Rectangle cellInfoArea = {rectX, rectY, rectWidth, rectHeight};
             DrawRectangle(cellInfoArea.x, cellInfoArea.y, cellInfoArea.width, cellInfoArea.height, DARKGRAY);
-            DrawText("CELL PROPERTIES", cellInfoArea.x + 10, cellInfoArea.y + 10, 20, RAYWHITE);
-            DrawText(TextFormat("Name: %s", selectedCell.getName().c_str()), cellInfoArea.x + 10, cellInfoArea.y + 40, 20, RAYWHITE);
-            DrawText(TextFormat("Elevation: %.2f", selectedCell.getElevation()), cellInfoArea.x + 10, cellInfoArea.y + 70, 20, RAYWHITE);
-            DrawText(TextFormat("Temperature: %.2f", selectedCell.getTemperature()), cellInfoArea.x + 10, cellInfoArea.y + 100, 20, RAYWHITE);
-            DrawText(TextFormat("Humidity: %.2f", selectedCell.getHumidity()), cellInfoArea.x + 10, cellInfoArea.y + 130, 20, RAYWHITE);
+
+            // Calculate font size based on the rectangle height
+            int fontSize = static_cast<int>(rectHeight * 0.1f);
+
+            DrawText("CELL PROPERTIES", cellInfoArea.x + 10, cellInfoArea.y + 10, fontSize, RAYWHITE);
+            DrawText(TextFormat("Name: %s", selectedCell.getName().c_str()), cellInfoArea.x + 10, cellInfoArea.y + 10 + fontSize, fontSize, RAYWHITE);
+            DrawText(TextFormat("Elevation: %.2f", selectedCell.getElevation()), cellInfoArea.x + 10, cellInfoArea.y + 20 + fontSize * 2, fontSize, RAYWHITE);
+            DrawText(TextFormat("Temperature: %.2f", selectedCell.getTemperature()), cellInfoArea.x + 10, cellInfoArea.y + 30 + fontSize * 3, fontSize, RAYWHITE);
+            DrawText(TextFormat("Humidity: %.2f", selectedCell.getHumidity()), cellInfoArea.x + 10, cellInfoArea.y + 40 + fontSize * 4, fontSize, RAYWHITE);
+            DrawText(TextFormat("Biome: %s", World::biomeToString(selectedCell.getBiome()).c_str()), cellInfoArea.x + 10, cellInfoArea.y + 50 + fontSize * 5, fontSize, RAYWHITE);
         }
     }
 

@@ -69,8 +69,8 @@ namespace Interface
         DrawRectangleLines(settingsArea.x, settingsArea.y, settingsArea.width, settingsArea.height, RAYWHITE);
         DrawText("SETTINGS", settingsArea.x + 10, settingsArea.y + 10, 20, RAYWHITE);
 
-        static float res{0.5f};
-        static float freq{0.5f};
+        static float res{2.0f};
+        static float freq{2.0f};
         static char seedBuffer[32];
 
         if (!seedInitialized)
@@ -81,15 +81,15 @@ namespace Interface
         }
 
         GuiLabel({settingsArea.x + 10, settingsArea.y + 40, 50 * System_Utils::scaleX, 20 * System_Utils::scaleY}, "CELL SIZE");
-        GuiSlider({settingsArea.x + 70, settingsArea.y + 40, 200 * System_Utils::scaleX, 20 * System_Utils::scaleY}, "0.1", "10.0", &System_Utils::Cellsize, 0.0f, 15.0f);
-        GuiLabel({settingsArea.x + 170, settingsArea.y + 40, 50 * System_Utils::scaleX, 20 * System_Utils::scaleY}, TextFormat(" %.1f", System_Utils::Cellsize));
+        GuiSlider({settingsArea.x + 70, settingsArea.y + 40, 200 * System_Utils::scaleX, 20 * System_Utils::scaleY}, "0.1", "10.0", &World::Cellsize, 0.1f, 15.0f);
+        GuiLabel({settingsArea.x + 170, settingsArea.y + 40, 50 * System_Utils::scaleX, 20 * System_Utils::scaleY}, TextFormat(" %.1f", World::Cellsize));
 
         GuiLabel({settingsArea.x + 10, settingsArea.y + 70, 50 * System_Utils::scaleX, 20 * System_Utils::scaleY}, "RES");
-        GuiSlider({settingsArea.x + 70, settingsArea.y + 70, 200 * System_Utils::scaleX, 20 * System_Utils::scaleY}, "0.0", "15.0", &res, 0.0f, 15.0f);
+        GuiSlider({settingsArea.x + 70, settingsArea.y + 70, 200 * System_Utils::scaleX, 20 * System_Utils::scaleY}, "0.1", "15.0", &res, 0.1f, 15.0f);
         GuiLabel({settingsArea.x + 170, settingsArea.y + 70, 50 * System_Utils::scaleX, 20 * System_Utils::scaleY}, TextFormat(" %.1f", res));
 
         GuiLabel({settingsArea.x + 10, settingsArea.y + 100, 50 * System_Utils::scaleX, 20 * System_Utils::scaleY}, "FREQ");
-        GuiSlider({settingsArea.x + 70, settingsArea.y + 100, 200 * System_Utils::scaleX, 20 * System_Utils::scaleY}, "0.0", "15.0", &freq, 0.0f, 15.0f);
+        GuiSlider({settingsArea.x + 70, settingsArea.y + 100, 200 * System_Utils::scaleX, 20 * System_Utils::scaleY}, "0.1", "15.0", &freq, 0.1f, 15.0f);
         GuiLabel({settingsArea.x + 170, settingsArea.y + 100, 50 * System_Utils::scaleX, 20 * System_Utils::scaleY}, TextFormat("%.1f", freq));
 
         GuiLabel({settingsArea.x + 10, settingsArea.y + 130, 50 * System_Utils::scaleX, 20 * System_Utils::scaleY}, "SEED");
@@ -99,7 +99,7 @@ namespace Interface
         {
             int seed = atoi(seedBuffer);
 
-            World::WorldGenerator::GenerateWorld(seed, res, freq, System_Utils::Cellsize);
+            World::WorldGenerator::GenerateWorld(seed, res, freq, World::Cellsize);
 
             if (mapTexture.id != 0)
                 UnloadTexture(mapTexture);

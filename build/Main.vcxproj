@@ -330,6 +330,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\src\System\User_Interface\Menu.cpp" />
     <ClCompile Include="C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\src\Utils\CameraUtils.cpp" />
     <ClCompile Include="C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\src\Utils\WindowUtils.cpp" />
+    <ClCompile Include="C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\src\Utils\WorldDefinitions.cpp" />
     <ClCompile Include="C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
