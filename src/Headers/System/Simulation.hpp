@@ -11,8 +11,6 @@ namespace System
     private:
         World::WorldGenerator WorldGen{};
         Interface::InterfaceHandler interfaceHand{};
-
-        Camera2D camera{0};
     public:
         Simulation();
         ~Simulation();

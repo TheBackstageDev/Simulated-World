@@ -1,5 +1,8 @@
 #include "../src/Headers/System/Map/WorldGeneration.hpp"
 
+#include <cassert>
+#include <cmath>
+
 namespace World
 {
     WorldMap *World::WorldGenerator::map = nullptr;
@@ -10,7 +13,6 @@ namespace World
     }
 
     WorldGenerator::~WorldGenerator() {}
-
 
     void WorldGenerator::GenerateWorld(int seed, float res, float freq, float CellSize)
     {
@@ -44,4 +46,20 @@ namespace World
             }
         }
     }
+
+    GridCell &WorldGenerator::getGridCellAtPos(Vector2 &worldPos)
+    {
+        assert(map != nullptr && "Map does not exist!");
+
+        int cellX = static_cast<int>(worldPos.x / map->getCellSize());
+        int cellY = static_cast<int>(worldPos.y / map->getCellSize());
+
+        if (cellX >= 0 && cellX < map->getWidth() && cellY >= 0 && cellY < map->getHeight())
+        {
+            return map->getCell(cellX, cellY);
+        }
+
+        return GridCell();
+    }
+
 } // namespace World

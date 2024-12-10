@@ -20,6 +20,7 @@ namespace Interface
         InterfaceHandler();
 
         void runInterface();
+        void runSimulationInterface();
         SimulationMode getCurrentMode() { return currentSimulationMode; }
     };
 

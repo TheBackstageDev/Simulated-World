@@ -2,9 +2,11 @@
 
 namespace World
 {
+    uint32_t World::GridCell::lastID{0};
     GridCell::GridCell(std::string name, float elevation, float temperature, float humidity) 
     : name(name), elevation(elevation), temperature(temperature), humidity(humidity)
     {
+        this->id = ++lastID;
     }
 
     GridCell::~GridCell() {}

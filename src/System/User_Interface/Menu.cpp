@@ -109,7 +109,7 @@ namespace Interface
             UnloadImage(mapImg);
         }
 
-        if (GuiButton({settingsArea.x + 170, settingsArea.y + 200, 150, 30}, "ENTER"))
+        if (GuiButton({settingsArea.x + 170, settingsArea.y + 200, 150, 30}, "ENTER") && mapTexture.id != 0)
         {
             currentMode = 2;
         }

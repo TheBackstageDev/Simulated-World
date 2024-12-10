@@ -2,6 +2,7 @@
 #include "../src/Headers/System/InputHandler.hpp"
 #include "../src/Headers/System/User_Interface/InterfaceHandler.hpp"
 #include "../src/Headers/Utils/WindowUtils.hpp"
+#include "../src/Headers/Utils/CameraUtils.hpp"
 #include "../src/Headers/Utils/WorldDefinitions.hpp"
 
 #include <iostream>
@@ -10,10 +11,10 @@ namespace System
 {
     Simulation::Simulation()
     {
-        camera.target = {0.0f, 0.0f};
-        camera.offset = {0.0f, 0.0f};
-        camera.rotation = 0.0f;
-        camera.zoom = 2.0f;
+        System_Utils::cam.target = {0.0f, 0.0f};
+        System_Utils::cam.offset = {0.0f, 0.0f};
+        System_Utils::cam.rotation = 0.0f;
+        System_Utils::cam.zoom = 2.0f;
 
         SetConfigFlags(FLAG_WINDOW_RESIZABLE);
         InitWindow(System_Utils::windowWidth, System_Utils::windowHeight, "Simulation");
@@ -41,10 +42,10 @@ namespace System
     {
         if (interfaceHand.getCurrentMode() == Interface::SimulationMode::Running)
         {
-            System_Input::handleCameraInput(camera);
+            System_Input::handleCameraInput(System_Utils::cam);
 
-            BeginMode2D(camera);
-            WorldGen.renderMap(camera);
+            BeginMode2D(System_Utils::cam);
+            WorldGen.renderMap(System_Utils::cam);
             EndMode2D();
         }
 

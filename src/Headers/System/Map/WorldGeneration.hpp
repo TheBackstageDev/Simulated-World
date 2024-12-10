@@ -18,7 +18,8 @@ namespace World
         static void GenerateWorld(int seed, float res, float freq, float CellSize);
         void renderMap( const Camera2D &camera ) { map->drawMap(camera); }
         bool doesMapExist() { return map != nullptr; }
-        WorldMap* getMap() { return map; }
+        static WorldMap* getMap() { return map; }
+        static GridCell& getGridCellAtPos(Vector2& worldPos);
 
         static Image getMapImage() { return map->getMapImage(map->getMapData(), map->getWidth(), map->getHeight(), 1); }
     };

@@ -27,7 +27,7 @@ namespace World
                 float posX = x * cellSize;
                 float posY = y * cellSize;
 
-                if (System::isPositionInsideCamera(camera, {posX, posY}))
+                if (System_Utils::isPositionInsideCamera(camera, {posX, posY}))
                 {
                     auto &CurrentCell = Map[y][x];
                     float CurrentElevation = CurrentCell.getElevation();
