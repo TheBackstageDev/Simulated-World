@@ -22,6 +22,8 @@ namespace Interface
         void runInterface();
         void runSimulationInterface();
         SimulationMode getCurrentMode() { return currentSimulationMode; }
+
+        bool isMenuOpen{false};
     };
 
 } // namespace Interface

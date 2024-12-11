@@ -12,7 +12,7 @@ namespace World
         static siv::PerlinNoise perlinNoise;
         static WorldMap* map;
 
-        void GenerateRivers(int seed, float res, float freq, float CellSize);
+        static void GenerateRivers();
 
     public:
         WorldGenerator();

@@ -2,6 +2,7 @@
 #include "../src/Headers/System/Map/WorldGeneration.hpp"
 #include "../src/Headers/Utils/WindowUtils.hpp"
 #include "../src/Headers/Utils/CameraUtils.hpp"
+#include "../src/Headers/Utils/WorldDefinitions.hpp"
 
 #define RAYGUI_IMPLEMENTATION
 #include <raygui.h>
@@ -53,6 +54,61 @@ namespace Interface
 
             selectedCell = World::WorldGenerator::getGridCellAtPos(worldPos);
             isCellSelected = true;
+        }
+
+        if (IsKeyPressed(KEY_BACKSPACE))
+            isMenuOpen = !isMenuOpen;
+
+        if (isMenuOpen)
+        {
+            float menuWidth = GetScreenWidth() * 0.3f;
+            float menuHeight = GetScreenHeight() * 0.4f;
+            float menuX = (GetScreenWidth() - menuWidth) / 2;
+            float menuY = (GetScreenHeight() - menuHeight) / 2;
+            Rectangle menuArea = {menuX, menuY, menuWidth, menuHeight};
+            DrawRectangleRec(menuArea, DARKGRAY);
+
+            int buttonHeight = 40;
+            float buttonX = menuX + 20;
+            float buttonY = menuY + 30;
+            float buttonWidth = menuWidth - 40;
+
+            if (GuiButton({buttonX, buttonY, buttonWidth, (float)buttonHeight}, "Terrain"))
+            {
+                World::currentDrawMode = World::drawMode::Terrain;
+            }
+
+            buttonY += buttonHeight + 10;
+            if (GuiButton({buttonX, buttonY, buttonWidth, (float)buttonHeight}, "Elevation"))
+            {
+                World::currentDrawMode = World::drawMode::Elevation;
+            }
+
+            buttonY += buttonHeight + 10;
+            if (GuiButton({buttonX, buttonY, buttonWidth, (float)buttonHeight}, "Biomes"))
+            {
+                World::currentDrawMode = World::drawMode::Biomes;
+            }
+
+            buttonY += buttonHeight + 10;
+            if (GuiButton({buttonX, buttonY, buttonWidth, (float)buttonHeight}, "Humidity"))
+            {
+                World::currentDrawMode = World::drawMode::Humidity;
+            }
+
+            buttonY += buttonHeight + 10;
+            if (GuiButton({buttonX, buttonY, buttonWidth, (float)buttonHeight}, "Temperature"))
+            {
+                World::currentDrawMode = World::drawMode::Temperature;
+            }
+
+            buttonY += buttonHeight + 20;
+            if (GuiButton({buttonX, buttonY, buttonWidth, (float)buttonHeight}, "Return"))
+            {
+                isMenuOpen = false;
+            }
+
+            return;
         }
 
         if (isCellSelected && !selectedCell.getName().empty())

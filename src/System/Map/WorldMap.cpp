@@ -1,6 +1,7 @@
 #include "../src/Headers/System/Map/WorldMap.hpp"
 #include "../src/Headers/Utils/CameraUtils.hpp"
 #include "../src/Headers/Utils/WindowUtils.hpp"
+#include "../src/Headers/Utils/WorldDefinitions.hpp"
 
 namespace World
 {
@@ -32,7 +33,35 @@ namespace World
                     auto &CurrentCell = Map[y][x];
                     float CurrentElevation = CurrentCell.getElevation();
 
-                    Color cellColor = CurrentCell.getColor();
+                    Color cellColor;
+
+                    switch (World::currentDrawMode)
+                    {
+                    case drawMode::Terrain:
+                        cellColor = CurrentCell.getColor();
+                        break;
+                    case drawMode::Elevation:
+                    {
+                        float clampedElevation = std::max(-1.0f, std::min(CurrentElevation, 1.0f));
+                        float normalizedElevation = (clampedElevation + 1.0f) / 2.0f;
+
+                        unsigned char elevationRgb = static_cast<unsigned char>(clampedElevation * 255);
+                        cellColor = {elevationRgb, elevationRgb, elevationRgb, 255};
+                        break;
+                    }
+                    case drawMode::Biomes:
+                        cellColor = CurrentCell.getBiomeColor();
+                        break;
+                    case drawMode::Humidity:
+                        cellColor = CurrentCell.getHumidityColor();
+                        break;
+                    case drawMode::Temperature:
+                        cellColor = CurrentCell.getTemperatureColor();
+                        break;
+                    default:
+                        cellColor = {255, 255, 255, 255};
+                        break;
+                    }
 
                     // For fitting the window size
                     int drawPosX = static_cast<int>((posX - camera.target.x) * scale + camera.offset.x);
@@ -58,11 +87,7 @@ namespace World
             {
                 auto &currentCell = map[y][x];
                 float currentElevation = currentCell.getElevation();
-
-                unsigned char colorValue = static_cast<unsigned char>(currentElevation * 255.0f);
-                Color cellColor = {colorValue, colorValue, colorValue, 255};
-
-                ImageDrawRectangle(&mapImage, x * cellSize, y * cellSize, cellSize, cellSize, cellColor);
+                ImageDrawRectangle(&mapImage, x * cellSize, y * cellSize, cellSize, cellSize, currentCell.getColor());
             }
         }
 

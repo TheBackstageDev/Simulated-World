@@ -12,6 +12,15 @@
 
 namespace World
 {
+    enum class drawMode
+    {
+        Terrain,
+        Elevation,
+        Biomes,
+        Humidity,
+        Temperature,
+    };
+
     class WorldMap
     {
     private:

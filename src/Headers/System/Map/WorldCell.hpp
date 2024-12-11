@@ -8,8 +8,10 @@ namespace World
     enum class Biome
     {
         Ocean,
+        River,
         Beach,
         Forest,
+        RainForest,
         Desert,
         Mountain,
         Hill,
@@ -43,8 +45,12 @@ namespace World
         uint32_t getID() { return id; }
         float getElevation() { return this->elevation; }
         float getTemperature() { return this->temperature; } 
+        Color getTemperatureColor() const;
         float getHumidity() { return this->humidity;}
+        Color getHumidityColor() const;
         Biome getBiome() const;
+        void setBiome(Biome newBiome) { this->biome = newBiome; }
+        Color getBiomeColor() const;
 
         Color getColor() const;
     };
