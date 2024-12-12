@@ -25,19 +25,27 @@ namespace World
     {
         float scale = System_Utils::getCurrentWindowScaleOffset({getWidth() * cellSize, getHeight() * cellSize}) * camera.zoom;
 
+        Vector2 topLeft = GetScreenToWorld2D({0, 0}, camera);
+        Vector2 bottomRight = GetScreenToWorld2D({(float)GetScreenWidth(), (float)GetScreenHeight()}, camera);
+
+        topLeft = (topLeft - camera.offset) / scale + camera.target;
+        bottomRight = (bottomRight - camera.offset) / scale + camera.target;
+
+        int startX = static_cast<int>(std::max(0.0f, floor((topLeft.x) / cellSize)));
+        int endX = static_cast<int>(std::min((float)getWidth(), ceil((bottomRight.x) / cellSize)));
+        int startY = static_cast<int>(std::max(0.0f, floor((topLeft.y) / cellSize)));
+        int endY = static_cast<int>(std::min((float)getHeight(), ceil((bottomRight.y) / cellSize)));
+
         int ammount = 0;
-        for (int x = 0; x < getWidth(); ++x)
+        for (int x = startX; x < endX; ++x)
         {
-            for (int y = 0; y < getHeight(); ++y)
+            for (int y = startY; y < endY; ++y)
             {
                 float posX = x * cellSize;
                 float posY = y * cellSize;
 
                 int drawPosX = static_cast<int>((posX - camera.target.x) * scale + camera.offset.x);
                 int drawPosY = static_cast<int>((posY - camera.target.y) * scale + camera.offset.y);
-
-                if (!System_Utils::isPositionInsideCamera(camera, {(float)drawPosX, (float)drawPosY}))
-                    continue;
 
                 auto &CurrentCell = Map[y][x];
                 float CurrentElevation = CurrentCell.getElevation();
@@ -82,7 +90,7 @@ namespace World
             }
         }
 
-        DrawText(TextFormat("Cell Drawns: %i", ammount), GetScreenWidth() / 2, GetScreenHeight() / 2, 10.f, WHITE);
+        DrawText(TextFormat("Cells Drawn: %i", ammount), GetScreenWidth() / 2, GetScreenHeight() / 2, 10.f, WHITE);
     }
 
     Image WorldMap::getMapImage(std::vector<std::vector<GridCell>> &map, int mapWidth, int mapHeight, int cellSize)

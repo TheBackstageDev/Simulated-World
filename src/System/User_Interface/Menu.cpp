@@ -58,9 +58,10 @@ namespace Interface
 
     void MenuInterface::drawPlanetInterface(Vector2 pos, float eccentricity, float distance, float axialTilt)
     {
-        int PlanetOrbitDisplayPosX = pos.x / 2;
+        float planetRadius = GetScreenWidth() * 0.05f; 
+        int PlanetOrbitDisplayPosX = static_cast<int>(pos.x / 2);
 
-        World::Planet::drawPlanetDepiction(pos, 45.f * System_Utils::scaleX, axialTilt);
+        World::Planet::drawPlanetDepiction(pos, planetRadius, axialTilt);
         World::Planet::drawPlanetOrbitDepiction({(float)PlanetOrbitDisplayPosX / 2 - 45, pos.y}, 10.f, eccentricity, distance);
     }
 
