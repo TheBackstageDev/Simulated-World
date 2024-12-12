@@ -3,6 +3,7 @@
 #include "../src/Headers/Utils/WindowUtils.hpp"
 #include "../src/Headers/Utils/CameraUtils.hpp"
 #include "../src/Headers/Utils/WorldDefinitions.hpp"
+#include "../src/Headers/System/Time.hpp"
 
 #define RAYGUI_IMPLEMENTATION
 #include <raygui.h>
@@ -31,6 +32,34 @@ namespace Interface
         default:
             break;
         }
+    }
+
+    void InterfaceHandler::headsUpDisplay()
+    {
+        float HUDheight = GetScreenHeight() * 1/4;
+        float HUDwidth = GetScreenWidth();
+
+        float HUDy = GetScreenHeight() - HUDheight;
+
+        int fontSize = static_cast<int>(HUDheight * 0.1f);
+
+        Rectangle HUDrectangle{0, HUDy, HUDwidth, HUDheight};
+
+        DrawRectangleRec(HUDrectangle, DARKGRAY);
+        DrawRectangleLinesEx(HUDrectangle, 2.f, WHITE);
+
+        int fps = GetFPS();
+
+        float textPosX = 10;
+        float textPosY = HUDy + 10;
+
+        std::string timeFormatted = System::Time::getCurrentTimeFormatted();
+
+        DrawText(TextFormat("FPS: %d", fps), textPosX + HUDwidth / 2, textPosY, fontSize, WHITE);
+        DrawText(timeFormatted.c_str(), textPosX + HUDwidth / 2 + 100, textPosY - 2, fontSize, WHITE);
+
+        
+        GuiSlider({textPosX + HUDwidth / 2 + 300, textPosY, 100, 20}, NULL, NULL, &World::SimulationStep, 0.1f, 2.0f);
     }
 
     void InterfaceHandler::runSimulationInterface()
@@ -63,6 +92,8 @@ namespace Interface
                 isCellSelected = false; // Deselect cell if clicked outside the map
             }
         }
+
+        headsUpDisplay();
 
         if (IsKeyPressed(KEY_BACKSPACE))
             isMenuOpen = !isMenuOpen;
@@ -119,16 +150,16 @@ namespace Interface
             return;
         }
 
-        if (isCellSelected && !selectedCell.getName().empty())
+        float rectWidth = GetScreenWidth() * 0.25f;
+        float rectHeight = GetScreenHeight() * 0.25f;
+        float rectX = 0;
+        float rectY = GetScreenHeight() - rectHeight;
+
+        Rectangle cellInfoArea = {rectX, rectY, rectWidth, rectHeight};
+        DrawRectangleLinesEx(cellInfoArea, 2.f, WHITE);
+
+        if (isCellSelected)
         {
-            float rectWidth = GetScreenWidth() * 0.25f;
-            float rectHeight = GetScreenHeight() * 0.25f;
-            float rectX = 10;
-            float rectY = GetScreenHeight() - rectHeight - 10;
-
-            Rectangle cellInfoArea = {rectX, rectY, rectWidth, rectHeight};
-            DrawRectangle(cellInfoArea.x, cellInfoArea.y, cellInfoArea.width, cellInfoArea.height, DARKGRAY);
-
             // Calculate font size based on the rectangle height
             int fontSize = static_cast<int>(rectHeight * 0.1f);
 

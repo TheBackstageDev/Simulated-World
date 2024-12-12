@@ -13,7 +13,7 @@ namespace World
         static WorldMap* map;
 
         static void GenerateRivers();
-
+        static void ApplyErosion(int iterations, float erosionStrength); //Future
     public:
         WorldGenerator();
         ~WorldGenerator();

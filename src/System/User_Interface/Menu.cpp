@@ -1,5 +1,6 @@
 #include "../src/Headers/System/User_Interface/Menu.hpp"
 #include "../src/Headers/System/Map/WorldGeneration.hpp"
+#include "../src/Headers/System/Map/Planet.hpp"
 #include "../src/Headers/Utils/WindowUtils.hpp"
 
 #include <random>
@@ -55,6 +56,14 @@ namespace Interface
         }
     }
 
+    void MenuInterface::drawPlanetInterface(Vector2 pos, float eccentricity, float distance, float axialTilt)
+    {
+        int PlanetOrbitDisplayPosX = pos.x / 2;
+
+        World::Planet::drawPlanetDepiction(pos, 45.f * System_Utils::scaleX, axialTilt);
+        World::Planet::drawPlanetOrbitDepiction({(float)PlanetOrbitDisplayPosX / 2 - 45, pos.y}, 10.f, eccentricity, distance);
+    }
+
     static bool seedInitialized = false;
 
     void MenuInterface::drawLobby()
@@ -63,9 +72,13 @@ namespace Interface
 
         float mapWidth = GetScreenWidth() - 20;
         float mapHeight = GetScreenHeight() / 2;
-        float settingsWidth = mapWidth;
+        float settingsWidth = mapWidth / 2 - 10;
         float settingsHeight = GetScreenHeight() / 2 - 20;
-        Rectangle settingsArea = {10, mapHeight + 20, settingsWidth, settingsHeight};
+
+        Rectangle settingsArea = {mapWidth / 2 + 10, mapHeight + 20, settingsWidth, settingsHeight};
+        Rectangle planetSettingsArea = {mapWidth / 4 - settingsWidth / 2, mapHeight + 20, settingsWidth, settingsHeight};
+
+        // Draw settings
         DrawRectangleLines(settingsArea.x, settingsArea.y, settingsArea.width, settingsArea.height, RAYWHITE);
         DrawText("SETTINGS", settingsArea.x + 10, settingsArea.y + 10, 20, RAYWHITE);
 
@@ -121,6 +134,27 @@ namespace Interface
             if (mapTexture.id != 0)
                 UnloadTexture(mapTexture);
         }
+        // Draw planet settings
+        DrawRectangleLines(planetSettingsArea.x, planetSettingsArea.y, planetSettingsArea.width, planetSettingsArea.height, RAYWHITE);
+        DrawText("PLANET SETTINGS", planetSettingsArea.x + 10, planetSettingsArea.y + 10, 20, RAYWHITE);
+
+        static float axialTilt = 23.5f;
+        static float orbitalEccentricity = 0.0167f;
+        static float distanceFromStar = 1.0f;
+
+        GuiLabel({planetSettingsArea.x + 10, planetSettingsArea.y + 40, 50 * System_Utils::scaleX, 20 * System_Utils::scaleY}, "AXIAL TILT");
+        GuiSlider({planetSettingsArea.x + 70, planetSettingsArea.y + 40, 200 * System_Utils::scaleX, 20 * System_Utils::scaleY}, "0.0", "90.0", &axialTilt, 0.0f, 90.0f);
+        GuiLabel({planetSettingsArea.x + 170, planetSettingsArea.y + 40, 50 * System_Utils::scaleX, 20 * System_Utils::scaleY}, TextFormat("%.1f", axialTilt));
+
+        GuiLabel({planetSettingsArea.x + 10, planetSettingsArea.y + 70, 50 * System_Utils::scaleX, 20 * System_Utils::scaleY}, "ECCENTRICITY");
+        GuiSlider({planetSettingsArea.x + 70, planetSettingsArea.y + 70, 200 * System_Utils::scaleX, 20 * System_Utils::scaleY}, "0.1", "0.8", &orbitalEccentricity, 0.0f, 0.8f);
+        GuiLabel({planetSettingsArea.x + 170, planetSettingsArea.y + 70, 50 * System_Utils::scaleX, 20 * System_Utils::scaleY}, TextFormat("%.4f", orbitalEccentricity));
+
+        GuiLabel({planetSettingsArea.x + 10, planetSettingsArea.y + 100, 50 * System_Utils::scaleX, 20 * System_Utils::scaleY}, "DISTANCE");
+        GuiSlider({planetSettingsArea.x + 70, planetSettingsArea.y + 100, 200 * System_Utils::scaleX, 20 * System_Utils::scaleY}, "0.1", "5.0", &distanceFromStar, 0.1f, 5.0f);
+        GuiLabel({planetSettingsArea.x + 170, planetSettingsArea.y + 100, 50 * System_Utils::scaleX, 20 * System_Utils::scaleY}, TextFormat("%.1f", distanceFromStar));
+
+        drawPlanetInterface({mapWidth - 70, mapHeight / 2}, orbitalEccentricity, distanceFromStar, axialTilt);
     }
 
     void MenuInterface::drawMapDisplay()

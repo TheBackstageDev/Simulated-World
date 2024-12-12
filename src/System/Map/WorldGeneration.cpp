@@ -12,7 +12,10 @@ namespace World
     {
     }
 
-    WorldGenerator::~WorldGenerator() {}
+    WorldGenerator::~WorldGenerator() 
+    {
+        delete map;
+    }
 
     void WorldGenerator::GenerateRivers()
     {
@@ -72,7 +75,7 @@ namespace World
                         {
                             auto &neighborCell = map->getCell(neighborX, neighborY);    
                             
-                            if (neighborCell.getElevation() < lowestElevation)
+                            if (neighborCell.getElevation() < lowestElevation + .01f)
                             {
                                 lowestPos = neighborCell.getPos();
                                 lowestElevation = neighborCell.getElevation();
@@ -118,7 +121,6 @@ namespace World
         int map_height = map->getHeight();
         int map_width = map->getWidth();
 
-        //Amp means frequency of variation
         float hillFreq = freq * 0.5f;
         float mountainFreq = freq * 0.5f;
 
@@ -146,9 +148,8 @@ namespace World
                 float elevationFactor = 1.0f;
   
                 if (elevation > SEA_LEVEL)
-                {
                     elevationFactor = 1.0f - (elevation * elevation);
-                }
+                
 
                 float temperature = (latitudeFactor * 0.75f + elevationFactor * 0.2f);
 
@@ -164,9 +165,8 @@ namespace World
                 GridCell cell(std::string(std::to_string(x) + "-" + std::to_string(y)), {(float)x, (float)y}, elevation, temperature, humidity);
 
                 if (elevation > MOUNTAIN_PEAK_MIN_HEIGHT && isPeakDistantFromOthers(mountainPeaks, cell.getPos()))
-                {
                     mountainPeaks.push(cell);
-                }
+                
 
                 map->setCell(x, y, cell);
             }

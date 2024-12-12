@@ -40,6 +40,16 @@ namespace System
 
     void Simulation::runSimulation()
     {
+        static float deltaSimulationTime{0.0f};
+
+        deltaSimulationTime += GetFrameTime();
+
+        if (deltaSimulationTime > World::SimulationStep)
+        {
+            timeController.advanceTime();
+            deltaSimulationTime = 0.0f;
+        }
+
         if (interfaceHand.getCurrentMode() == Interface::SimulationMode::Running)
         {
             System_Input::handleCameraInput(System_Utils::cam);

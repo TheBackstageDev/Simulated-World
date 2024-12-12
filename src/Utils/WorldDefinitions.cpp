@@ -4,6 +4,8 @@
 namespace World
 {
     drawMode currentDrawMode{drawMode::Terrain};
+    float SimulationStep{1.0f};
+
     std::string World::biomeToString(Biome biome)
     {
         switch (biome)

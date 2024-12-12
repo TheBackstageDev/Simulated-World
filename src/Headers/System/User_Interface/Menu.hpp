@@ -11,9 +11,9 @@ namespace Interface
 
         void drawMapDisplay();
         void drawGenerationSettings(Rectangle settingsBox);
-        
-        void drawLobby();
 
+        void drawPlanetInterface(Vector2 pos, float eccentricity, float distance, float axialTilt);
+        void drawLobby();
         void handleInput();
 
         char16_t currentMode{0}; //0: Menu, 1: Lobby

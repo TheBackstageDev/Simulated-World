@@ -12,12 +12,14 @@ namespace World
     static float Cellsize{1.0f}; // in KM
     #define MAX_RIVERS 10
     #define MAX_RIVER_LENGTH 50 * (1 / Cellsize) // in KM
+    #define MAX_RIVER_WIDTH 2
 
     #define MOUNTAIN_PEAKS_MIN_DISTANCE 30 * (1 / Cellsize) // in KM
     #define MOUNTAIN_PEAK_MIN_HEIGHT 1.0 
 
     //Simulation Defines
     extern drawMode currentDrawMode;
+    extern float SimulationStep;
 
     //WorldMap Functions
     std::string biomeToString(Biome biome);

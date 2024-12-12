@@ -16,6 +16,8 @@ namespace Interface
         MenuInterface menu{};
 
         static SimulationMode currentSimulationMode;
+
+        void headsUpDisplay();
     public:
         InterfaceHandler();
 

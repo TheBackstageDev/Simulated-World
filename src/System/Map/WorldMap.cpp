@@ -30,49 +30,49 @@ namespace World
                 float posX = x * cellSize;
                 float posY = y * cellSize;
 
-                if (System_Utils::isPositionInsideCamera(camera, {posX, posY}))
+                if (!System_Utils::isPositionInsideCamera(camera, {posX, posY}))
+                    continue;
+
+                auto &CurrentCell = Map[y][x];
+                float CurrentElevation = CurrentCell.getElevation();
+
+                Color cellColor;
+
+                switch (World::currentDrawMode)
                 {
-                    auto &CurrentCell = Map[y][x];
-                    float CurrentElevation = CurrentCell.getElevation();
+                case drawMode::Terrain:
+                    cellColor = CurrentCell.getColor();
+                    break;
+                case drawMode::Elevation:
+                {
+                    float clampedElevation = std::max(-1.0f, std::min(CurrentElevation, 1.0f));
+                    float normalizedElevation = (clampedElevation + 1.0f) / 2.0f;
 
-                    Color cellColor;
-
-                    switch (World::currentDrawMode)
-                    {
-                    case drawMode::Terrain:
-                        cellColor = CurrentCell.getColor();
-                        break;
-                    case drawMode::Elevation:
-                    {
-                        float clampedElevation = std::max(-1.0f, std::min(CurrentElevation, 1.0f));
-                        float normalizedElevation = (clampedElevation + 1.0f) / 2.0f;
-
-                        unsigned char elevationRgb = static_cast<unsigned char>(clampedElevation * 255);
-                        cellColor = {elevationRgb, elevationRgb, elevationRgb, 255};
-                        break;
-                    }
-                    case drawMode::Biomes:
-                        cellColor = CurrentCell.getBiomeColor();
-                        break;
-                    case drawMode::Humidity:
-                        cellColor = CurrentCell.getHumidityColor();
-                        break;
-                    case drawMode::Temperature:
-                        cellColor = CurrentCell.getTemperatureColor();
-                        break;
-                    default:
-                        cellColor = {255, 255, 255, 255};
-                        break;
-                    }
-
-                    // For fitting the window size
-                    int drawPosX = static_cast<int>((posX - camera.target.x) * scale + camera.offset.x);
-                    int drawPosY = static_cast<int>((posY - camera.target.y) * scale + camera.offset.y);
-                    int width = static_cast<int>(1 + cellSize * scale);
-                    int height = static_cast<int>(1 + cellSize * scale);
-
-                    DrawRectangle(drawPosX, drawPosY, width, height, cellColor);
+                    unsigned char elevationRgb = static_cast<unsigned char>(clampedElevation * 255);
+                    cellColor = {elevationRgb, elevationRgb, elevationRgb, 255};
+                    break;
                 }
+                case drawMode::Biomes:
+                    cellColor = CurrentCell.getBiomeColor();
+                    break;
+                case drawMode::Humidity:
+                    cellColor = CurrentCell.getHumidityColor();
+                    break;
+                case drawMode::Temperature:
+                    cellColor = CurrentCell.getTemperatureColor();
+                    break;
+                default:
+                    cellColor = {255, 255, 255, 255};
+                    break;
+                }
+
+                // For fitting the window size
+                int drawPosX = static_cast<int>((posX - camera.target.x) * scale + camera.offset.x);
+                int drawPosY = static_cast<int>((posY - camera.target.y) * scale + camera.offset.y);
+                int width = static_cast<int>(1 + cellSize * scale);
+                int height = static_cast<int>(1 + cellSize * scale);
+
+                DrawRectangle(drawPosX, drawPosY, width, height, cellColor);
             }
         }
     }

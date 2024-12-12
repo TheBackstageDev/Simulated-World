@@ -1,6 +1,8 @@
 #pragma once
 
 #include "WorldCell.hpp"
+
+#include "Planet.hpp"
 #include <vector>
 #include<queue>
 #include <raylib.h>

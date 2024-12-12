@@ -33,9 +33,10 @@ namespace World
         Biome biome;
 
         Vector2 position;
+        Color cellColor{0, 0, 0, 0};
 
         void determineBiome();
-        Color interpolateColor() const;
+        Color interpolateColor();
 
     public:
         GridCell(std::string name, Vector2 position, float elevation, float temperature, float humidity);
@@ -45,6 +46,8 @@ namespace World
         //Setters
         void setName(std::string newName) { this->name = newName; }
         void updateElevation(float increment) { this->elevation += increment; }
+        void updateTemperature(float increment) { this->temperature += increment; }
+        void updateHumidity(float increment) { this->humidity += increment; }
 
         //Getters
         std::string& getName() { return this->name; }
@@ -54,11 +57,11 @@ namespace World
         Color getTemperatureColor() const;
         float getHumidity() const { return this->humidity;}
         Color getHumidityColor() const;
-        Biome getBiome() const;
+        Biome getBiome() const { return this->biome; }
         void setBiome(Biome newBiome) { this->biome = newBiome; }
         Color getBiomeColor() const;
         Vector2 getPos() const { return position; }
-        Color getColor() const;
+        Color getColor();
     };
 
     struct CompareGridCell

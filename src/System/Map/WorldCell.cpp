@@ -72,13 +72,11 @@ namespace World
         }
     }
 
-    Biome GridCell::getBiome() const
+    Color GridCell::interpolateColor() 
     {
-        return biome;
-    }
+        if (cellColor.a != 0)
+            return cellColor;
 
-    Color GridCell::interpolateColor() const
-    {
         Color color;
         switch (biome)
         {
@@ -176,20 +174,21 @@ namespace World
         {
             adjustment = (1 - humidity * 2) + (temperature * 2);
 
-            color.r = static_cast<unsigned char>(std::min(225.0f, color.r * adjustment));
-            color.g = static_cast<unsigned char>(std::min(225.0f, color.g * adjustment));
-            color.b = static_cast<unsigned char>(std::min(225.0f, color.b * adjustment));
+            color.r = static_cast<unsigned char>(std::min(210.0f, color.r * adjustment));
+            color.g = static_cast<unsigned char>(std::min(210.0f, color.g * adjustment));
+            color.b = static_cast<unsigned char>(std::min(210.0f, color.b * adjustment));
         }
 
         if (biome == Biome::Grassland)
         {
             adjustment = ((1 - humidity) + (1 - temperature)) * 1.2f;
  
-            color.r = static_cast<unsigned char>(std::min(255.0f, color.r * adjustment));
-            color.g = static_cast<unsigned char>(std::min(255.0f, color.g * adjustment));
+            color.r = static_cast<unsigned char>(std::min(225.0f, color.r * adjustment));
+            color.g = static_cast<unsigned char>(std::min(225.0f, color.g * adjustment));
             color.b = static_cast<unsigned char>(std::min(225.0f, color.b * adjustment));
         }
 
+        cellColor = color;
         return color;
     }
 
@@ -299,7 +298,7 @@ namespace World
         return color;
     }
 
-    Color GridCell::getColor() const
+    Color GridCell::getColor()
     {
         return interpolateColor();
     }
