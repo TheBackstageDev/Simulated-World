@@ -8,7 +8,7 @@ namespace System_Utils
     bool System_Utils::isPositionInsideCamera(const Camera2D &camera, Vector2 pos)
     {
         Vector2 screenPos = GetWorldToScreen2D(pos, camera);
-
+        
         bool isOnScreenSpace = (screenPos.x >= 0 && screenPos.x <= GetScreenWidth() &&
                                 screenPos.y >= 0 && screenPos.y <= GetScreenHeight());
 

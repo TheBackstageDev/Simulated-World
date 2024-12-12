@@ -80,7 +80,7 @@ namespace Interface
 
         // Draw settings
         DrawRectangleLines(settingsArea.x, settingsArea.y, settingsArea.width, settingsArea.height, RAYWHITE);
-        DrawText("SETTINGS", settingsArea.x + 10, settingsArea.y + 10, 20, RAYWHITE);
+        DrawText("MAP SETTINGS", settingsArea.x + 10, settingsArea.y + 10, 20, RAYWHITE);
 
         static float res{2.0f};
         static float freq{2.0f};

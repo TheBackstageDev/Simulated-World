@@ -3,6 +3,8 @@
 #include "../src/Headers/Utils/WindowUtils.hpp"
 #include "../src/Headers/Utils/WorldDefinitions.hpp"
 
+#include <iostream>
+
 namespace World
 {
     std::priority_queue<GridCell, std::vector<GridCell>, CompareGridCell> WorldMap::mountainPeaks;
@@ -23,6 +25,7 @@ namespace World
     {
         float scale = System_Utils::getCurrentWindowScaleOffset({getWidth() * cellSize, getHeight() * cellSize}) * camera.zoom;
 
+        int ammount = 0;
         for (int x = 0; x < getWidth(); ++x)
         {
             for (int y = 0; y < getHeight(); ++y)
@@ -30,7 +33,10 @@ namespace World
                 float posX = x * cellSize;
                 float posY = y * cellSize;
 
-                if (!System_Utils::isPositionInsideCamera(camera, {posX, posY}))
+                int drawPosX = static_cast<int>((posX - camera.target.x) * scale + camera.offset.x);
+                int drawPosY = static_cast<int>((posY - camera.target.y) * scale + camera.offset.y);
+
+                if (!System_Utils::isPositionInsideCamera(camera, {(float)drawPosX, (float)drawPosY}))
                     continue;
 
                 auto &CurrentCell = Map[y][x];
@@ -67,14 +73,16 @@ namespace World
                 }
 
                 // For fitting the window size
-                int drawPosX = static_cast<int>((posX - camera.target.x) * scale + camera.offset.x);
-                int drawPosY = static_cast<int>((posY - camera.target.y) * scale + camera.offset.y);
                 int width = static_cast<int>(1 + cellSize * scale);
                 int height = static_cast<int>(1 + cellSize * scale);
 
                 DrawRectangle(drawPosX, drawPosY, width, height, cellColor);
+
+                ammount++;
             }
         }
+
+        DrawText(TextFormat("Cell Drawns: %i", ammount), GetScreenWidth() / 2, GetScreenHeight() / 2, 10.f, WHITE);
     }
 
     Image WorldMap::getMapImage(std::vector<std::vector<GridCell>> &map, int mapWidth, int mapHeight, int cellSize)

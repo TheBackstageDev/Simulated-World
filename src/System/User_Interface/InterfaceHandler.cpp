@@ -36,7 +36,7 @@ namespace Interface
 
     void InterfaceHandler::headsUpDisplay()
     {
-        float HUDheight = GetScreenHeight() * 1/4;
+        float HUDheight = GetScreenHeight() * 1 / 4;
         float HUDwidth = GetScreenWidth();
 
         float HUDy = GetScreenHeight() - HUDheight;
@@ -58,8 +58,10 @@ namespace Interface
         DrawText(TextFormat("FPS: %d", fps), textPosX + HUDwidth / 2, textPosY, fontSize, WHITE);
         DrawText(timeFormatted.c_str(), textPosX + HUDwidth / 2 + 100, textPosY - 2, fontSize, WHITE);
 
-        
-        GuiSlider({textPosX + HUDwidth / 2 + 300, textPosY, 100, 20}, NULL, NULL, &World::SimulationStep, 0.1f, 2.0f);
+        float sliderWidth = HUDwidth * 0.1f;  
+        float sliderHeight = HUDheight * 0.1f; 
+
+        GuiSlider({textPosX + HUDwidth / 2 + 300, textPosY, sliderWidth, sliderHeight}, "0.01", "2.0", &World::SimulationStep, 0.01f, 2.0f);
     }
 
     void InterfaceHandler::runSimulationInterface()
