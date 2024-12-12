@@ -5,6 +5,8 @@
 
 namespace World
 {
+    std::priority_queue<GridCell, std::vector<GridCell>, CompareGridCell> WorldMap::mountainPeaks;
+
     WorldMap::WorldMap(const float cellSize) : cellSize(cellSize)
     {
         Map.resize(getHeight()); // for the height

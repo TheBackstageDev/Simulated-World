@@ -32,26 +32,40 @@ namespace World
         float humidity;
         Biome biome;
 
+        Vector2 position;
+
         void determineBiome();
         Color interpolateColor() const;
 
     public:
-        GridCell(std::string name, float elevation, float temperature, float humidity);
-        GridCell() : name(""), elevation(0.0f) {}
+        GridCell(std::string name, Vector2 position, float elevation, float temperature, float humidity);
+        GridCell() : name(""), elevation(0.0f), position({1.0f, 1.0f}) {}
         ~GridCell();
 
+        //Setters
         void setName(std::string newName) { this->name = newName; }
+        void updateElevation(float increment) { this->elevation += increment; }
+
+        //Getters
         std::string& getName() { return this->name; }
         uint32_t getID() { return id; }
-        float getElevation() { return this->elevation; }
-        float getTemperature() { return this->temperature; } 
+        float getElevation() const { return this->elevation; }
+        float getTemperature() const { return this->temperature; } 
         Color getTemperatureColor() const;
-        float getHumidity() { return this->humidity;}
+        float getHumidity() const { return this->humidity;}
         Color getHumidityColor() const;
         Biome getBiome() const;
         void setBiome(Biome newBiome) { this->biome = newBiome; }
         Color getBiomeColor() const;
-
+        Vector2 getPos() const { return position; }
         Color getColor() const;
+    };
+
+    struct CompareGridCell
+    {
+        bool operator()(const GridCell &lhs, const GridCell &rhs) const
+        {
+            return lhs.getElevation() < rhs.getElevation();
+        }
     };
 } // namespace World

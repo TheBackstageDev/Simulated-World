@@ -40,8 +40,8 @@ namespace Interface
 
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
         {
-            auto& camera = System_Utils::getCam();
-            auto* map = World::WorldGenerator::getMap();
+            auto &camera = System_Utils::getCam();
+            auto *map = World::WorldGenerator::getMap();
 
             float cellSize = map->getCellSize();
             float scale = System_Utils::getCurrentWindowScaleOffset({map->getWidth() * cellSize, map->getHeight() * cellSize}) * camera.zoom;
@@ -49,11 +49,19 @@ namespace Interface
             Vector2 mousePos = GetMousePosition();
             Vector2 worldPos = GetScreenToWorld2D(mousePos, camera);
 
-            //Does the inverse scaling that the drawMap() function does
+            // Does the inverse scaling that the drawMap() function does
             worldPos = (worldPos - camera.offset) / scale + camera.target;
 
-            selectedCell = World::WorldGenerator::getGridCellAtPos(worldPos);
-            isCellSelected = true;
+            if (worldPos.x >= 0 && worldPos.x < map->getWidth() * cellSize &&
+                worldPos.y >= 0 && worldPos.y < map->getHeight() * cellSize)
+            {
+                selectedCell = World::WorldGenerator::getGridCellAtPos(worldPos);
+                isCellSelected = true;
+            }
+            else
+            {
+                isCellSelected = false; // Deselect cell if clicked outside the map
+            }
         }
 
         if (IsKeyPressed(KEY_BACKSPACE))

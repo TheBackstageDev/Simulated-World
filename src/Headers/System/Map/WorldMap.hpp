@@ -2,6 +2,7 @@
 
 #include "WorldCell.hpp"
 #include <vector>
+#include<queue>
 #include <raylib.h>
 
 #include <cassert>
@@ -26,6 +27,8 @@ namespace World
     private:
         const float cellSize;
         std::vector<std::vector<GridCell>> Map;
+        static std::priority_queue<GridCell, std::vector<GridCell>, CompareGridCell> mountainPeaks;
+
     public:
         WorldMap(const float cellSize);
         ~WorldMap();
@@ -43,6 +46,7 @@ namespace World
         void drawMap(const Camera2D &camera);
         float getCellSize() { return cellSize; } 
         std::vector<std::vector<GridCell>> getMapData() { return Map; }
+        static std::priority_queue<GridCell, std::vector<GridCell>, CompareGridCell>& getMountainPeaks() { return mountainPeaks; }
 
         Image getMapImage(std::vector<std::vector<GridCell>> &map, int mapWidth, int mapHeight, int cellSize); 
     };

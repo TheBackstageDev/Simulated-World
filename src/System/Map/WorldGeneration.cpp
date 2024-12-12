@@ -21,15 +21,91 @@ namespace World
         int riverCount = 0;
 
         const float startElevationThreshold = 0.8f; // Height at which rivers will start forming
-        const float maxElevationThreshold = 1.2f; // Max height for river formation
+        const float maxElevationThreshold = 1.2f;   // Max height for river formation
 
-        for (int y = 0; y < map_height; ++y)
+        auto &mountainPeaks = map->getMountainPeaks();
+        std::vector<GridCell> peaks;
+
+        while (!mountainPeaks.empty())
         {
-            for (int x = 0; x < map_width; ++x)
+            GridCell p = mountainPeaks.top();
+            mountainPeaks.pop();
+
+            peaks.push_back(p);
+        }
+
+        for (const auto &source : peaks)
+        {
+            if (riverCount >= MAX_RIVERS)
+                return;
+
+            Vector2 currentPosition = source.getPos();
+            int length = 0;
+            std::vector<GridCell*> riverPath; // Track the cells modified to form the river
+
+            bool reachedOcean = false;
+
+            while (length < MAX_RIVER_LENGTH)
             {
-                if (riverCount >= MAX_RIVERS)
-                    return;
-            }   
+                auto &currentCell = map->getCell(currentPosition.x, currentPosition.y);
+
+                if (currentCell.getBiome() == Biome::Ocean)
+                {
+                    reachedOcean = true;
+                    break;
+                }
+
+                riverPath.push_back(&currentCell);
+
+                Vector2 lowestPos = currentCell.getPos();
+                float lowestElevation = currentCell.getElevation();
+                Vector2 sameElevationPos = currentCell.getPos();
+                bool foundSameElevation = false;
+
+                for (int dx = -1; dx <= 1; ++dx)
+                {
+                    for (int dy = -1; dy <= 1; ++dy)
+                    {
+                        int neighborX = currentPosition.x + dx;
+                        int neighborY = currentPosition.y + dy;
+                        if (neighborX >= 0 && neighborX < map_width && neighborY >= 0 && neighborY < map_height)
+                        {
+                            auto &neighborCell = map->getCell(neighborX, neighborY);    
+                            
+                            if (neighborCell.getElevation() < lowestElevation)
+                            {
+                                lowestPos = neighborCell.getPos();
+                                lowestElevation = neighborCell.getElevation();
+                            }
+                            else if (neighborCell.getElevation() == currentCell.getElevation())
+                            {
+                                sameElevationPos = neighborCell.getPos();
+                                foundSameElevation = true;
+                            }
+                        }
+                    }
+                }
+
+                if (lowestPos.x == currentPosition.x && lowestPos.y == currentPosition.y && foundSameElevation)
+                    lowestPos = sameElevationPos;
+
+                if (lowestPos.x == currentPosition.x && lowestPos.y == currentPosition.y)
+                    break; // No lower or same elevation neighbor found
+
+                currentPosition = lowestPos;
+                ++length;
+            }
+
+            if (reachedOcean)
+            {
+                for (auto& cell : riverPath)
+                {
+                    cell->updateElevation(-.02f);
+                    cell->setBiome(Biome::River);
+                }
+
+                ++riverCount;
+            }
         }
     }
 
@@ -45,6 +121,8 @@ namespace World
         //Amp means frequency of variation
         float hillFreq = freq * 0.5f;
         float mountainFreq = freq * 0.5f;
+
+        auto& mountainPeaks = map->getMountainPeaks();
 
         //Main loop, for Map Creation
         for (int y = 0; y < map_height; ++y)
@@ -83,7 +161,13 @@ namespace World
                 if (elevation < SEA_LEVEL && temperature > 0.3f)
                     humidity += 0.05f;
 
-                GridCell cell(std::string(std::to_string(x) + "-" + std::to_string(y)), elevation, temperature, humidity);
+                GridCell cell(std::string(std::to_string(x) + "-" + std::to_string(y)), {(float)x, (float)y}, elevation, temperature, humidity);
+
+                if (elevation > MOUNTAIN_PEAK_MIN_HEIGHT && isPeakDistantFromOthers(mountainPeaks, cell.getPos()))
+                {
+                    mountainPeaks.push(cell);
+                }
+
                 map->setCell(x, y, cell);
             }
         }

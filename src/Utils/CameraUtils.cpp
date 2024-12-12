@@ -7,18 +7,12 @@ namespace System_Utils
     Camera2D &System_Utils::getCam() { return cam; }
     bool System_Utils::isPositionInsideCamera(const Camera2D &camera, Vector2 pos)
     {
-        float invScale = 1.0f / camera.zoom;
+        Vector2 screenPos = GetWorldToScreen2D(pos, camera);
 
-        // Calculate the visible area in world coordinates
-        float startX = camera.target.x - (camera.offset.x * invScale);
-        float startY = camera.target.y - (camera.offset.y * invScale);
-        float endX = camera.target.x + (camera.offset.x * invScale) + ((GetScreenWidth() - camera.offset.x) * invScale);
-        float endY = camera.target.y + (camera.offset.y * invScale) + ((GetScreenHeight() - camera.offset.y) * invScale);
+        bool isOnScreenSpace = (screenPos.x >= 0 && screenPos.x <= GetScreenWidth() &&
+                                screenPos.y >= 0 && screenPos.y <= GetScreenHeight());
 
-        // Check if the position is within the visible area
-        bool inViewX = pos.x >= startX && pos.x <= endX;
-        bool inViewY = pos.y >= startY && pos.y <= endY;
-
-        return inViewX && inViewY;
+        return isOnScreenSpace;
     }
+
 } // namespace System_Utils

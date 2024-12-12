@@ -5,8 +5,8 @@ namespace World
 {
     uint32_t GridCell::lastID{0};
 
-    GridCell::GridCell(std::string name, float elevation, float temperature, float humidity)
-        : name(name), elevation(elevation), temperature(temperature), humidity(humidity)
+    GridCell::GridCell(std::string name, Vector2 position, float elevation, float temperature, float humidity)
+        : name(name), elevation(elevation), temperature(temperature), humidity(humidity), position(position)
     {
         this->id = ++lastID;
         determineBiome(); 
@@ -98,7 +98,7 @@ namespace World
             color = {0, 100, 0, 255}; // Dark Green
             break;
         case Biome::Desert:
-            color = {237, 201, 175, 255}; // Sand
+            color = {237, 201, 150, 255}; // Sand
             break;
         case Biome::Mountain:
             color = {255, 255, 255, 255}; // White
@@ -110,7 +110,7 @@ namespace World
             color = {192, 192, 210, 255}; // Light Gray
             break;
         case Biome::Grassland:
-            color = {124, 252, 0, 255}; // Lawn Green
+            color = {70, 179, 70, 255}; // Lawn Green
             break;
         case Biome::Savanna:
             color = {189, 183, 107, 255}; // Dark Khaki
@@ -124,7 +124,6 @@ namespace World
         }
 
         //Elevation Based Interpolations
-        
         float adjustment = elevation * 0.3f;
 
         if (biome == Biome::Hill)
@@ -133,7 +132,7 @@ namespace World
         if (biome == Biome::Mountain)
         {
             if (elevation > 1.0f)
-                adjustment = elevation * 0.85f;
+                adjustment = elevation * 0.75f;
 
             color.r = static_cast<unsigned char>(std::min(255.0f, color.r  * adjustment));
             color.g = static_cast<unsigned char>(std::min(255.0f, color.g  * adjustment));
@@ -161,6 +160,35 @@ namespace World
         }
 
         //Humidity and Temperature Based Interpolations
+        if (biome == Biome::RainForest || biome == Biome::Forest)
+        {
+            adjustment = (1 - humidity) + (1 - temperature * 2);
+
+            if (biome == Biome::RainForest)
+                adjustment /= 2;
+
+            color.r = static_cast<unsigned char>(std::min(225.0f, color.r + color.r * adjustment));
+            color.g = static_cast<unsigned char>(std::min(225.0f, color.g + color.g * adjustment));
+            color.b = static_cast<unsigned char>(std::min(225.0f, color.b + color.b * adjustment));
+        }
+
+        if (biome == Biome::Desert)
+        {
+            adjustment = (1 - humidity * 2) + (temperature * 2);
+
+            color.r = static_cast<unsigned char>(std::min(225.0f, color.r * adjustment));
+            color.g = static_cast<unsigned char>(std::min(225.0f, color.g * adjustment));
+            color.b = static_cast<unsigned char>(std::min(225.0f, color.b * adjustment));
+        }
+
+        if (biome == Biome::Grassland)
+        {
+            adjustment = ((1 - humidity) + (1 - temperature)) * 1.2f;
+ 
+            color.r = static_cast<unsigned char>(std::min(255.0f, color.r * adjustment));
+            color.g = static_cast<unsigned char>(std::min(255.0f, color.g * adjustment));
+            color.b = static_cast<unsigned char>(std::min(225.0f, color.b * adjustment));
+        }
 
         return color;
     }

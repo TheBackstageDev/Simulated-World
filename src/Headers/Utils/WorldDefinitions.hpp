@@ -10,12 +10,17 @@ namespace World
 
     //WorldMap Defines
     static float Cellsize{1.0f}; // in KM
-    #define MAX_RIVERS 3
-    #define MAX_RIVER_LENGHT 100 // in cells
+    #define MAX_RIVERS 10
+    #define MAX_RIVER_LENGTH 50 * (1 / Cellsize) // in KM
+
+    #define MOUNTAIN_PEAKS_MIN_DISTANCE 30 * (1 / Cellsize) // in KM
+    #define MOUNTAIN_PEAK_MIN_HEIGHT 1.0 
 
     //Simulation Defines
     extern drawMode currentDrawMode;
 
+    //WorldMap Functions
     std::string biomeToString(Biome biome);
+    bool isPeakDistantFromOthers(std::priority_queue<GridCell, std::vector<GridCell>, CompareGridCell> mountainPeaks, Vector2 peak);
 
 } // namespace System_Utils
