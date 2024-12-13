@@ -48,6 +48,8 @@ namespace System
         {
             timeController.advanceTime();
             deltaSimulationTime = 0.0f;
+
+            WorldGen.getPlanet()->updatePlanet();
         }
 
         if (interfaceHand.getCurrentMode() == Interface::SimulationMode::Running)

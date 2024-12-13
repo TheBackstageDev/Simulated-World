@@ -1,16 +1,37 @@
 #include "../src/Headers/System/Map/Planet.hpp"
+#include "../src/Headers/Utils/WorldDefinitions.hpp"
 #include <raymath.h>
 
 namespace World
 {
-    Planet::Planet(float axialTilt, float orbitalEccentricity, float distanceFromStar, float orbitalPeriod, float rotationPeriod)
-    : axialTilt(axialTilt), orbitalEccentricity(orbitalEccentricity), distanceFromStar(distanceFromStar), orbitalPeriod(orbitalPeriod), rotationPeriod(rotationPeriod)
-    {   
+    float Planet::percentInOrbit{0.0f};
+    Planet::Planet(float axialTilt, float orbitalEccentricity, float distanceFromStar, float rotationPeriod)
+    : axialTilt(axialTilt), orbitalEccentricity(orbitalEccentricity), distanceFromStar(distanceFromStar), rotationPeriod(rotationPeriod)
+    {
+        double semiMajorAxisMeters = distanceFromStar * 1.49e11; // Convert AU to meters
+        orbitalPeriod = sqrt((4 * powf(PI, 2) * semiMajorAxisMeters * semiMajorAxisMeters * semiMajorAxisMeters) / (GRAVITATIONAL_CONSTANT * STAR_MASS)) / (60 * 60 * 24);
     }
 
     Planet::Planet()
     : axialTilt(23.4f), orbitalEccentricity(0.01f), distanceFromStar(1.0f), orbitalPeriod(365.f), rotationPeriod(24.f)
     {}
+
+    //Plnaet Functions
+
+    void Planet::updateOrbitalParams()
+    {
+        float orbitalSpeed = 1.0f / orbitalPeriod;
+        percentInOrbit += orbitalSpeed;
+        if (percentInOrbit >= 1.0f)
+        {
+            percentInOrbit -= 1.0f; 
+        }
+    }
+
+    void Planet::updatePlanet()
+    {
+        updateOrbitalParams();
+    }
 
     //Drawing Functions
     void Planet::drawPlanetDepiction(Vector2 pos, float radius, float axialTilt)
@@ -56,18 +77,50 @@ namespace World
         DrawTriangle(vertices[1], vertices[5], vertices[7], YELLOW);
     }
 
-    void Planet::drawPlanetOrbitDepiction(Vector2 pos, float radius, float orbitalEccentricity, float distanceFromStar)
+    void Planet::drawPlanetOrbit(Vector2 pos, float radius)
     {
-        float semiMajorAxis = distanceFromStar * 50.f;
+        float semiMajorAxis = distanceFromStar * 50.0f;
         float semiMinorAxis = semiMajorAxis * sqrt(1 - orbitalEccentricity * orbitalEccentricity);
 
         float focalDistance = semiMajorAxis * orbitalEccentricity;
-        Vector2 ellipseCenter = {pos.x - semiMajorAxis, pos.y};
+        Vector2 ellipseCenter = {pos.x - focalDistance, pos.y};
+
+        float angle = 2 * PI * percentInOrbit;
+
+        float r = semiMajorAxis * (1 - orbitalEccentricity * orbitalEccentricity) / (1 + orbitalEccentricity * cos(angle));
+
+        float planetX = r * cos(angle);
+        float planetY = r * sin(angle);
+
+        Vector2 planetPos = {ellipseCenter.x + planetX + focalDistance, ellipseCenter.y + planetY};
 
         drawStar({ellipseCenter.x - focalDistance, ellipseCenter.y}, radius);
 
         DrawEllipseLines(ellipseCenter.x, ellipseCenter.y, semiMajorAxis, semiMinorAxis, WHITE);
-        DrawCircleLines(pos.x, pos.y, radius, WHITE);
+        DrawCircleV(planetPos, radius, WHITE);
+    }
+
+    void Planet::drawPlanetOrbitDepiction(Vector2 pos, float radius, float orbitalEccentricity, float distanceFromStar)
+    {
+        float semiMajorAxis = distanceFromStar * 50.0f;
+        float semiMinorAxis = semiMajorAxis * sqrt(1 - orbitalEccentricity * orbitalEccentricity);
+
+        float focalDistance = semiMajorAxis * orbitalEccentricity;
+        Vector2 ellipseCenter = {pos.x - focalDistance, pos.y};
+
+        float angle = 2 * PI * percentInOrbit;
+
+        float r = semiMajorAxis * (1 - orbitalEccentricity * orbitalEccentricity) / (1 + orbitalEccentricity * cos(angle));
+
+        float planetX = r * cos(angle);
+        float planetY = r * sin(angle);
+
+        Vector2 planetPos = {ellipseCenter.x + planetX + focalDistance, ellipseCenter.y + planetY};
+
+        drawStar({ellipseCenter.x - focalDistance, ellipseCenter.y}, radius);
+
+        DrawEllipseLines(ellipseCenter.x, ellipseCenter.y, semiMajorAxis, semiMinorAxis, WHITE);
+        DrawCircleV(planetPos, radius, WHITE);
     }
 
 } // namespace World

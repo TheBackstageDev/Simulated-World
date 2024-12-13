@@ -6,6 +6,7 @@
 namespace World
 {
     WorldMap *World::WorldGenerator::map = nullptr;
+    Planet* WorldGenerator::planet = nullptr;
     siv::PerlinNoise World::WorldGenerator::perlinNoise{0};
 
     WorldGenerator::WorldGenerator()
@@ -15,6 +16,7 @@ namespace World
     WorldGenerator::~WorldGenerator() 
     {
         delete map;
+        delete planet;
     }
 
     void WorldGenerator::GenerateRivers()

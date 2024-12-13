@@ -90,7 +90,7 @@ namespace World
             }
         }
 
-        DrawText(TextFormat("Cells Drawn: %i", ammount), GetScreenWidth() / 2, GetScreenHeight() / 2, 10.f, WHITE);
+        //DrawText(TextFormat("Cells Drawn: %i", ammount), GetScreenWidth() / 2, GetScreenHeight() / 2, 10.f, WHITE);
     }
 
     Image WorldMap::getMapImage(std::vector<std::vector<GridCell>> &map, int mapWidth, int mapHeight, int cellSize)

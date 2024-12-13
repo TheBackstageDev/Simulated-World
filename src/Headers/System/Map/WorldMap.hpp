@@ -30,7 +30,6 @@ namespace World
         const float cellSize;
         std::vector<std::vector<GridCell>> Map;
         static std::priority_queue<GridCell, std::vector<GridCell>, CompareGridCell> mountainPeaks;
-
     public:
         WorldMap(const float cellSize);
         ~WorldMap();

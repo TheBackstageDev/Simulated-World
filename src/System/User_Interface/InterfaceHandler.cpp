@@ -34,6 +34,8 @@ namespace Interface
         }
     }
 
+    bool isPlanetStatsOpen{false};
+
     void InterfaceHandler::headsUpDisplay()
     {
         float HUDheight = GetScreenHeight() * 1 / 4;
@@ -62,6 +64,13 @@ namespace Interface
         float sliderHeight = HUDheight * 0.1f; 
 
         GuiSlider({textPosX + HUDwidth / 2 + 300, textPosY, sliderWidth, sliderHeight}, "0.01", "2.0", &World::SimulationStep, 0.01f, 2.0f);
+
+        float buttonX = HUDwidth - 150; 
+        float buttonY = HUDy + 10;  
+        if (GuiButton({buttonX, buttonY, 140, 30}, "Planet Stats"))
+        {
+            isPlanetStatsOpen = !isPlanetStatsOpen;
+        }
     }
 
     void InterfaceHandler::runSimulationInterface()
@@ -80,7 +89,6 @@ namespace Interface
             Vector2 mousePos = GetMousePosition();
             Vector2 worldPos = GetScreenToWorld2D(mousePos, camera);
 
-            // Does the inverse scaling that the drawMap() function does
             worldPos = (worldPos - camera.offset) / scale + camera.target;
 
             if (worldPos.x >= 0 && worldPos.x < map->getWidth() * cellSize &&
@@ -162,7 +170,6 @@ namespace Interface
 
         if (isCellSelected)
         {
-            // Calculate font size based on the rectangle height
             int fontSize = static_cast<int>(rectHeight * 0.1f);
 
             DrawText("CELL PROPERTIES", cellInfoArea.x + 10, cellInfoArea.y + 10, fontSize, RAYWHITE);
@@ -171,6 +178,30 @@ namespace Interface
             DrawText(TextFormat("Temperature: %.2f", selectedCell.getTemperature()), cellInfoArea.x + 10, cellInfoArea.y + 30 + fontSize * 3, fontSize, RAYWHITE);
             DrawText(TextFormat("Humidity: %.2f", selectedCell.getHumidity()), cellInfoArea.x + 10, cellInfoArea.y + 40 + fontSize * 4, fontSize, RAYWHITE);
             DrawText(TextFormat("Biome: %s", World::biomeToString(selectedCell.getBiome()).c_str()), cellInfoArea.x + 10, cellInfoArea.y + 50 + fontSize * 5, fontSize, RAYWHITE);
+        }
+
+        if (isPlanetStatsOpen)
+        {
+            float menuWidth = GetScreenWidth() * 0.3f;
+            float menuHeight = GetScreenHeight() * 0.4f;
+            float menuX = (GetScreenWidth() - menuWidth) / 2;
+            float menuY = (GetScreenHeight() - menuHeight) / 2;
+            Rectangle menuArea = {menuX, menuY, menuWidth, menuHeight};
+            DrawRectangleRec(menuArea, DARKGRAY);
+
+            float planetRadius = 15.0f; 
+            float planetPosX = menuX + menuWidth / 4;
+            float planetPosY = menuY + menuHeight / 2;
+
+            World::Planet *planet = World::WorldGenerator::getPlanet();
+            planet->drawPlanetOrbitDepiction({planetPosX, planetPosY}, planetRadius, planet->getOrbitalEccentricity(), planet->getDistanceFromStar());
+
+            float depictionPosX = menuX + 3 * menuWidth / 4;
+            planet->drawPlanetDepiction({depictionPosX, planetPosY}, 30.f, planet->getAxialTilt());
+
+            float seasonTextPosX = menuX + 10;
+            float seasonTextPosY = menuY + 10;
+            DrawText("Planet Stats", seasonTextPosX, seasonTextPosY, 20, WHITE);
         }
     }
 
