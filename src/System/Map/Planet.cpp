@@ -39,6 +39,8 @@ namespace World
             float latitude = ((static_cast<float>(y) / map->getHeight()) * 180.0f) - 90.0f;
             float solarEnergy = calculateSolarEnergy(latitude);
 
+            //float latitudeFactor = 1.0f - abs(2.0f * (static_cast<float>(y) / map->getHeight()) - 1.0f);
+
             for (int x = 0; x < map->getWidth(); ++x)
             {
                 GridCell &cell = map->getCell(x, y);
@@ -48,7 +50,7 @@ namespace World
                     elevationFactor = 1.0f - (cell.getElevation() * cell.getElevation());
                 }
 
-                float temperature = (solarEnergy) * (0.75f + elevationFactor * 0.2f);
+                float temperature = solarEnergy * (0.75f + elevationFactor * 0.2f);
 
                 cell.updateTemperature(1 - temperature);
             }
@@ -69,27 +71,31 @@ namespace World
 
     float Planet::calculateSolarEnergy(int latitude) const
     {
+        // Convert latitude to radians
         float latitudeRad = latitude * (PI / 180.0f);
 
-        int dayOfYear = System::Time::getCurrentTime(); 
-        float declination = axialTilt * sin((2 * PI / 365.0f) * (dayOfYear - 81));
+        // Calculate declination angle using the axial tilt
+        int dayOfYear = System::Time::getCurrentTime();
+        float declination = axialTilt * sin((2 * PI / orbitalPeriod) * dayOfYear);
 
-        float solarElevation = asin(sin(latitudeRad) * sin(declination * (PI / 180.0f)) + cos(latitudeRad) * cos(declination * (PI / 180.0f)));
+        float declinationRad = declination * (PI / 180.0f); 
+        float solarElevation = asin(sin(latitudeRad) * sin(declinationRad) + cos(latitudeRad) * cos(declinationRad));
 
-        if (solarElevation < 0)
-            solarElevation = 0;
+        solarElevation = std::max(solarElevation, 0.0f);
+        float insolation = SOLAR_CONSTANT * sin(solarElevation);
 
-        float insolation = SOLAR_CONSTANT * cos(solarElevation);
+        // Adjust for distance to star and orbital eccentricity
+        float meanDistanceAU = distanceFromStar;                                                 
+        float distanceAU = meanDistanceAU * (1 + orbitalEccentricity * cos(2 * PI * percentInOrbit)); 
+        float distanceFactor = 1.0f / (distanceAU * distanceAU);                                    
 
-        // Adjust for distance to star
-        float distanceFactor = 1.0f / pow(1.0f - orbitalEccentricity * cos(2 * PI * percentInOrbit), 2);
         float correctedInsolation = insolation * distanceFactor;
 
+        // Normalize to a value between 0 and 1
         float normalizedInsolation = correctedInsolation / SOLAR_CONSTANT;
-
         normalizedInsolation = std::clamp(normalizedInsolation, 0.0f, 1.0f);
 
-        return normalizedInsolation;
+        return 1 - (normalizedInsolation * 0.9f);
     }
 
     std::array<std::string, 2> Planet::getSeasons() const

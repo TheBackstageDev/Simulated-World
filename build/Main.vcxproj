@@ -321,6 +321,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\src\System\AISimulation\Pop.cpp" />
     <ClCompile Include="C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\src\System\InputHandler.cpp" />
     <ClCompile Include="C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\src\System\Map\Planet.cpp" />
     <ClCompile Include="C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\src\System\Map\WorldCell.cpp" />

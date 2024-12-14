@@ -32,6 +32,8 @@ namespace World
         float humidity;
         Biome biome;
 
+        uint32_t ResourcesAmmount;
+
         Vector2 position;
         Color cellColor{0, 0, 0, 0};
 
@@ -46,12 +48,13 @@ namespace World
         //Setters
         void setName(std::string newName) { this->name = newName; }
         void updateElevation(float increment) { this->elevation += increment; }
-        void updateTemperature(float increment) { this->temperature = increment; }
+        void updateTemperature(float newTemp);
         void updateHumidity(float increment) { this->humidity = increment; }
 
         //Getters
         std::string& getName() { return this->name; }
         uint32_t getID() { return id; }
+        uint32_t getResourcesAmmount() { return ResourcesAmmount; }
         float getElevation() const { return this->elevation; }
         float getTemperature() const { return this->temperature; } 
         Color getTemperatureColor() const;

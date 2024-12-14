@@ -152,7 +152,7 @@ namespace World
                 if (elevation > SEA_LEVEL)
                     elevationFactor = 1.0f - (elevation * elevation);
                 
-                float temperature = 1 - (planet->getSolarEnergy((latitude * 180.f) - 90.f) * (latitudeFactor * 0.75f + elevationFactor * 0.2f));
+                float temperature = 1 - (planet->getSolarEnergy((latitude * 180.f) - 90.f) * ( 0.75f + elevationFactor * 0.2f));
 
                 float humidityNoise = perlinNoise.normalizedOctave2D(nx + 10.0f, ny + 10.0f, 10);
                 float humidity = (latitudeFactor * 0.4f + elevationFactor * 0.3f + humidityNoise * 0.4f);
@@ -167,13 +167,10 @@ namespace World
 
                 if (elevation > MOUNTAIN_PEAK_MIN_HEIGHT && isPeakDistantFromOthers(mountainPeaks, cell.getPos()))
                     mountainPeaks.push(cell);
-                
 
                 map->setCell(x, y, cell);
             }
         }
-
-        planet->updatePlanet();
 
         //Secondary Loops, for Details
         GenerateRivers();

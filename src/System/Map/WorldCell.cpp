@@ -19,7 +19,7 @@ namespace World
     {
         if (elevation < SEA_LEVEL)
         {
-            if (temperature < 0.25f)
+            if (temperature < ARCTIC_TEMP)
             {
                 biome = Biome::Arctic;
             }
@@ -43,13 +43,9 @@ namespace World
                 biome = Biome::Hill;
             }
         }
-        else if (humidity < 0.3f)
+        else if (temperature > 0.3f && humidity < 0.3f)
         {
             biome = Biome::Desert;
-        }
-        else if (temperature < 0.3f)
-        {
-            biome = Biome::Tundra;
         }
         else if (humidity > 0.65f)
         {
@@ -63,6 +59,10 @@ namespace World
         {
             biome = Biome::Savanna;
         }
+        else if (temperature < 0.2f && humidity < 0.3f)
+        {
+            biome = Biome::Tundra;
+        }
         else
         {
             biome = Biome::Grassland;
@@ -71,7 +71,7 @@ namespace World
 
     Color GridCell::interpolateColor() 
     {
-        if (cellColor.a != 0 && System::Time::getCurrentTime() % UPDATE_RATE != 0)
+         if ((this->biome == Biome::RainForest) && this->cellColor.a != 0)
             return cellColor;
 
         Color color;
@@ -126,7 +126,7 @@ namespace World
 
         if (biome == Biome::Mountain)
         {
-            if (elevation > 1.0f)
+            if (elevation > 1.0f && temperature < 1.0f)
                 adjustment = elevation * 0.75f - temperature * 0.2f;
 
             color.r = static_cast<unsigned char>(std::min(255.0f, color.r  * adjustment));
@@ -298,6 +298,23 @@ namespace World
     Color GridCell::getColor()
     {
         return interpolateColor();
+    }
+
+    void GridCell::updateTemperature(float newTemp)
+    {
+        this->temperature = newTemp;
+
+        const float ARCTIC_TEMP_UPPER = ARCTIC_TEMP + 0.02f; 
+        const float ARCTIC_TEMP_LOWER = ARCTIC_TEMP - 0.02f;
+
+        if (this->biome == Biome::Arctic && temperature > ARCTIC_TEMP_UPPER)
+        {
+            setBiome(Biome::Ocean);
+        }
+        if (this->biome == Biome::Ocean && temperature < ARCTIC_TEMP_LOWER)
+        {
+            setBiome(Biome::Arctic);
+        }
     }
 
 } // namespace World

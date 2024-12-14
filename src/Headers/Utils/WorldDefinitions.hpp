@@ -17,6 +17,8 @@ namespace World
     #define MOUNTAIN_PEAKS_MIN_DISTANCE 30 * (1 / Cellsize) // in KM
     #define MOUNTAIN_PEAK_MIN_HEIGHT 1.0
 
+    #define ARCTIC_TEMP 0.08f
+
     //Planet Defines
     #define SOLAR_CONSTANT 1361.0f // Solar constant in W/m²
     #define UPDATE_RATE 30 // In Days
