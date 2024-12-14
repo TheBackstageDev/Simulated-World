@@ -46,8 +46,8 @@ namespace World
         //Setters
         void setName(std::string newName) { this->name = newName; }
         void updateElevation(float increment) { this->elevation += increment; }
-        void updateTemperature(float increment) { this->temperature += increment; }
-        void updateHumidity(float increment) { this->humidity += increment; }
+        void updateTemperature(float increment) { this->temperature = increment; }
+        void updateHumidity(float increment) { this->humidity = increment; }
 
         //Getters
         std::string& getName() { return this->name; }

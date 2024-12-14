@@ -11,7 +11,7 @@ namespace World
     //WorldMap Defines
     static float Cellsize{1.0f}; // in KM
     #define MAX_RIVERS 10
-    #define MAX_RIVER_LENGTH 50 * (1 / Cellsize) // in KM
+    #define MAX_RIVER_LENGTH 25 * (1 / Cellsize) // in KM
     #define MAX_RIVER_WIDTH 2
 
     #define MOUNTAIN_PEAKS_MIN_DISTANCE 30 * (1 / Cellsize) // in KM

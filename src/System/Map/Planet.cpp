@@ -1,5 +1,7 @@
 #include "../src/Headers/System/Map/Planet.hpp"
+#include "../src/Headers/System/Map/WorldGeneration.hpp"
 #include "../src/Headers/Utils/WorldDefinitions.hpp"
+#include "../src/Headers/System/Time.hpp"
 #include <raymath.h>
 
 namespace World
@@ -28,9 +30,111 @@ namespace World
         }
     }
 
+    void Planet::updateMapTemperatures()
+    {
+        auto *map = WorldGenerator::getMap();
+
+        for (int y = 0; y < map->getHeight(); ++y)
+        {
+            float latitude = ((static_cast<float>(y) / map->getHeight()) * 180.0f) - 90.0f;
+            float solarEnergy = calculateSolarEnergy(latitude);
+
+            for (int x = 0; x < map->getWidth(); ++x)
+            {
+                GridCell &cell = map->getCell(x, y);
+                float elevationFactor = 1.0f;
+                if (cell.getElevation() > SEA_LEVEL)
+                {
+                    elevationFactor = 1.0f - (cell.getElevation() * cell.getElevation());
+                }
+
+                float temperature = (solarEnergy) * (0.75f + elevationFactor * 0.2f);
+
+                cell.updateTemperature(1 - temperature);
+            }
+        }
+
+
+    }
+
     void Planet::updatePlanet()
     {
         updateOrbitalParams();
+
+        if (System::Time::getCurrentTime() % UPDATE_RATE == 0)
+        {
+            updateMapTemperatures();
+        }
+    }
+
+    float Planet::calculateSolarEnergy(int latitude) const
+    {
+        float latitudeRad = latitude * (PI / 180.0f);
+
+        int dayOfYear = System::Time::getCurrentTime(); 
+        float declination = axialTilt * sin((2 * PI / 365.0f) * (dayOfYear - 81));
+
+        float solarElevation = asin(sin(latitudeRad) * sin(declination * (PI / 180.0f)) + cos(latitudeRad) * cos(declination * (PI / 180.0f)));
+
+        if (solarElevation < 0)
+            solarElevation = 0;
+
+        float insolation = SOLAR_CONSTANT * cos(solarElevation);
+
+        // Adjust for distance to star
+        float distanceFactor = 1.0f / pow(1.0f - orbitalEccentricity * cos(2 * PI * percentInOrbit), 2);
+        float correctedInsolation = insolation * distanceFactor;
+
+        float normalizedInsolation = correctedInsolation / SOLAR_CONSTANT;
+
+        normalizedInsolation = std::clamp(normalizedInsolation, 0.0f, 1.0f);
+
+        return normalizedInsolation;
+    }
+
+    std::array<std::string, 2> Planet::getSeasons() const
+    {
+        std::array<std::string, 2> seasons;
+
+        float orbitAngle = 2 * PI * percentInOrbit;
+
+        // Determine the season in the Southern Hemisphere
+        if (orbitAngle >= 0 && orbitAngle < PI / 2)
+        {
+            seasons[1] = "Spring"; // Vernal equinox to summer solstice
+        }
+        else if (orbitAngle >= PI / 2 && orbitAngle < PI)
+        {
+            seasons[1] = "Summer"; // Summer solstice to autumnal equinox
+        }
+        else if (orbitAngle >= PI && orbitAngle < 3 * PI / 2)
+        {
+            seasons[1] = "Autumn"; // Autumnal equinox to winter solstice
+        }
+        else
+        {
+            seasons[1] = "Winter"; // Winter solstice to vernal equinox
+        }
+
+        // Determine the season in the Northern Hemisphere (opposite)
+        if (seasons[1] == "Spring")
+        {
+            seasons[0] = "Autumn";
+        }
+        else if (seasons[1] == "Summer")
+        {
+            seasons[0] = "Winter";
+        }
+        else if (seasons[1] == "Autumn")
+        {
+            seasons[0] = "Spring";
+        }
+        else
+        {
+            seasons[0] = "Summer";
+        }
+
+        return seasons;
     }
 
     //Drawing Functions

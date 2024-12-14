@@ -117,6 +117,7 @@ namespace Interface
         {
             int seed = atoi(seedBuffer);
 
+            World::WorldGenerator::GeneratePlanet(axialTilt, orbitalEccentricity, distanceFromStar, 24.f);
             World::WorldGenerator::GenerateWorld(seed, res, freq, World::Cellsize);
 
             if (mapTexture.id != 0)
@@ -125,8 +126,6 @@ namespace Interface
             Image mapImg = World::WorldGenerator::getMapImage();
             mapTexture = LoadTextureFromImage(mapImg);
             UnloadImage(mapImg);
-
-            World::WorldGenerator::GeneratePlanet(axialTilt, orbitalEccentricity, distanceFromStar, 24.f);
         }
 
         if (GuiButton({settingsArea.x + 170, settingsArea.y + 200, 150, 30}, "ENTER") && mapTexture.id != 0)

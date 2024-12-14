@@ -22,6 +22,7 @@ namespace World
         static void GenerateWorld(int seed, float res, float freq, float CellSize);
         static void GeneratePlanet(float axialTilt, float orbitalEccentricity, float distanceFromStar, float rotationPeriod)
         {
+            delete planet;
             planet = new Planet(axialTilt, orbitalEccentricity, distanceFromStar, rotationPeriod);
         }
         void renderMap( const Camera2D &camera ) { map->drawMap(camera); }

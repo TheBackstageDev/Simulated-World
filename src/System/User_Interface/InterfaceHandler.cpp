@@ -188,20 +188,28 @@ namespace Interface
             float menuY = (GetScreenHeight() - menuHeight) / 2;
             Rectangle menuArea = {menuX, menuY, menuWidth, menuHeight};
             DrawRectangleRec(menuArea, DARKGRAY);
+            DrawRectangleLinesEx(menuArea, 2.0f, WHITE);
 
-            float planetRadius = 15.0f; 
+            float planetRadius = 10.0f; 
             float planetPosX = menuX + menuWidth / 4;
             float planetPosY = menuY + menuHeight / 2;
 
             World::Planet *planet = World::WorldGenerator::getPlanet();
             planet->drawPlanetOrbitDepiction({planetPosX, planetPosY}, planetRadius, planet->getOrbitalEccentricity(), planet->getDistanceFromStar());
 
+            std::array<std::string, 2> seasons = planet->getSeasons();
+
             float depictionPosX = menuX + 3 * menuWidth / 4;
             planet->drawPlanetDepiction({depictionPosX, planetPosY}, 30.f, planet->getAxialTilt());
 
-            float seasonTextPosX = menuX + 10;
-            float seasonTextPosY = menuY + 10;
-            DrawText("Planet Stats", seasonTextPosX, seasonTextPosY, 20, WHITE);
+            float seasonTextPosX = depictionPosX - 100;
+            float seasonTextPosY = planetPosY + 80;
+            DrawText(TextFormat("North: %s", seasons[0].c_str()), seasonTextPosX, seasonTextPosY, 20, WHITE);
+            DrawText(TextFormat("South: %s", seasons[1].c_str()), seasonTextPosX, seasonTextPosY + 30, 20, WHITE);
+
+            float titleTextPosX = menuX + 10;
+            float titleTextPosY = menuY + 10;
+            DrawText("Planet Stats", titleTextPosX, titleTextPosY, 20, WHITE);
         }
     }
 

@@ -1,5 +1,6 @@
 #include "../src/Headers/System/Map/WorldCell.hpp"
 #include "../src/Headers/Utils/WorldDefinitions.hpp"
+#include "../src/Headers/System/Time.hpp"
 
 namespace World
 {
@@ -42,10 +43,6 @@ namespace World
                 biome = Biome::Hill;
             }
         }
-        else if (temperature < 0.2)
-        {
-            biome = Biome::Arctic;
-        }
         else if (humidity < 0.3f)
         {
             biome = Biome::Desert;
@@ -74,7 +71,7 @@ namespace World
 
     Color GridCell::interpolateColor() 
     {
-        if (cellColor.a != 0)
+        if (cellColor.a != 0 && System::Time::getCurrentTime() % UPDATE_RATE != 0)
             return cellColor;
 
         Color color;
@@ -130,7 +127,7 @@ namespace World
         if (biome == Biome::Mountain)
         {
             if (elevation > 1.0f)
-                adjustment = elevation * 0.75f;
+                adjustment = elevation * 0.75f - temperature * 0.2f;
 
             color.r = static_cast<unsigned char>(std::min(255.0f, color.r  * adjustment));
             color.g = static_cast<unsigned char>(std::min(255.0f, color.g  * adjustment));
@@ -275,11 +272,11 @@ namespace World
     Color GridCell::getTemperatureColor() const
     {
         Color color;
-        if (temperature <= 0.2f)
+        if (temperature <= 0.1f)
         {
             color = {0, 0, 255, 255}; // Very Cold (Blue)
         }
-        else if (temperature <= 0.4f)
+        else if (temperature <= 0.3f)
         {
             color = {135, 206, 235, 255}; // Cold (Sky Blue)
         }

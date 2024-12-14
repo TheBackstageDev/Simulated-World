@@ -1,6 +1,7 @@
 #pragma once
 
 #include <raygui.h>
+#include <array>
 #include "../src/Headers/System/Map/WorldMap.hpp"
 
 namespace World
@@ -18,6 +19,7 @@ namespace World
         static float percentInOrbit; // Percentage of the orbit it has completed
 
         void updateOrbitalParams();
+        void updateMapTemperatures();
         float calculateSolarEnergy(int latitude) const;
     public:
         Planet();
@@ -29,6 +31,8 @@ namespace World
         float getDistanceFromStar() const { return distanceFromStar; }
         float getOrbitalPeriod() const { return orbitalPeriod; }
         float getRotationPeriod() const { return rotationPeriod; }
+        float getSolarEnergy(int latitude) const { return calculateSolarEnergy(latitude); }
+        std::array<std::string, 2> getSeasons() const;
 
         // Update methods
         void updatePlanet();
