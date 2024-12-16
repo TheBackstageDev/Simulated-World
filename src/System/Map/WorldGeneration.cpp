@@ -5,7 +5,7 @@
 
 namespace World
 {
-    WorldMap *World::WorldGenerator::map = nullptr;
+    WorldMap *WorldGenerator::map = nullptr;
     Planet* WorldGenerator::planet = nullptr;
     siv::PerlinNoise World::WorldGenerator::perlinNoise{0};
 

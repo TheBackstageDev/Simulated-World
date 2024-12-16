@@ -3,6 +3,7 @@
 #include "../src/Headers/Utils/WorldDefinitions.hpp"
 #include "../src/Headers/System/Time.hpp"
 #include <raymath.h>
+#include <string>
 
 namespace World
 {
@@ -15,7 +16,7 @@ namespace World
     }
 
     Planet::Planet()
-    : axialTilt(23.4f), orbitalEccentricity(0.01f), distanceFromStar(1.0f), orbitalPeriod(365.f), rotationPeriod(24.f)
+    : axialTilt(23.4f), orbitalEccentricity(0.0175f), distanceFromStar(1.0f), orbitalPeriod(365.f), rotationPeriod(24.f)
     {}
 
     //Plnaet Functions
@@ -39,8 +40,6 @@ namespace World
             float latitude = ((static_cast<float>(y) / map->getHeight()) * 180.0f) - 90.0f;
             float solarEnergy = calculateSolarEnergy(latitude);
 
-            //float latitudeFactor = 1.0f - abs(2.0f * (static_cast<float>(y) / map->getHeight()) - 1.0f);
-
             for (int x = 0; x < map->getWidth(); ++x)
             {
                 GridCell &cell = map->getCell(x, y);
@@ -55,8 +54,6 @@ namespace World
                 cell.updateTemperature(1 - temperature);
             }
         }
-
-
     }
 
     void Planet::updatePlanet()
@@ -89,13 +86,13 @@ namespace World
         float distanceAU = meanDistanceAU * (1 + orbitalEccentricity * cos(2 * PI * percentInOrbit)); 
         float distanceFactor = 1.0f / (distanceAU * distanceAU);                                    
 
-        float correctedInsolation = insolation * distanceFactor;
+        float correctedInsolation = insolation * distanceFactor * 0.85f;
 
         // Normalize to a value between 0 and 1
         float normalizedInsolation = correctedInsolation / SOLAR_CONSTANT;
         normalizedInsolation = std::clamp(normalizedInsolation, 0.0f, 1.0f);
 
-        return 1 - (normalizedInsolation * 0.9f);
+        return 1 - (normalizedInsolation);
     }
 
     std::array<std::string, 2> Planet::getSeasons() const

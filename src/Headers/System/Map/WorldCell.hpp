@@ -11,6 +11,7 @@ namespace World
         River,
         Beach,
         Forest,
+        Dirt,
         RainForest,
         Desert,
         Mountain,
@@ -32,12 +33,15 @@ namespace World
         float humidity;
         Biome biome;
 
-        uint32_t ResourcesAmmount;
+        uint32_t MaxResourcesAmmount;
+        uint32_t MaterialsAmmount;
+        uint32_t FoodAmmount;
 
         Vector2 position;
         Color cellColor{0, 0, 0, 0};
 
         void determineBiome();
+        void determineResourceAmmount();
         Color interpolateColor();
 
     public:
@@ -54,11 +58,12 @@ namespace World
         //Getters
         std::string& getName() { return this->name; }
         uint32_t getID() { return id; }
-        uint32_t getResourcesAmmount() { return ResourcesAmmount; }
+        uint32_t getMaterialsAmmount() { return MaterialsAmmount; }
+        uint32_t getFoodAmmount() { return FoodAmmount; }
         float getElevation() const { return this->elevation; }
         float getTemperature() const { return this->temperature; } 
         Color getTemperatureColor() const;
-        float getHumidity() const { return this->humidity;}
+        float getHumidity() const { return this->humidity; }
         Color getHumidityColor() const;
         Biome getBiome() const { return this->biome; }
         void setBiome(Biome newBiome) { this->biome = newBiome; }

@@ -61,6 +61,15 @@
         "deque": "cpp",
         "queue": "cpp",
         "ranges": "cpp",
-        "span": "cpp"
+        "span": "cpp",
+        "thread": "cpp",
+        "ratio": "cpp",
+        "stop_token": "cpp",
+        "functional": "cpp",
+        "condition_variable": "cpp",
+        "list": "cpp",
+        "mutex": "cpp",
+        "unordered_map": "cpp",
+        "xhash": "cpp"
     }
 }

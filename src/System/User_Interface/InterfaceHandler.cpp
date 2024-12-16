@@ -170,7 +170,7 @@ namespace Interface
 
         if (isCellSelected)
         {
-            int fontSize = static_cast<int>(rectHeight * 0.1f);
+            int fontSize = static_cast<int>(rectHeight * 0.08f);
 
             DrawText("CELL PROPERTIES", cellInfoArea.x + 10, cellInfoArea.y + 10, fontSize, RAYWHITE);
             DrawText(TextFormat("Name: %s", selectedCell.getName().c_str()), cellInfoArea.x + 10, cellInfoArea.y + 10 + fontSize, fontSize, RAYWHITE);
@@ -178,6 +178,8 @@ namespace Interface
             DrawText(TextFormat("Temperature: %.2f", selectedCell.getTemperature()), cellInfoArea.x + 10, cellInfoArea.y + 30 + fontSize * 3, fontSize, RAYWHITE);
             DrawText(TextFormat("Humidity: %.2f", selectedCell.getHumidity()), cellInfoArea.x + 10, cellInfoArea.y + 40 + fontSize * 4, fontSize, RAYWHITE);
             DrawText(TextFormat("Biome: %s", World::biomeToString(selectedCell.getBiome()).c_str()), cellInfoArea.x + 10, cellInfoArea.y + 50 + fontSize * 5, fontSize, RAYWHITE);
+            DrawText(TextFormat("Materials: %i", selectedCell.getMaterialsAmmount()), cellInfoArea.x + 10, cellInfoArea.y + 60 + fontSize * 6, fontSize, RAYWHITE);
+            DrawText(TextFormat("Food: %i", selectedCell.getFoodAmmount()), cellInfoArea.x + 10, cellInfoArea.y + 70 + fontSize * 7, fontSize, RAYWHITE);
         }
 
         if (isPlanetStatsOpen)

@@ -14,6 +14,8 @@ namespace World
             return "Ocean";
         case Biome::River:
             return "River";
+        case Biome::Dirt:
+            return "Dirt";
         case Biome::Beach:
             return "Beach";
         case Biome::Forest:

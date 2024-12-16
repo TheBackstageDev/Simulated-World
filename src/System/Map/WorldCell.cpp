@@ -10,7 +10,8 @@ namespace World
         : name(name), elevation(elevation), temperature(temperature), humidity(humidity), position(position)
     {
         this->id = ++lastID;
-        determineBiome(); 
+        determineBiome();
+        determineResourceAmmount();
     }
 
     GridCell::~GridCell() {}
@@ -22,6 +23,10 @@ namespace World
             if (temperature < ARCTIC_TEMP)
             {
                 biome = Biome::Arctic;
+            }
+            else if (temperature >= 1.0f)
+            {
+                biome = Biome::Dirt;
             }
             else 
             {
@@ -83,6 +88,9 @@ namespace World
         case Biome::River:
             color = {30, 144, 255, 255}; // Dodger Blue
             break;
+        case Biome::Dirt:
+            color = {155, 118, 83, 255}; // Dirt Brown
+            break;
         case Biome::Beach:
             color = {255, 255, 102, 255}; // Light Yellow
             break;
@@ -134,13 +142,13 @@ namespace World
             color.b = static_cast<unsigned char>(std::min(255.0f, color.b  * adjustment));
         }
 
-        if (biome == Biome::Ocean || biome == Biome::Hill)
+        if (biome == Biome::Ocean || biome == Biome::Hill || biome == Biome::Dirt)
         {
             if (biome == Biome::Ocean && elevation > -0.1f)
             {
                 adjustment = (elevation + 1.0f) * 2.0f; 
             }
-            if (biome == Biome::Ocean)
+            if (biome == Biome::Ocean || biome == Biome::Dirt)
             {
                 color.r = static_cast<unsigned char>(std::min(255.0f, color.r + color.r * adjustment * 0.5f)); 
                 color.g = static_cast<unsigned char>(std::min(255.0f, color.g + color.g * adjustment * 2.f));
@@ -199,6 +207,9 @@ namespace World
             break;
         case Biome::River:
             color = {30, 144, 255, 255}; // Dodger Blue
+            break;
+        case Biome::Dirt:
+            color = {155,118,83, 255}; // Dirt Brown
             break;
         case Biome::Beach:
             color = {255, 255, 102, 255}; // Light Yellow
@@ -315,6 +326,67 @@ namespace World
         {
             setBiome(Biome::Arctic);
         }
+        if (this->biome == Biome::Ocean && temperature >= 1.0f)
+        {
+            setBiome(Biome::Dirt);
+        }
+        if (this->biome == Biome::Dirt && temperature < 1.0f)
+        {
+            setBiome(Biome::Ocean);
+        }
+    }
+
+    void GridCell::determineResourceAmmount()
+    {
+        switch (biome)
+        {
+        case Biome::Ocean:
+            MaxResourcesAmmount = 50; 
+            break;
+        case Biome::River:
+            MaxResourcesAmmount = 70; 
+            break;
+        case Biome::Beach:
+            MaxResourcesAmmount = 30; 
+            break;
+        case Biome::Forest:
+            MaxResourcesAmmount = 100; 
+            break;
+        case Biome::RainForest:
+            MaxResourcesAmmount = 120; 
+            break;
+        case Biome::Desert:
+            MaxResourcesAmmount = 20; 
+            break;
+        case Biome::Mountain:
+            MaxResourcesAmmount = 60; 
+            break;
+        case Biome::Hill:
+            MaxResourcesAmmount = 80; 
+            break;
+        case Biome::Tundra:
+            MaxResourcesAmmount = 40; 
+            break;
+        case Biome::Grassland:
+            MaxResourcesAmmount = 90; 
+            break;
+        case Biome::Savanna:
+            MaxResourcesAmmount = 85; 
+            break;
+        default:
+            MaxResourcesAmmount = 10; 
+            break;
+        }
+
+        float elevationModifier = 1.0f;
+        if (elevation > SEA_LEVEL)
+        {
+            elevationModifier = 1.0f - (elevation * 0.1f);
+        }
+
+        MaxResourcesAmmount = static_cast<uint32_t>(MaxResourcesAmmount * elevationModifier * (0.9f + (static_cast<float>(rand()) / RAND_MAX) * 0.2f));
+        MaterialsAmmount = floor(0.75 * MaxResourcesAmmount);
+        FoodAmmount = floor(0.25 * MaxResourcesAmmount);
     }
 
 } // namespace World
