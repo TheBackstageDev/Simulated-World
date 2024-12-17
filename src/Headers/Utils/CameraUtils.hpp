@@ -7,6 +7,6 @@ namespace System_Utils
 {
     extern Camera2D cam;
     
-    Camera2D& getCam();
     bool isPositionInsideCamera(const Camera2D &camera, Vector2 pos);
+    Vector2 getRealCellMousePosition(const Camera2D &camera);
 } // namespace System

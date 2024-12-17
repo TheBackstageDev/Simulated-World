@@ -1,6 +1,9 @@
 #include "../src/Headers/System/AISimulation/PopAI/Pop.hpp"
 
-namespace Simulation
+namespace Simulation_AI
 {
-    
-} // namespace Simulation
+    Pop::Pop(std::string name, char32_t age)
+    : name(name), age(age)
+    {
+    }
+} // namespace Simulation_AI

@@ -1,4 +1,5 @@
 #include "../src/Headers/System/Map/WorldGeneration.hpp"
+#include "../src/Headers/Utils/WorldUtils.hpp"
 
 #include <cassert>
 #include <cmath>
@@ -165,7 +166,7 @@ namespace World
 
                 GridCell cell(std::string(std::to_string(x) + "-" + std::to_string(y)), {(float)x, (float)y}, elevation, temperature, humidity);
 
-                if (elevation > MOUNTAIN_PEAK_MIN_HEIGHT && isPeakDistantFromOthers(mountainPeaks, cell.getPos()))
+                if (elevation > MOUNTAIN_PEAK_MIN_HEIGHT && System_Utils::isPeakDistantFromOthers(mountainPeaks, cell.getPos()))
                     mountainPeaks.push(cell);
 
                 map->setCell(x, y, cell);

@@ -1,11 +1,33 @@
 #include "../src/Headers/System/AISimulation/CivAI/Civilization.hpp"
+#include "../src/Headers/Utils/WorldUtils.hpp"
 
-namespace Simulation
+namespace Simulation_AI
 {
-    std::vector<Civilization> Simulation::civilizations;
-
-    Civilization::Civilization(Pop &leader, Color civColor, uint32_t population, uint32_t id) 
-    : leader(leader), civColor(civColor), population(population), id(id)
+    static uint32_t lastID;
+    
+    Civilization::Civilization(Pop &leader, Color civColor, uint32_t population) 
+    : leader(leader), civColor(civColor), population(population), id(lastID++)
     {
     }
-} // namespace Simulation
+
+    void Civilization::expand(Vector2 cell)
+    {
+        float cost = System_Utils::calculateCellCost(cell);
+        auto &currentCell = World::WorldGenerator::getGridCellAtPos(cell);
+
+        if (materialsAmmount < cost && currentCell.getCurrentCivilization() != -1)
+            return; //Later to add more complex behaviour
+
+        materialsAmmount -= cost;
+        cellsOwned.push_back(cell);
+        currentCell.setCivilizationOwnership(this->id);
+    }
+
+    void Civilization::placeCivilization(Vector2 rootCell)
+    {
+        if (cellsOwned.size() > 0)
+            return;
+
+        cellsOwned.push_back(rootCell);
+    }
+} // namespace Simulation_AI

@@ -321,6 +321,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\src\System\AISimulation\CivAI\Civilization.cpp" />
     <ClCompile Include="C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\src\System\AISimulation\PopAI\Pop.cpp" />
     <ClCompile Include="C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\src\System\InputHandler.cpp" />
     <ClCompile Include="C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\src\System\Map\Planet.cpp" />
@@ -335,6 +336,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\src\Utils\CameraUtils.cpp" />
     <ClCompile Include="C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\src\Utils\WindowUtils.cpp" />
     <ClCompile Include="C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\src\Utils\WorldDefinitions.cpp" />
+    <ClCompile Include="C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\src\Utils\WorldUtils.cpp" />
     <ClCompile Include="C:\Users\cleve\OneDrive\Documents\GitHub\Simulated-World\src\main.cpp" />
   </ItemGroup>
   <ItemGroup>

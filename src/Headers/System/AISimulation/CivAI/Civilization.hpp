@@ -4,14 +4,10 @@
 #include <string>
 
 #include "../src/Headers/System/Time.hpp"
-#include "../src/Headers/System/Map/WorldMap.hpp"
 #include "../src/Headers/System/AISimulation/PopAI/Pop.hpp"
-#include <map>
 
-namespace Simulation
+namespace Simulation_AI
 {
-    static std::vector<Civilization> civilizations;
-
     class Civilization
     {
     private:
@@ -29,20 +25,16 @@ namespace Simulation
         Color civColor;
         std::vector<Vector2> cellsOwned;
 
-        //Otherb
+        //Other
         uint32_t lifeTime{0}; // in Years
         uint32_t id;
 
-        void expand();
-
-        Civilization(Pop &leader, Color civColor, uint32_t population = 1, uint32_t id);
+        void expand(Vector2 cell);
     public:
-        static Civilization createCivilization(Pop &leader, Color civColor, uint32_t population = 1)
-        {
-            static uint32_t lastID{0};
-            Civilization civ(leader, civColor, population, ++lastID);
-            civilizations.push_back(std::move(civ));
-            return civ;
-        }
+        Civilization(Pop &leader, Color civColor, uint32_t population = 1);
+
+        void placeCivilization(Vector2 rootCell);
+
+        uint32_t getId() { return id; }
     };
 } // namespace Simulation_AI

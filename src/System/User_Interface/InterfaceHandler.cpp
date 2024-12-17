@@ -3,7 +3,9 @@
 #include "../src/Headers/Utils/WindowUtils.hpp"
 #include "../src/Headers/Utils/CameraUtils.hpp"
 #include "../src/Headers/Utils/WorldDefinitions.hpp"
+#include "../src/Headers/Utils/WorldUtils.hpp"
 #include "../src/Headers/System/Time.hpp"
+#include "../src/Headers/Utils/InputDefinitions.hpp"
 
 #define RAYGUI_IMPLEMENTATION
 #include <raygui.h>
@@ -78,18 +80,13 @@ namespace Interface
         static bool isCellSelected = false;
         static World::GridCell selectedCell;
 
-        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+        if (IsMouseButtonPressed(SELECT_CELL))
         {
-            auto &camera = System_Utils::getCam();
+            auto &camera = System_Utils::cam;
             auto *map = World::WorldGenerator::getMap();
 
             float cellSize = map->getCellSize();
-            float scale = System_Utils::getCurrentWindowScaleOffset({map->getWidth() * cellSize, map->getHeight() * cellSize}) * camera.zoom;
-
-            Vector2 mousePos = GetMousePosition();
-            Vector2 worldPos = GetScreenToWorld2D(mousePos, camera);
-
-            worldPos = (worldPos - camera.offset) / scale + camera.target;
+            Vector2 worldPos = System_Utils::getRealCellMousePosition(camera);
 
             if (worldPos.x >= 0 && worldPos.x < map->getWidth() * cellSize &&
                 worldPos.y >= 0 && worldPos.y < map->getHeight() * cellSize)
@@ -105,7 +102,7 @@ namespace Interface
 
         headsUpDisplay();
 
-        if (IsKeyPressed(KEY_BACKSPACE))
+        if (IsKeyPressed(OPEN_MENU))
             isMenuOpen = !isMenuOpen;
 
         if (isMenuOpen)
@@ -122,37 +119,45 @@ namespace Interface
             float buttonY = menuY + 30;
             float buttonWidth = menuWidth - 40;
 
-            if (GuiButton({buttonX, buttonY, buttonWidth, (float)buttonHeight}, "Terrain"))
+            int fontSize = static_cast<int>(buttonHeight * 0.03f);
+
+            if (GuiButton({buttonX, buttonY, buttonWidth, (float)buttonHeight * fontSize}, "Terrain"))
             {
                 World::currentDrawMode = World::drawMode::Terrain;
             }
 
             buttonY += buttonHeight + 10;
-            if (GuiButton({buttonX, buttonY, buttonWidth, (float)buttonHeight}, "Elevation"))
+            if (GuiButton({buttonX, buttonY, buttonWidth, (float)buttonHeight * fontSize}, "Elevation"))
             {
                 World::currentDrawMode = World::drawMode::Elevation;
             }
 
             buttonY += buttonHeight + 10;
-            if (GuiButton({buttonX, buttonY, buttonWidth, (float)buttonHeight}, "Biomes"))
+            if (GuiButton({buttonX, buttonY, buttonWidth, (float)buttonHeight * fontSize}, "Biomes"))
             {
                 World::currentDrawMode = World::drawMode::Biomes;
             }
 
             buttonY += buttonHeight + 10;
-            if (GuiButton({buttonX, buttonY, buttonWidth, (float)buttonHeight}, "Humidity"))
+            if (GuiButton({buttonX, buttonY, buttonWidth, (float)buttonHeight * fontSize}, "Humidity"))
             {
                 World::currentDrawMode = World::drawMode::Humidity;
             }
 
             buttonY += buttonHeight + 10;
-            if (GuiButton({buttonX, buttonY, buttonWidth, (float)buttonHeight}, "Temperature"))
+            if (GuiButton({buttonX, buttonY, buttonWidth, (float)buttonHeight * fontSize}, "Temperature"))
             {
                 World::currentDrawMode = World::drawMode::Temperature;
             }
 
+            buttonY += buttonHeight + 10;
+            if (GuiButton({buttonX, buttonY, buttonWidth, (float)buttonHeight * fontSize}, "Population"))
+            {
+                World::currentDrawMode = World::drawMode::Population;
+            }
+
             buttonY += buttonHeight + 20;
-            if (GuiButton({buttonX, buttonY, buttonWidth, (float)buttonHeight}, "Return"))
+            if (GuiButton({buttonX, buttonY, buttonWidth, (float)buttonHeight * fontSize}, "Return"))
             {
                 isMenuOpen = false;
             }
@@ -177,7 +182,7 @@ namespace Interface
             DrawText(TextFormat("Elevation: %.2f", selectedCell.getElevation()), cellInfoArea.x + 10, cellInfoArea.y + 20 + fontSize * 2, fontSize, RAYWHITE);
             DrawText(TextFormat("Temperature: %.2f", selectedCell.getTemperature()), cellInfoArea.x + 10, cellInfoArea.y + 30 + fontSize * 3, fontSize, RAYWHITE);
             DrawText(TextFormat("Humidity: %.2f", selectedCell.getHumidity()), cellInfoArea.x + 10, cellInfoArea.y + 40 + fontSize * 4, fontSize, RAYWHITE);
-            DrawText(TextFormat("Biome: %s", World::biomeToString(selectedCell.getBiome()).c_str()), cellInfoArea.x + 10, cellInfoArea.y + 50 + fontSize * 5, fontSize, RAYWHITE);
+            DrawText(TextFormat("Biome: %s", System_Utils::biomeToString(selectedCell.getBiome()).c_str()), cellInfoArea.x + 10, cellInfoArea.y + 50 + fontSize * 5, fontSize, RAYWHITE);
             DrawText(TextFormat("Materials: %i", selectedCell.getMaterialsAmmount()), cellInfoArea.x + 10, cellInfoArea.y + 60 + fontSize * 6, fontSize, RAYWHITE);
             DrawText(TextFormat("Food: %i", selectedCell.getFoodAmmount()), cellInfoArea.x + 10, cellInfoArea.y + 70 + fontSize * 7, fontSize, RAYWHITE);
         }

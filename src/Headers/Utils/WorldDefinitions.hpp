@@ -1,6 +1,7 @@
 #pragma once
 
-#include <string>
+#include <unordered_map>
+#include "../src/Headers/System/AISimulation/CivAI/Civilization.hpp"
 #include "../src/Headers/System/Map/WorldGeneration.hpp"
 
 namespace World
@@ -19,19 +20,19 @@ namespace World
 
     #define ARCTIC_TEMP 0.08f
 
+    //GridCell Definitions
+
+    #define MAX_COST 100.f
+
     //Planet Defines
     #define SOLAR_CONSTANT 1361.0f // Solar constant in W/m²
     #define UPDATE_RATE 30 // In Days
 
     //Simulation Defines
+    #define GRAVITATIONAL_CONSTANT 6.67408e-11
+    #define STAR_MASS 1.989e30 // Equivalent value to 1 * Mass of the Sun
+
     extern drawMode currentDrawMode;
     extern float SimulationStep;
-
-    #define GRAVITATIONAL_CONSTANT 6.67408e-11
-    #define STAR_MASS 1.989e30 //Temporary
-
-    //WorldMap Functions
-    std::string biomeToString(Biome biome);
-    bool isPeakDistantFromOthers(std::priority_queue<GridCell, std::vector<GridCell>, CompareGridCell> mountainPeaks, Vector2 peak);
-
+    extern std::unordered_map<uint32_t, Simulation_AI::Civilization> civilizations;
 } // namespace System_Utils

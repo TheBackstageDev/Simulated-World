@@ -4,16 +4,16 @@
 #include "../src/Headers/System/Map/WorldCell.hpp"
 #include "../src/Headers/System/Time.hpp"
 
-namespace Simulation
+namespace Simulation_AI
 {
     class Pop
     {
     private:
-        //Resources
+        //Resourcesy
         uint32_t materialsAmmount{0};
         uint32_t foodAmmount{0};
 
-        //Personalg
+        //Personal
         std::string name;
         char32_t age{0};
         World::GridCell* residence{nullptr};
@@ -24,7 +24,7 @@ namespace Simulation
         char16_t energy{100};
     public:
         Pop(std::string name, char32_t age = 0);
-        ~Pop();
+       // ~Pop();
 
         //Getters
         std::string getName() const { return name; }
@@ -32,5 +32,5 @@ namespace Simulation
         World::GridCell *getResidence() const { return residence; }
         std::vector<System::Event> getPersonalHistory() const { return history; }
     };
-    
-} // namespace Simulation
+
+} // namespace Simulation_AI

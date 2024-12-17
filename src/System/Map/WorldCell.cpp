@@ -306,6 +306,40 @@ namespace World
         return color;
     }
 
+    Color GridCell::getPopulationColor() const
+    {
+        const float density = static_cast<float>(population) / Cellsize;
+
+        Color color;
+
+        if (density == 0.f)
+        {
+            color = {100, 100, 100, 255}; // Gray
+        }
+        else if (density < 1.0f)
+        {
+            color = {0, 255, 0, 255}; // Green
+        }
+        else if (density < 3.0f)
+        {
+            color = {173, 255, 47, 255}; // YellowGreen
+        }
+        else if (density < 5.0f)
+        {
+            color = {255, 255, 0, 255}; // Yellow
+        }
+        else if (density < 7.0f)
+        {
+            color = {255, 165, 0, 255}; // Orange
+        }
+        else
+        {
+            color = {255, 0, 0, 255}; // Red
+        }
+
+        return color;
+    }
+
     Color GridCell::getColor()
     {
         return interpolateColor();
@@ -385,8 +419,8 @@ namespace World
         }
 
         MaxResourcesAmmount = static_cast<uint32_t>(MaxResourcesAmmount * elevationModifier * (0.9f + (static_cast<float>(rand()) / RAND_MAX) * 0.2f));
-        MaterialsAmmount = floor(0.75 * MaxResourcesAmmount);
-        FoodAmmount = floor(0.25 * MaxResourcesAmmount);
+        MaterialsAmmount = floorf(0.75 * MaxResourcesAmmount);
+        FoodAmmount = floorf(0.25 * MaxResourcesAmmount);
     }
 
 } // namespace World

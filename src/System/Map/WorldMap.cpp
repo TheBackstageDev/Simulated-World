@@ -75,6 +75,9 @@ namespace World
                 case drawMode::Temperature:
                     cellColor = CurrentCell.getTemperatureColor();
                     break;
+                case drawMode::Population:
+                    cellColor = CurrentCell.getPopulationColor();
+                    break;
                 default:
                     cellColor = {255, 255, 255, 255};
                     break;

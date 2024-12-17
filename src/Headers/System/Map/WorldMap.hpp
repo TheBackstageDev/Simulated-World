@@ -22,6 +22,7 @@ namespace World
         Biomes,
         Humidity,
         Temperature,
+        Population,
     };
 
     class WorldMap
