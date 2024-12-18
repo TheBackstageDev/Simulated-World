@@ -316,19 +316,27 @@ namespace World
         {
             color = {100, 100, 100, 255}; // Gray
         }
-        else if (density < 1.0f)
+        else if (density < 100.0f)
+        {
+            color = {0, 0, 255, 255}; // Blue
+        }
+        else if (density < 500.0f)
+        {
+            color = {0, 128, 255, 255}; // Light Blue
+        }
+        else if (density < 1000.0f)
         {
             color = {0, 255, 0, 255}; // Green
         }
-        else if (density < 3.0f)
+        else if (density < 2000.0f)
         {
             color = {173, 255, 47, 255}; // YellowGreen
         }
-        else if (density < 5.0f)
+        else if (density < 3000.0f)
         {
             color = {255, 255, 0, 255}; // Yellow
         }
-        else if (density < 7.0f)
+        else if (density < 4000.0f)
         {
             color = {255, 165, 0, 255}; // Orange
         }

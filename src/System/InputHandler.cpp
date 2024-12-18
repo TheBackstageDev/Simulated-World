@@ -26,15 +26,12 @@ namespace System_Input
             camera.zoom = 0.1f;
     }
 
-    void System_Input::handleSimulationInput(Camera2D &camera)
+    bool System_Input::handleSimulationInput(Camera2D &camera)
     {
         //Related to AI and stuff
         if (IsKeyPressed(INPUT_PLACE_CIV))
         {
-            Vector2 CellPos = System_Utils::getRealCellMousePosition(camera);
-            auto& currentCell = System_Utils::getCell(CellPos);
-
-            //currentCell.setCivilizationOwnership();
+            return true; // ToBegin();
         }
     }
 } // namespace System_Input

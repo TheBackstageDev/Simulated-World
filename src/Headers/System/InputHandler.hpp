@@ -5,5 +5,5 @@
 namespace System_Input
 {
     void handleCameraInput(Camera2D& camera);
-    void handleSimulationInput(Camera2D &camera);
+    bool handleSimulationInput(Camera2D &camera);
 } // namespace System_Input

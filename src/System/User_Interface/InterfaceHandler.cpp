@@ -177,6 +177,8 @@ namespace Interface
         {
             int fontSize = static_cast<int>(rectHeight * 0.08f);
 
+            //Collumn 1
+
             DrawText("CELL PROPERTIES", cellInfoArea.x + 10, cellInfoArea.y + 10, fontSize, RAYWHITE);
             DrawText(TextFormat("Name: %s", selectedCell.getName().c_str()), cellInfoArea.x + 10, cellInfoArea.y + 10 + fontSize, fontSize, RAYWHITE);
             DrawText(TextFormat("Elevation: %.2f", selectedCell.getElevation()), cellInfoArea.x + 10, cellInfoArea.y + 20 + fontSize * 2, fontSize, RAYWHITE);
@@ -185,6 +187,10 @@ namespace Interface
             DrawText(TextFormat("Biome: %s", System_Utils::biomeToString(selectedCell.getBiome()).c_str()), cellInfoArea.x + 10, cellInfoArea.y + 50 + fontSize * 5, fontSize, RAYWHITE);
             DrawText(TextFormat("Materials: %i", selectedCell.getMaterialsAmmount()), cellInfoArea.x + 10, cellInfoArea.y + 60 + fontSize * 6, fontSize, RAYWHITE);
             DrawText(TextFormat("Food: %i", selectedCell.getFoodAmmount()), cellInfoArea.x + 10, cellInfoArea.y + 70 + fontSize * 7, fontSize, RAYWHITE);
+
+            //Collumn 2
+
+            DrawText(TextFormat("Civilization: %s", selectedCell.getCurrentCivilization() == -1 ? "None" : civilizations.at(selectedCell.getCurrentCivilization()).getName().c_str()), cellInfoArea.x + cellInfoArea.width / 2 + 10, cellInfoArea.y + 10, fontSize, RAYWHITE);
         }
 
         if (isPlanetStatsOpen)

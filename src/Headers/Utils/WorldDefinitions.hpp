@@ -1,7 +1,9 @@
 #pragma once
 
 #include <unordered_map>
+#include <memory>
 #include "../src/Headers/System/AISimulation/CivAI/Civilization.hpp"
+#include "../src/Headers/System/AISimulation/PopAI/Pop.hpp"
 #include "../src/Headers/System/Map/WorldGeneration.hpp"
 
 namespace World
@@ -34,5 +36,11 @@ namespace World
 
     extern drawMode currentDrawMode;
     extern float SimulationStep;
+
+    //Civilization Defines
+    #define POP_DAWN_AMMOUNT 20
+    #define POP_DAWN_AGE 18
+
     extern std::unordered_map<uint32_t, Simulation_AI::Civilization> civilizations;
+    extern std::unordered_map<uint32_t, Simulation_AI::Pop> globalPopulation;
 } // namespace System_Utils

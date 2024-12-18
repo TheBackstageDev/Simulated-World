@@ -26,15 +26,17 @@ namespace Simulation_AI
         std::vector<Vector2> cellsOwned;
 
         //Other
+        std::string name;
         uint32_t lifeTime{0}; // in Years
         uint32_t id;
 
         void expand(Vector2 cell);
     public:
-        Civilization(Pop &leader, Color civColor, uint32_t population = 1);
+        Civilization(Pop &leader, Color civColor, uint32_t population = 1, std::string name = "Default Civ");
 
         void placeCivilization(Vector2 rootCell);
 
+        std::string& getName() { return name; }
         uint32_t getId() { return id; }
     };
 } // namespace Simulation_AI

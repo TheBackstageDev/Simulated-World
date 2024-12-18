@@ -5,8 +5,8 @@ namespace Simulation_AI
 {
     static uint32_t lastID;
     
-    Civilization::Civilization(Pop &leader, Color civColor, uint32_t population) 
-    : leader(leader), civColor(civColor), population(population), id(lastID++)
+    Civilization::Civilization(Pop &leader, Color civColor, uint32_t population, std::string name) 
+    : leader(leader), civColor(civColor), population(population), id(lastID++), name(name)
     {
     }
 

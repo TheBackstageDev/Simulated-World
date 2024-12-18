@@ -18,17 +18,20 @@ namespace Simulation_AI
         char32_t age{0};
         World::GridCell* residence{nullptr};
         std::vector<System::Event> history;
+        
+        uint32_t id;
 
         //Stats
         char16_t health{100};
         char16_t energy{100};
     public:
         Pop(std::string name, char32_t age = 0);
-       // ~Pop();
+        ~Pop() = default;
 
         //Getters
         std::string getName() const { return name; }
         char32_t getAge() const { return age; }
+        uint32_t getID() const { return id; }
         World::GridCell *getResidence() const { return residence; }
         std::vector<System::Event> getPersonalHistory() const { return history; }
     };

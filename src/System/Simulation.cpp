@@ -1,11 +1,15 @@
 #include "../src/Headers/System/Simulation.hpp"
+#include "../src/Headers/System/AISimulation/CivAI/Civilization.hpp"
 #include "../src/Headers/System/InputHandler.hpp"
 #include "../src/Headers/System/User_Interface/InterfaceHandler.hpp"
 #include "../src/Headers/Utils/WindowUtils.hpp"
 #include "../src/Headers/Utils/CameraUtils.hpp"
 #include "../src/Headers/Utils/WorldDefinitions.hpp"
+#include "../src/Headers/Utils/WorldUtils.hpp"
 
 #include <iostream>
+
+using namespace Simulation_AI;
 
 namespace System
 {
@@ -38,6 +42,34 @@ namespace System
         }
     }
 
+    void Simulation::runAISimulation()
+    {
+        
+    }
+
+    void Simulation::beginCivilizations()
+    {
+        Vector2 CellPos = System_Utils::getRealCellMousePosition(System_Utils::cam);
+        auto &currentCell = System_Utils::getCell(CellPos);
+        
+        Pop leader("King Hannes Doe", POP_DAWN_AGE);
+
+        globalPopulation.emplace(leader.getID(), std::move(leader));
+
+        for (int i = 0; i < POP_DAWN_AMMOUNT - 1; i++)
+        {
+            Pop newPop("Johanes Doe", POP_DAWN_AGE);
+            globalPopulation.emplace(newPop.getID(), std::move(newPop));
+        }
+
+        Civilization dawnCiv(leader, RED, POP_DAWN_AMMOUNT);
+        civilizations.emplace(dawnCiv.getId(), std::move(dawnCiv));
+
+        currentCell.updatePopulation(POP_DAWN_AMMOUNT);
+        dawnCiv.placeCivilization(CellPos);
+        currentCell.setCivilizationOwnership(dawnCiv.getId());
+    }
+
     void Simulation::runSimulation()
     {
         static float deltaSimulationTime{0.0f};
@@ -49,12 +81,17 @@ namespace System
             timeController.advanceTime();
             deltaSimulationTime = 0.0f;
 
+            runAISimulation();
             WorldGen.getPlanet()->updatePlanet();
         }
 
         if (interfaceHand.getCurrentMode() == Interface::SimulationMode::Running)
         {
             System_Input::handleCameraInput(System_Utils::cam);
+            bool result = System_Input::handleSimulationInput(System_Utils::cam);
+
+            if (result)
+                beginCivilizations();
 
             BeginMode2D(System_Utils::cam);
             WorldGen.renderMap(System_Utils::cam);
