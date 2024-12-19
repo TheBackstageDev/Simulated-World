@@ -12,7 +12,8 @@ namespace World
     : axialTilt(axialTilt), orbitalEccentricity(orbitalEccentricity), distanceFromStar(distanceFromStar), rotationPeriod(rotationPeriod)
     {
         double semiMajorAxisMeters = distanceFromStar * 1.49e11; // Convert AU to meters
-        orbitalPeriod = sqrt((4 * powf(PI, 2) * semiMajorAxisMeters * semiMajorAxisMeters * semiMajorAxisMeters) / (GRAVITATIONAL_CONSTANT * STAR_MASS)) / (60 * 60 * 24);
+        this->orbitalPeriod = sqrt((4 * powf(PI, 2) * semiMajorAxisMeters * semiMajorAxisMeters * semiMajorAxisMeters) / (GRAVITATIONAL_CONSTANT * STAR_MASS)) / (60 * 60 * 24);
+        World::orbitalPeriod = this->orbitalPeriod;
     }
 
     Planet::Planet()

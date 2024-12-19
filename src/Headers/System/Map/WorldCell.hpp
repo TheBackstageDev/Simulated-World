@@ -66,18 +66,18 @@ namespace World
         uint32_t getID() const { return id; }
         uint32_t getMaterialsAmmount() const { return MaterialsAmmount; }
         uint32_t getFoodAmmount() const { return FoodAmmount; }
-        int32_t getCurrentCivilization() { return civilization; }
         uint32_t getPopulation() const { return population; }
-        Color getPopulationColor() const;
         float getElevation() const { return this->elevation; }
         float getTemperature() const { return this->temperature; } 
-        Color getTemperatureColor() const;
         float getHumidity() const { return this->humidity; }
+        Color getPopulationColor() const;
         Color getHumidityColor() const;
-        Biome getBiome() const { return this->biome; }
+        Color getTemperatureColor() const;
         Color getBiomeColor() const;
-        Vector2 getPos() const { return position; }
         Color getColor();
+        int32_t getCurrentCivilization() { return civilization; }
+        Vector2 getPos() const { return position; }
+        Biome getBiome() const { return this->biome; }
     };
 
     struct CompareGridCell

@@ -44,7 +44,14 @@ namespace System
 
     void Simulation::runAISimulation()
     {
-        
+        std::vector<std::function<void()>> tasks;
+
+        for (auto& [id, pop] : globalPopulation)
+        {
+            tasks.push_back([&]{ pop.simulate(); });
+        }
+
+        AIPool.enqueue(tasks);
     }
 
     void Simulation::beginCivilizations()
@@ -52,22 +59,24 @@ namespace System
         Vector2 CellPos = System_Utils::getRealCellMousePosition(System_Utils::cam);
         auto &currentCell = System_Utils::getCell(CellPos);
         
-        Pop leader("King Hannes Doe", POP_DAWN_AGE);
+        Pop leader("King Adam", POP_DAWN_AGE, currentCell.getPos());
 
         globalPopulation.emplace(leader.getID(), std::move(leader));
 
         for (int i = 0; i < POP_DAWN_AMMOUNT - 1; i++)
         {
-            Pop newPop("Johanes Doe", POP_DAWN_AGE);
+            Pop newPop("Johanes Doe", POP_DAWN_AGE, currentCell.getPos());
             globalPopulation.emplace(newPop.getID(), std::move(newPop));
         }
 
-        Civilization dawnCiv(leader, RED, POP_DAWN_AMMOUNT);
+        Civilization dawnCiv(leader, RED, POP_DAWN_AMMOUNT, "Adawnia");
         civilizations.emplace(dawnCiv.getId(), std::move(dawnCiv));
 
         currentCell.updatePopulation(POP_DAWN_AMMOUNT);
         dawnCiv.placeCivilization(CellPos);
         currentCell.setCivilizationOwnership(dawnCiv.getId());
+
+        timeController.logEvent("First Civilization Rises!");
     }
 
     void Simulation::runSimulation()
@@ -90,7 +99,7 @@ namespace System
             System_Input::handleCameraInput(System_Utils::cam);
             bool result = System_Input::handleSimulationInput(System_Utils::cam);
 
-            if (result)
+            if (result && civilizations.size() == 0)
                 beginCivilizations();
 
             BeginMode2D(System_Utils::cam);

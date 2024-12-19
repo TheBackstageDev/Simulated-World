@@ -30,6 +30,8 @@ namespace World
     #define SOLAR_CONSTANT 1361.0f // Solar constant in W/m²
     #define UPDATE_RATE 30 // In Days
 
+    extern float orbitalPeriod;
+
     //Simulation Defines
     #define GRAVITATIONAL_CONSTANT 6.67408e-11
     #define STAR_MASS 1.989e30 // Equivalent value to 1 * Mass of the Sun

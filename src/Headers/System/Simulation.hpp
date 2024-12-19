@@ -15,6 +15,8 @@ namespace System
         Interface::InterfaceHandler interfaceHand{};
         Time timeController{};
 
+        System_Inner::ThreadPool AIPool{2};
+
         void runSimulation();
         void runAISimulation();
         void beginCivilizations();

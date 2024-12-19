@@ -36,7 +36,13 @@ namespace Simulation_AI
 
         void placeCivilization(Vector2 rootCell);
 
+        // Getters
         std::string& getName() { return name; }
-        uint32_t getId() { return id; }
+        uint32_t getId() const { return id; }
+        Color getColor() const { return civColor; }
+
+        Pop& getLeader() { return leader; }
+        std::vector<Vector2> getTerritory() { return cellsOwned; }
+        Vector2 getCapital() { return cellsOwned[0]; }
     };
 } // namespace Simulation_AI

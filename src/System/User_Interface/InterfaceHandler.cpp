@@ -59,13 +59,13 @@ namespace Interface
 
         std::string timeFormatted = System::Time::getCurrentTimeFormatted();
 
-        DrawText(TextFormat("FPS: %d", fps), textPosX + HUDwidth / 2, textPosY, fontSize, WHITE);
+        DrawText(TextFormat("FPS: %d", fps), textPosX + HUDwidth / 3, textPosY, fontSize, WHITE);
         DrawText(timeFormatted.c_str(), textPosX + HUDwidth / 2 + 100, textPosY - 2, fontSize, WHITE);
 
         float sliderWidth = HUDwidth * 0.1f;  
         float sliderHeight = HUDheight * 0.1f; 
 
-        GuiSlider({textPosX + HUDwidth / 2 + 300, textPosY, sliderWidth, sliderHeight}, "0.01", "2.0", &World::SimulationStep, 0.01f, 2.0f);
+        GuiSlider({textPosX + HUDwidth / 2 + 300, textPosY, sliderWidth, sliderHeight}, "0.001", "2.0", &World::SimulationStep, 0.001f, 2.0f);
 
         float buttonX = HUDwidth - 150; 
         float buttonY = HUDy + 10;  
@@ -119,7 +119,14 @@ namespace Interface
             float buttonY = menuY + 30;
             float buttonWidth = menuWidth - 40;
 
-            int fontSize = static_cast<int>(buttonHeight * 0.03f);
+            int fontSize = static_cast<int>(buttonHeight * 0.025f);
+
+            if (GuiButton({buttonX, buttonY, buttonWidth, (float)buttonHeight * fontSize}, "Political"))
+            {
+                World::currentDrawMode = World::drawMode::Political;
+            }
+
+            buttonY += buttonHeight + 10;
 
             if (GuiButton({buttonX, buttonY, buttonWidth, (float)buttonHeight * fontSize}, "Terrain"))
             {
@@ -190,7 +197,9 @@ namespace Interface
 
             //Collumn 2
 
-            DrawText(TextFormat("Civilization: %s", selectedCell.getCurrentCivilization() == -1 ? "None" : civilizations.at(selectedCell.getCurrentCivilization()).getName().c_str()), cellInfoArea.x + cellInfoArea.width / 2 + 10, cellInfoArea.y + 10, fontSize, RAYWHITE);
+            DrawText(TextFormat("Civilization: %s", selectedCell.getCurrentCivilization() == -1 ? "None" : civilizations.at(selectedCell.getCurrentCivilization()).getName().c_str()), cellInfoArea.x + cellInfoArea.width / 2, cellInfoArea.y + fontSize, fontSize, RAYWHITE);
+            DrawText(TextFormat("Population: %i", selectedCell.getPopulation()), cellInfoArea.x + cellInfoArea.width / 2, cellInfoArea.y + 10 + fontSize * 2, fontSize, RAYWHITE);
+
         }
 
         if (isPlanetStatsOpen)

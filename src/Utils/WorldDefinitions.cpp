@@ -2,7 +2,9 @@
 
 namespace World
 {
-    drawMode currentDrawMode{drawMode::Terrain};
+    float orbitalPeriod{365.f};
+
+    drawMode currentDrawMode{drawMode::Political};
     float SimulationStep{1.0f};
     
     std::unordered_map<uint32_t, Simulation_AI::Pop> globalPopulation;

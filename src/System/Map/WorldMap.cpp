@@ -54,6 +54,19 @@ namespace World
 
                 switch (World::currentDrawMode)
                 {
+                case drawMode::Political:
+                {
+                    cellColor = CurrentCell.getColor();
+
+                    if (CurrentCell.getCurrentCivilization() != -1)
+                    {
+                        Color civColor = civilizations.at(CurrentCell.getCurrentCivilization()).getColor();
+                        cellColor.r = static_cast<unsigned char>((cellColor.r + civColor.r) / 2);
+                        cellColor.g = static_cast<unsigned char>((cellColor.g + civColor.g) / 2);
+                        cellColor.b = static_cast<unsigned char>((cellColor.b + civColor.b) / 2);
+                    }
+                    break;
+                }
                 case drawMode::Terrain:
                     cellColor = CurrentCell.getColor();
                     break;

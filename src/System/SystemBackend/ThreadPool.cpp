@@ -4,6 +4,7 @@ namespace System_Inner
 {
     ThreadPool::ThreadPool(size_t threads)
     {
+        workers.resize(threads);
         for (size_t i = 0; i < threads; ++i)
         {
             workers.emplace_back([this]{ this->worker(); });
@@ -20,7 +21,8 @@ namespace System_Inner
 
         for (std::thread& thread : workers)
         {
-            thread.join();
+            if (thread.joinable())
+                thread.join();
         }
     }
 
@@ -55,7 +57,7 @@ namespace System_Inner
                 std::unique_lock<std::mutex> lock(queueMutex);
                 condition.wait(lock, [this]{ return stop || !tasks.empty(); }); 
 
-                if (stop && tasks.empty()) // Exit if stop is true and there are no tasks
+                if (stop)
                     return;
 
                 task = std::move(tasks.front());
@@ -66,4 +68,4 @@ namespace System_Inner
         }
     }
 
-} // namespace System_Inne
+} // namespace System_Inner

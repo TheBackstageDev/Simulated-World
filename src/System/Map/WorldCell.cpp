@@ -383,7 +383,7 @@ namespace World
         switch (biome)
         {
         case Biome::Ocean:
-            MaxResourcesAmmount = 50; 
+            MaxResourcesAmmount = 30; 
             break;
         case Biome::River:
             MaxResourcesAmmount = 70; 
@@ -398,7 +398,7 @@ namespace World
             MaxResourcesAmmount = 120; 
             break;
         case Biome::Desert:
-            MaxResourcesAmmount = 20; 
+            MaxResourcesAmmount = 5; 
             break;
         case Biome::Mountain:
             MaxResourcesAmmount = 60; 
@@ -407,13 +407,13 @@ namespace World
             MaxResourcesAmmount = 80; 
             break;
         case Biome::Tundra:
-            MaxResourcesAmmount = 40; 
+            MaxResourcesAmmount = 20; 
             break;
         case Biome::Grassland:
             MaxResourcesAmmount = 90; 
             break;
         case Biome::Savanna:
-            MaxResourcesAmmount = 85; 
+            MaxResourcesAmmount = 60; 
             break;
         default:
             MaxResourcesAmmount = 10; 
@@ -426,9 +426,23 @@ namespace World
             elevationModifier = 1.0f - (elevation * 0.1f);
         }
 
-        MaxResourcesAmmount = static_cast<uint32_t>(MaxResourcesAmmount * elevationModifier * (0.9f + (static_cast<float>(rand()) / RAND_MAX) * 0.2f));
+        MaxResourcesAmmount = 100 * static_cast<uint32_t>(MaxResourcesAmmount * elevationModifier * (0.9f + (static_cast<float>(rand()) / RAND_MAX) * 0.2f));
         MaterialsAmmount = floorf(0.75 * MaxResourcesAmmount);
+
         FoodAmmount = floorf(0.25 * MaxResourcesAmmount);
+
+        switch (biome)
+        {
+        case Biome::Hill:
+        case Biome::Mountain:
+            FoodAmmount *= 0.05f;
+            break;
+        case Biome::Desert:
+            FoodAmmount *= 0.05f;
+            break;
+        default:
+            break;
+        }
     }
 
 } // namespace World

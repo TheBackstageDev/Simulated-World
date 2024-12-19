@@ -17,6 +17,7 @@ namespace World
 {
     enum class drawMode
     {
+        Political,
         Terrain,
         Elevation,
         Biomes,
