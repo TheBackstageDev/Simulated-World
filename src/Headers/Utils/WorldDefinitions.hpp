@@ -23,7 +23,6 @@ namespace World
     #define ARCTIC_TEMP 0.08f
 
     //GridCell Definitions
-
     #define MAX_COST 100.f
 
     //Planet Defines
@@ -38,9 +37,10 @@ namespace World
 
     extern drawMode currentDrawMode;
     extern float SimulationStep;
+    extern float deltaSimulationTime;
 
     //Civilization Defines
-    #define POP_DAWN_AMMOUNT 20
+    #define POP_DAWN_AMMOUNT 100
     #define POP_DAWN_AGE 18
 
     extern std::unordered_map<uint32_t, Simulation_AI::Civilization> civilizations;

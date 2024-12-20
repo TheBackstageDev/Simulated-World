@@ -96,6 +96,14 @@ namespace World
                     break;
                 }
 
+                //Update the Resources
+                Biome cellBiome = CurrentCell.getBiome();
+
+                if (System::Time::getCurrentTime() % UPDATE_RATE == 0 && cellBiome != Biome::Dirt || cellBiome == Biome::Arctic)
+                {
+                    CurrentCell.updateFood(50.f);
+                }
+
                 // For fitting the window size
                 int width = static_cast<int>(1 + cellSize * scale);
                 int height = static_cast<int>(1 + cellSize * scale);

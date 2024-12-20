@@ -2,7 +2,7 @@
 
 namespace System_Inner
 {
-    ThreadPool::ThreadPool(size_t threads)
+    ThreadPool::ThreadPool(size_t threads) : stop(false)
     {
         workers.resize(threads);
         for (size_t i = 0; i < threads; ++i)
@@ -55,16 +55,23 @@ namespace System_Inner
             std::function<void()> task;
             {
                 std::unique_lock<std::mutex> lock(queueMutex);
-                condition.wait(lock, [this]{ return stop || !tasks.empty(); }); 
+                condition.wait(lock, [this]
+                               { return stop || !tasks.empty(); });
 
-                if (stop)
+                if (stop && tasks.empty())
                     return;
 
-                task = std::move(tasks.front());
-                tasks.pop(); 
-                lock.unlock();
+                if (!tasks.empty())
+                {
+                    task = std::move(tasks.front());
+                    tasks.pop();
+                }
             }
-            task(); 
+
+            if (task)
+            {
+                task();
+            }
         }
     }
 

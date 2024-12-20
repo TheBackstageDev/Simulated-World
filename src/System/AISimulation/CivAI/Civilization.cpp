@@ -5,9 +5,11 @@ namespace Simulation_AI
 {
     static uint32_t lastID;
     
-    Civilization::Civilization(Pop &leader, Color civColor, uint32_t population, std::string name) 
+    Civilization::Civilization(Pop &leader, Color civColor, Vector2 rootCell, uint32_t population, std::string name) 
     : leader(leader), civColor(civColor), population(population), id(lastID++), name(name)
     {
+        cellsOwned.push_back(rootCell);
+        World::WorldGenerator::getGridCellAtPos(rootCell).setCivilizationOwnership(this->id);
     }
 
     void Civilization::expand(Vector2 cell)
@@ -21,13 +23,5 @@ namespace Simulation_AI
         materialsAmmount -= cost;
         cellsOwned.push_back(cell);
         currentCell.setCivilizationOwnership(this->id);
-    }
-
-    void Civilization::placeCivilization(Vector2 rootCell)
-    {
-        if (cellsOwned.size() > 0)
-            return;
-
-        cellsOwned.push_back(rootCell);
     }
 } // namespace Simulation_AI

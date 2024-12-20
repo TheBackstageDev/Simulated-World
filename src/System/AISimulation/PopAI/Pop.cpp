@@ -19,14 +19,30 @@ namespace Simulation_AI
         health = std::clamp(health, 0.0f, max_health);
     }
 
+    void Pop::updateEnergy(float increment)
+    {
+        energy += increment;
+        energy = std::clamp(energy, 0.0f, 100.f);
+    }
+
+    void Pop::updateFood(float increment)
+    {
+        auto civ = System_Utils::getCiv(civilization);
+        float tax = civ->getTaxRate();
+
+        uint32_t ammountTaxed = floorf(increment * tax);
+        civ->incrementFood(ammountTaxed);
+
+        foodAmmount += increment - ammountTaxed;
+    }
+
     Vector2 Pop::lookForCell()
     {
         std::mt19937 rng(std::random_device{}());
-        std::mt19937 rng2(std::random_device{}());
 
         std::uniform_int_distribution<int> offset_dist(-1, 1);
         int randXoffset = offset_dist(rng);
-        int randYoffset = offset_dist(rng2);
+        int randYoffset = offset_dist(rng);
 
         Vector2 currentCellPos = residence->getPos();
 
@@ -48,18 +64,22 @@ namespace Simulation_AI
         return false;
     }
 
-    void Pop::isCellAdequate(GridCell &cell)
+    bool Pop::isCellAdequate(GridCell &cell)
     {
         // Check if the cell is not the current residence
         if (isCellMoveable(cell))
         {
-            bool hasMoreFood = cell.getFoodAmmount() > residence->getFoodAmmount();
             bool optimalTemperature = cell.getTemperature() >= 0.3 && cell.getTemperature() <= 0.9;
             bool optimalHumidity = cell.getHumidity() <= 0.8;
 
-            if (hasMoreFood || optimalTemperature && optimalHumidity)
+            if (optimalTemperature && optimalHumidity)
+            {
                 isNewCellAdequate = true;
+                return true;
+            }
         }
+
+        return false;
     }
 
     // AI Behaviour
@@ -69,16 +89,23 @@ namespace Simulation_AI
         auto& currentCell = System_Utils::getCell(cell);
         position = cell;
 
+        updateEnergy(-5.f);
+
         isCellAdequate(currentCell);
     }
 
     void Pop::migrate(Vector2 newCell)
     {
+        auto& newCellRef = System_Utils::getCell(newCell);
+
+        if (newCellRef.getCurrentCivilization() != civilization && health > max_health * .45f)
+            return; // Prefer staying inside the nation
+
         if (residence != nullptr)
             residence->updatePopulation(-1);
 
         residence = &System_Utils::getCell(newCell);
-        position = newCell;
+        move(newCell);
         residence->updatePopulation(+1);
 
         //Resets Flags
@@ -86,18 +113,152 @@ namespace Simulation_AI
         isLookingForNewResidence = false;
     }
 
+    void Pop::gatherFood()
+    {
+        if (isLeader)
+            return; // Leader won't gather Resources
+
+        auto civ = System_Utils::getCiv(civilization);
+        auto& currentCell = System_Utils::getCell(position);
+
+        std::mt19937 rng(std::random_device{}());
+        std::uniform_int_distribution<int> delta_reources(0, 2);
+
+        std::uniform_int_distribution<int> event_happen(1, 10);
+
+        if (event_happen(rng) == 1)
+            event(); // event will happen while gathering resources;
+
+        int gatheredFood = delta_reources(rng);
+        
+        updateFood((float)gatheredFood);
+
+        currentCell.updateFood(-gatheredFood);
+        updateEnergy(-5.f);
+    }
+
+    void Pop::rest()
+    {
+        if (isLeader) // Leader Actions
+        {
+            auto civ = System_Utils::getCiv(civilization);
+            if (civ->getFoodAmmount() > 5 && energy < 60.f) // Leaders eat more since they have more.
+            {
+                civ->incrementFood(-5);
+                updateEnergy(60.f);
+                updateHealth(15.f);
+            }
+            else 
+            {
+                updateEnergy(20.f);
+                updateHealth(2.5f);
+            }
+        }
+        else
+        {
+            if (foodAmmount > 3 && (energy < 20.f || health < 30.f))
+            {
+                foodAmmount -= 3;
+                updateEnergy(50.f);
+                updateHealth(15.f);
+            }
+            else if (foodAmmount > 0)
+            {
+                foodAmmount -= 1.f;
+                updateEnergy(25.f);
+                updateHealth(10.f);
+            }
+            else
+            {
+                updateEnergy(10.f);
+                updateHealth(2.5f);
+                gatherFood();
+            }
+        }
+    }
+
+    //RNG
+
+    void Pop::event()
+    {
+        std::mt19937 rng(std::random_device{}());
+        std::uniform_int_distribution<int> event_dist(0, 4);
+
+        int eventType = event_dist(rng);
+
+        switch (eventType)
+        {
+        case 0:
+            // Wound event
+            updateHealth(-15.f);
+            break;
+        case 1:
+            // Find extra food event
+            updateFood(2);
+            break;
+        case 2:
+            // Gain energy event
+            updateEnergy(15.f);
+            break;
+        case 3:
+            // Encounter wild animal event
+            updateHealth(-20.f);
+            updateEnergy(-10.f);
+            break;
+        case 4:
+            // Discover a resource cache event
+            updateFood(5);
+            updateEnergy(10.f);
+            break;
+        default:
+            break;
+        }
+    }
     // Leader
 
     void Pop::manageCivilization()
     {
+        auto civ = System_Utils::getCiv(civilization);
+        auto& currentCell = System_Utils::getCell(position);
 
+        uint32_t totalPossibleResources = currentCell.getMaxResources();
+        uint32_t currentResources = currentCell.getFoodAmmount() + currentCell.getMaterialsAmmount();
+
+        bool resourceScarcity = currentResources < totalPossibleResources * 0.3f;
+        bool populationPressure = civ->getPopulation() / civ->getTerritory().size() > 10;
+
+        if (resourceScarcity || populationPressure)
+        {
+            expandCivilization();
+        }
+    }
+
+    void Pop::expandCivilization()
+    {
+        auto civ = System_Utils::getCiv(civilization);
+
+        Vector2 newCellPos = lookForCell();
+        auto &newCell = System_Utils::getCell(newCellPos);
+
+        if (isCellMoveable(newCell) && newCell.getCurrentCivilization() == -1)
+        {
+            civ->expand(newCellPos);
+        }
     }
 
     void Pop::simulate()
     {
         auto& currentCell = System_Utils::getCell(position);
 
-        if (isLookingForNewResidence)
+        updateEnergy(-10.f); // Daily Energy Loss
+
+        if (energy < 50.f || health < max_health * 0.75f)
+        {
+            rest();
+            return; // skip the day for resting
+        }
+
+        if (isLookingForNewResidence && !isLeader)
         {
             if (!isNewCellAdequate)
             {
@@ -113,8 +274,6 @@ namespace Simulation_AI
         if (isLeader)
             manageCivilization();
 
-        static uint32_t lastAgeUpdateTime{0};
-
         if (System::Time::getCurrentTime() - lastAgeUpdateTime >= static_cast<int>(orbitalPeriod))
         {
             lastAgeUpdateTime = System::Time::getCurrentTime();
@@ -126,12 +285,15 @@ namespace Simulation_AI
             }
         }
 
-        if (currentCell.getTemperature() < 0.3 || currentCell.getTemperature() > 0.9 || currentCell.getHumidity() > 0.8)
+        if (!((residence->getTemperature() >= 0.3 && residence->getTemperature() <= 0.9) && residence->getHumidity() <= 0.8))
         {
             health -= 0.5f;
+            isLookingForNewResidence = true;
+        }
 
-            if (!isLeader) 
-                isLookingForNewResidence = true;
+        if (energy < 50.0f || foodAmmount < 2)
+        {
+            gatherFood();
         }
     }
 } // namespace Simulation_AI

@@ -43,8 +43,8 @@ namespace World
         };
         void setCell(int x, int y, const GridCell cell) { Map[y][x] = cell; }
 
-        int getHeight() { return TOTAL_MAP_HEIGHT / cellSize; }
-        int getWidth() { return TOTAL_MAP_WIDTH / cellSize; }
+        int getHeight() { return TOTAL_MAP_HEIGHT / (int)cellSize; }
+        int getWidth() { return TOTAL_MAP_WIDTH / (int)cellSize; }
 
         void drawMap(const Camera2D &camera);
         float getCellSize() { return cellSize; } 

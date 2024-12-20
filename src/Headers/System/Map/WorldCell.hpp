@@ -2,6 +2,7 @@
 
 #include <raylib.h>
 #include <string>
+#include <raymath.h>
 
 namespace World
 {
@@ -57,8 +58,19 @@ namespace World
         void updateElevation(float increment) { this->elevation += increment; }
         void updateTemperature(float newTemp);
         void updateHumidity(float increment) { this->humidity = increment; }
+        void updateFood(uint32_t increment)
+        {
+            this->FoodAmmount += increment;
+            this->FoodAmmount = (uint32_t)Clamp((float)FoodAmmount, 0u, static_cast<uint32_t>(floorf(MaxResourcesAmmount * 0.25f)));
+        }
+
+        void updateMaterials(uint32_t increment)
+        {
+            this->MaterialsAmmount += increment;
+            this->MaterialsAmmount = (uint32_t)Clamp((float)MaterialsAmmount, 0u, static_cast<uint32_t>(floorf(MaxResourcesAmmount * 0.75f)));
+        }
         void setCivilizationOwnership(uint32_t id) { civilization = id; }
-        void updatePopulation(uint32_t increment) { population += increment; }
+        void updatePopulation(uint32_t increment) { population += increment; if (population < 0) population = 0; }
         void setBiome(Biome newBiome) { this->biome = newBiome; }
 
         //Getters
@@ -66,6 +78,9 @@ namespace World
         uint32_t getID() const { return id; }
         uint32_t getMaterialsAmmount() const { return MaterialsAmmount; }
         uint32_t getFoodAmmount() const { return FoodAmmount; }
+        uint32_t getMaxResources() const { return MaxResourcesAmmount; }
+        uint32_t getMaxFoodAmmount() const { return MaxResourcesAmmount * .25f; }
+        uint32_t getMaxMaterialsAmmount() const { return MaxResourcesAmmount * .75f; }
         uint32_t getPopulation() const { return population; }
         float getElevation() const { return this->elevation; }
         float getTemperature() const { return this->temperature; } 

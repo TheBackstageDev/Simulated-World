@@ -105,4 +105,6 @@ namespace System_Utils
     }
 
     GridCell &System_Utils::getCell(Vector2 cell) { return WorldGenerator::getGridCellAtPos(cell); }
+
+    Simulation_AI::Civilization *getCiv(uint32_t civID) { return &World::civilizations.at(civID); }
 }

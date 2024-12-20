@@ -9,7 +9,7 @@
 
 // Simulation Interface Controls
 
-#define OPEN_MENU KEY_BACKSPACE
+#define OPEN_MENU KEY_M
 
 // Camera Controls
 

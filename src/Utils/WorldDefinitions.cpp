@@ -6,6 +6,7 @@ namespace World
 
     drawMode currentDrawMode{drawMode::Political};
     float SimulationStep{1.0f};
+    float deltaSimulationTime{0.0f};
     
     std::unordered_map<uint32_t, Simulation_AI::Pop> globalPopulation;
     std::unordered_map<uint32_t, Simulation_AI::Civilization> civilizations;

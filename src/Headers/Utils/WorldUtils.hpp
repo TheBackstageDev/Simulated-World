@@ -10,4 +10,6 @@ namespace System_Utils
     bool isPeakDistantFromOthers(std::priority_queue<GridCell, std::vector<GridCell>, CompareGridCell> mountainPeaks, Vector2 peak);
     GridCell &getCell(Vector2 cell);
     float calculateCellCost(Vector2 cell);
+
+    Simulation_AI::Civilization* getCiv(uint32_t civID);
 } // namespace System_Utils

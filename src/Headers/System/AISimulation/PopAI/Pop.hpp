@@ -5,6 +5,8 @@
 #include "../src/Headers/System/Map/WorldCell.hpp"
 #include "../src/Headers/System/Time.hpp"
 
+#define FOOD_ENERGY 50
+
 namespace Simulation_AI
 {
     class Pop
@@ -36,14 +38,27 @@ namespace Simulation_AI
 
         //Helpers
         void updateHealth(float increment);
-        void isCellAdequate(World::GridCell &cell);
+        void updateEnergy(float increment);
+        void updateFood(float increment);
+        bool isCellAdequate(World::GridCell &cell);
         bool isCellMoveable(World::GridCell &cell);
         Vector2 lookForCell();
+        uint32_t lastAgeUpdateTime{0};
 
         // AI Behaviour
         void move(Vector2 cell);
         void migrate(Vector2 newCell);
+        void rest();
+        void gatherFood();
+        void gatherMaterial();
+
+        //RNG
+        void event();
+
+        // Civilization Management 
+
         void manageCivilization();
+        void expandCivilization();
 
         // AI Flags
 
@@ -61,13 +76,21 @@ namespace Simulation_AI
         std::string getName() const { return name; }
         char32_t getAge() const { return age; }
         uint32_t getID() const { return id; }
+        uint32_t getFoodAmmount() const { return foodAmmount; }
+        uint32_t getMaterialsAmmount() const { return materialsAmmount; }
+        float getHealth() const { return health; }
+        float getEnergy() const { return energy; }
         World::GridCell *getResidence() const { return residence; }
         Vector2 getPosition() const { return position; }
         std::vector<System::Event> getPersonalHistory() const { return history; }
 
         //Setters
 
-        void setLeader(uint32_t leaderCivilization) { isLeader = true; civilization = leaderCivilization; }
+        void setLeader(uint32_t leaderCivilization) 
+        { 
+            isLeader = true; 
+            civilization = leaderCivilization; 
+        }
     };
 
 } // namespace Simulation_AI

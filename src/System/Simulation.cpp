@@ -44,14 +44,10 @@ namespace System
 
     void Simulation::runAISimulation()
     {
-        std::vector<std::function<void()>> tasks;
-
         for (auto& [id, pop] : globalPopulation)
         {
-            tasks.push_back([&]{ pop.simulate(); });
+            AIPool.enqueue([&]{ pop.simulate(); });
         }
-
-        AIPool.enqueue(tasks);
     }
 
     void Simulation::beginCivilizations()
@@ -61,38 +57,25 @@ namespace System
         
         Pop leader("King Adam", POP_DAWN_AGE, currentCell.getPos());
 
+        Civilization dawnCiv(leader, RED, CellPos, POP_DAWN_AMMOUNT, "Adawnia");
+        civilizations.emplace(dawnCiv.getId(), std::move(dawnCiv));
+
+        leader.setLeader(dawnCiv.getId());
         globalPopulation.emplace(leader.getID(), std::move(leader));
 
         for (int i = 0; i < POP_DAWN_AMMOUNT - 1; i++)
         {
-            Pop newPop("Johanes Doe", POP_DAWN_AGE, currentCell.getPos());
+            Pop newPop("Johanes Doe", POP_DAWN_AGE, currentCell.getPos(), dawnCiv.getId());
             globalPopulation.emplace(newPop.getID(), std::move(newPop));
         }
 
-        Civilization dawnCiv(leader, RED, POP_DAWN_AMMOUNT, "Adawnia");
-        civilizations.emplace(dawnCiv.getId(), std::move(dawnCiv));
-
         currentCell.updatePopulation(POP_DAWN_AMMOUNT);
-        dawnCiv.placeCivilization(CellPos);
-        currentCell.setCivilizationOwnership(dawnCiv.getId());
-
         timeController.logEvent("First Civilization Rises!");
     }
 
     void Simulation::runSimulation()
     {
-        static float deltaSimulationTime{0.0f};
-
         deltaSimulationTime += GetFrameTime();
-
-        if (deltaSimulationTime > World::SimulationStep)
-        {
-            timeController.advanceTime();
-            deltaSimulationTime = 0.0f;
-
-            runAISimulation();
-            WorldGen.getPlanet()->updatePlanet();
-        }
 
         if (interfaceHand.getCurrentMode() == Interface::SimulationMode::Running)
         {
@@ -105,6 +88,15 @@ namespace System
             BeginMode2D(System_Utils::cam);
             WorldGen.renderMap(System_Utils::cam);
             EndMode2D();
+        }
+
+        if (deltaSimulationTime > World::SimulationStep)
+        {
+            timeController.advanceTime();
+            deltaSimulationTime = 0.0f;
+
+            runAISimulation();
+            WorldGen.getPlanet()->updatePlanet();
         }
 
         interfaceHand.runInterface();
