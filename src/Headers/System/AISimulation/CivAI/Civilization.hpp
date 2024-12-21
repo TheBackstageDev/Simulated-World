@@ -6,6 +6,11 @@
 #include "../src/Headers/System/Time.hpp"
 #include "../src/Headers/System/AISimulation/PopAI/Pop.hpp"
 
+enum class GovernmentType
+{
+    Monarchy,
+}; // Placeholder
+
 namespace Simulation_AI
 {
     class Civilization
@@ -22,6 +27,7 @@ namespace Simulation_AI
 
         //Politics
         Pop& leader;
+        GovernmentType governmentType;
         Color civColor;
         std::vector<Vector2> cellsOwned{};
 
@@ -34,11 +40,17 @@ namespace Simulation_AI
 
         friend class Pop;
     public:
-        Civilization(Pop &leader, Color civColor, Vector2 rootCell, uint32_t population = 1, std::string name = "Default Civ");
+        Civilization(
+            Pop &leader, 
+            Color civColor, 
+            Vector2 rootCell, 
+            uint32_t population = 1, 
+            std::string name = "Default Civ", 
+            GovernmentType governmentType = GovernmentType::Monarchy);
 
         // Getters
         std::string& getName() { return name; }
-        uint32_t getId() const { return id; }
+        uint32_t getID() const { return id; }
         Color getColor() const { return civColor; }
         float getTaxRate() const { return taxRate / 100; } //gets the percentage 
         uint32_t getMaterialsAmmount() const { return materialsAmmount; }
@@ -48,9 +60,11 @@ namespace Simulation_AI
         Pop& getLeader() { return leader; }
         std::vector<Vector2> getTerritory() { return cellsOwned; }
         Vector2 getCapital() { return cellsOwned[0]; }
+        GovernmentType getGovernmentType() { return governmentType; }
 
         //Setters
 
+        void setLeader(Pop &newLeader) { leader = newLeader; }
         void incrementFood(uint32_t increment) { foodAmmount += increment; }
         void incrementMaterials(uint32_t increment) { materialsAmmount += increment; }
         void incrementPopulation(uint32_t increment) { population += increment; }

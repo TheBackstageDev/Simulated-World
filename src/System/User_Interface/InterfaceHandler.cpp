@@ -40,8 +40,8 @@ namespace Interface
 
     void InterfaceHandler::headsUpDisplay()
     {
-        float HUDheight = GetScreenHeight() * 1 / 4;
-        float HUDwidth = GetScreenWidth();
+        float HUDheight = (float)GetScreenHeight() * 1 / 4;
+        float HUDwidth = (float)GetScreenWidth();
 
         float HUDy = GetScreenHeight() - HUDheight;
 
@@ -59,13 +59,13 @@ namespace Interface
 
         std::string timeFormatted = System::Time::getCurrentTimeFormatted();
 
-        DrawText(TextFormat("FPS: %d", fps), textPosX + HUDwidth / 3, textPosY, fontSize, WHITE);
-        DrawText(timeFormatted.c_str(), textPosX + HUDwidth / 2 + 100, textPosY - 2, fontSize, WHITE);
+        DrawText(TextFormat("FPS: %d", fps), (int)textPosX + (int)HUDwidth / 3, textPosY, fontSize, WHITE);
+        DrawText(timeFormatted.c_str(), (int)textPosX + (int)HUDwidth / 2 + 100, textPosY - 2, fontSize, WHITE);
 
         float sliderWidth = HUDwidth * 0.1f;  
         float sliderHeight = HUDheight * 0.1f; 
 
-        GuiSlider({textPosX + HUDwidth / 2 + 300, (float)textPosY, sliderWidth, sliderHeight}, "0.001", "2.0", &World::SimulationStep, 0.001f, 2.0f);
+        GuiSlider({textPosX + HUDwidth / 2 + 300, (float)textPosY, sliderWidth, sliderHeight}, "0.0001", "2.0", &World::SimulationStep, 0.0001f, 2.0f);
 
         float buttonX = HUDwidth - 150; 
         float buttonY = HUDy + 10;  
@@ -101,8 +101,8 @@ namespace Interface
 
             int fontSize = static_cast<int>(menuHeight * 0.04f);
 
-            int textX = menuX + 20;
-            int textY = menuY + 20;
+            int textX = (int)menuX + 20;
+            int textY = (int)menuY + 20;
 
             DrawText("Population Details", textX, textY, fontSize, WHITE);
             textY += fontSize + 10;
@@ -149,20 +149,20 @@ namespace Interface
             }
             textY += 50;
 
-            if (searchedPopID > 0 && searchedPopID < World::globalPopulation.size())
+            if (searchedPopID > 0 && World::globalPopulation.find(searchedPopID) != World::globalPopulation.end())
             {
                 auto &currentPop = World::globalPopulation.at(searchedPopID);
-                Vector2 currentPosition = currentPop.getPosition();
-                Vector2 residencePosition = currentPop.getResidence()->getPos();
+                Vector2 currentPosition = currentPop->getPosition();
+                Vector2 residencePosition = currentPop->getResidence()->getPos();
                 DrawText(TextFormat("Person ID: %d", searchedPopID), textX, textY, fontSize, WHITE);
                 textY += fontSize + 10;
-                DrawText(TextFormat("Person Name: %s", currentPop.getName().c_str()), textX, textY, fontSize, WHITE);
+                DrawText(TextFormat("Person Name: %s", currentPop->getName().c_str()), textX, textY, fontSize, WHITE);
                 textY += fontSize + 10;
-                DrawText(TextFormat("Person Age: %i", currentPop.getAge()), textX, textY, fontSize, WHITE);
+                DrawText(TextFormat("Person Age: %i", currentPop->getAge()), textX, textY, fontSize, WHITE);
                 textY += fontSize + 10;
-                DrawText(TextFormat("Person Food: %i", currentPop.getFoodAmmount()), textX, textY, fontSize, WHITE);
+                DrawText(TextFormat("Person Food: %i", currentPop->getFoodAmmount()), textX, textY, fontSize, WHITE);
                 textY += fontSize + 10;
-                DrawText(TextFormat("Person Materials: %i", currentPop.getMaterialsAmmount()), textX, textY, fontSize, WHITE);
+                DrawText(TextFormat("Person Materials: %i", currentPop->getMaterialsAmmount()), textX, textY, fontSize, WHITE);
                 textY += fontSize + 10;
                 DrawText(TextFormat("Person Position: x: %i, y: %i", static_cast<int>(currentPosition.x), static_cast<int>(currentPosition.y)), textX, textY, fontSize, WHITE);
                 textY += fontSize + 10;
@@ -170,11 +170,15 @@ namespace Interface
 
                 // 2nd Column
                 textX += 250;  
-                textY = menuY + 100 + 2 * (fontSize + 10); 
+                textY = menuY + 110 + 2 * (fontSize + 10); 
 
-                DrawText(TextFormat("Person Health: %.2f", currentPop.getHealth()), textX, textY, fontSize, WHITE);
+                DrawText(TextFormat("Person Health: %.2f", currentPop->getHealth()), textX, textY, fontSize, WHITE);
                 textY += fontSize + 10;
-                DrawText(TextFormat("Person Energy: %.2f", currentPop.getEnergy()), textX, textY, fontSize, WHITE);
+                DrawText(TextFormat("Person Energy: %.2f", currentPop->getEnergy()), textX, textY, fontSize, WHITE);
+                textY += fontSize + 10;
+                DrawText(TextFormat("Person Gender: %s", currentPop->getGender().c_str()), textX, textY, fontSize, WHITE);
+                textY += fontSize + 10;
+                DrawText(TextFormat("Person's Partner: %s, ID: %i", currentPop->getPartner().c_str(), currentPop->getPartnerID()), textX, textY, fontSize, WHITE);
             }
         }
     }
@@ -199,8 +203,8 @@ namespace Interface
 
             int fontSize = static_cast<int>(menuHeight * 0.04f);
 
-            int textX = menuX + 20;
-            int textY = menuY + 20;
+            int textX = (int)menuX + 20;
+            int textY = (int)menuY + 20;
 
             DrawText("Civilization Details", textX, textY, fontSize, WHITE);
             textY += fontSize + 10;
@@ -247,7 +251,7 @@ namespace Interface
             }
             textY += 50;
 
-            if (searchedCivID >= 0 && searchedCivID < World::civilizations.size())
+            if (searchedCivID > 0 && World::civilizations.find(searchedCivID) != World::civilizations.end())
             {
                 auto &currentCiv = World::civilizations.at(searchedCivID);
                 DrawText(TextFormat("Civ ID: %d", searchedCivID), textX, textY, fontSize, WHITE);
@@ -361,12 +365,12 @@ namespace Interface
 
             float seasonTextPosX = depictionPosX - 100;
             float seasonTextPosY = planetPosY + 80;
-            DrawText(TextFormat("North: %s", seasons[0].c_str()), seasonTextPosX, seasonTextPosY, 20, WHITE);
-            DrawText(TextFormat("South: %s", seasons[1].c_str()), seasonTextPosX, seasonTextPosY + 30, 20, WHITE);
+            DrawText(TextFormat("North: %s", seasons[0].c_str()), (int)seasonTextPosX, (int)seasonTextPosY, 20, WHITE);
+            DrawText(TextFormat("South: %s", seasons[1].c_str()), (int)seasonTextPosX, (int)seasonTextPosY + 30, 20, WHITE);
 
             float titleTextPosX = menuX + 10;
             float titleTextPosY = menuY + 10;
-            DrawText("Planet Stats", titleTextPosX, titleTextPosY, 20, WHITE);
+            DrawText("Planet Stats", (int)titleTextPosX, (int)titleTextPosY, 20, WHITE);
         }
     }
 
@@ -389,14 +393,14 @@ namespace Interface
 
             // Collumn 1
 
-            DrawText("CELL PROPERTIES", cellInfoArea.x + 10, cellInfoArea.y + 10, fontSize, RAYWHITE);
-            DrawText(TextFormat("Name: %s", selectedCell.getName().c_str()), cellInfoArea.x + 10, cellInfoArea.y + 10 + fontSize, fontSize, RAYWHITE);
-            DrawText(TextFormat("Elevation: %.2f", selectedCell.getElevation()), cellInfoArea.x + 10, cellInfoArea.y + 20 + fontSize * 2, fontSize, RAYWHITE);
-            DrawText(TextFormat("Temperature: %.2f", selectedCell.getTemperature()), cellInfoArea.x + 10, cellInfoArea.y + 30 + fontSize * 3, fontSize, RAYWHITE);
-            DrawText(TextFormat("Humidity: %.2f", selectedCell.getHumidity()), cellInfoArea.x + 10, cellInfoArea.y + 40 + fontSize * 4, fontSize, RAYWHITE);
-            DrawText(TextFormat("Biome: %s", System_Utils::biomeToString(selectedCell.getBiome()).c_str()), cellInfoArea.x + 10, cellInfoArea.y + 50 + fontSize * 5, fontSize, RAYWHITE);
-            DrawText(TextFormat("Materials: %i", selectedCell.getMaterialsAmmount()), cellInfoArea.x + 10, cellInfoArea.y + 60 + fontSize * 6, fontSize, RAYWHITE);
-            DrawText(TextFormat("Food: %i", selectedCell.getFoodAmmount()), cellInfoArea.x + 10, cellInfoArea.y + 70 + fontSize * 7, fontSize, RAYWHITE);
+            DrawText("CELL PROPERTIES", (int)cellInfoArea.x + 10, (int)cellInfoArea.y + 10, fontSize, RAYWHITE);
+            DrawText(TextFormat("Name: %s", selectedCell.getName().c_str()), (int)cellInfoArea.x + 10, (int)cellInfoArea.y + 10 + fontSize, fontSize, RAYWHITE);
+            DrawText(TextFormat("Elevation: %.2f", selectedCell.getElevation()), (int)cellInfoArea.x + 10, (int)cellInfoArea.y + 20 + fontSize * 2, fontSize, RAYWHITE);
+            DrawText(TextFormat("Temperature: %.2f", selectedCell.getTemperature()), (int)cellInfoArea.x + 10, (int)cellInfoArea.y + 30 + fontSize * 3, fontSize, RAYWHITE);
+            DrawText(TextFormat("Humidity: %.2f", selectedCell.getHumidity()), (int)cellInfoArea.x + 10, (int)cellInfoArea.y + 40 + fontSize * 4, fontSize, RAYWHITE);
+            DrawText(TextFormat("Biome: %s", System_Utils::biomeToString(selectedCell.getBiome()).c_str()), (int)cellInfoArea.x + 10, (int)cellInfoArea.y + 50 + fontSize * 5, fontSize, RAYWHITE);
+            DrawText(TextFormat("Materials: %i", selectedCell.getMaterialsAmmount()), (int)cellInfoArea.x + 10, (int)cellInfoArea.y + 60 + fontSize * 6, fontSize, RAYWHITE);
+            DrawText(TextFormat("Food: %i", selectedCell.getFoodAmmount()), (int)cellInfoArea.x + 10, (int)cellInfoArea.y + 70 + fontSize * 7, fontSize, RAYWHITE);
 
             // Collumn 2
 

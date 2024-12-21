@@ -3,6 +3,7 @@
 #include <raylib.h>
 #include <string>
 #include <raymath.h>
+#include <set>
 
 namespace World
 {
@@ -48,6 +49,8 @@ namespace World
         void determineResourceAmmount();
         Color interpolateColor();
 
+        std::set<uint32_t> popsInCell;
+
     public:
         GridCell(std::string name, Vector2 position, float elevation, float temperature, float humidity);
         GridCell() : name(""), elevation(0.0f), position({1.0f, 1.0f}) {}
@@ -61,13 +64,23 @@ namespace World
         void updateFood(uint32_t increment)
         {
             this->FoodAmmount += increment;
-            this->FoodAmmount = (uint32_t)Clamp((float)FoodAmmount, 0u, static_cast<uint32_t>(floorf(MaxResourcesAmmount * 0.25f)));
+            this->FoodAmmount = (uint32_t)Clamp((float)FoodAmmount, 0u, static_cast<uint32_t>(floorf((float)MaxResourcesAmmount * 0.25f)));
         }
-
+        void movePop(uint32_t id, bool isMovingIn)
+        {
+            if (isMovingIn)
+            {
+                popsInCell.insert(id);
+            }
+            else
+            {
+                popsInCell.erase(id);
+            }
+        }
         void updateMaterials(uint32_t increment)
         {
             this->MaterialsAmmount += increment;
-            this->MaterialsAmmount = (uint32_t)Clamp((float)MaterialsAmmount, 0u, static_cast<uint32_t>(floorf(MaxResourcesAmmount * 0.75f)));
+            this->MaterialsAmmount = (uint32_t)Clamp((float)MaterialsAmmount, 0u, static_cast<uint32_t>(floorf((float)MaxResourcesAmmount * 0.75f)));
         }
         void setCivilizationOwnership(uint32_t id) { civilization = id; }
         void updatePopulation(uint32_t increment) { population += increment; if (population < 0) population = 0; }
@@ -79,9 +92,10 @@ namespace World
         uint32_t getMaterialsAmmount() const { return MaterialsAmmount; }
         uint32_t getFoodAmmount() const { return FoodAmmount; }
         uint32_t getMaxResources() const { return MaxResourcesAmmount; }
-        uint32_t getMaxFoodAmmount() const { return MaxResourcesAmmount * .25f; }
-        uint32_t getMaxMaterialsAmmount() const { return MaxResourcesAmmount * .75f; }
+        uint32_t getMaxFoodAmmount() const { return static_cast<uint32_t>(MaxResourcesAmmount * .25f); }
+        uint32_t getMaxMaterialsAmmount() const { return static_cast<uint32_t>(MaxResourcesAmmount * .75f); }
         uint32_t getPopulation() const { return population; }
+        int32_t getCurrentCivilization() { return civilization; }
         float getElevation() const { return this->elevation; }
         float getTemperature() const { return this->temperature; } 
         float getHumidity() const { return this->humidity; }
@@ -90,7 +104,7 @@ namespace World
         Color getTemperatureColor() const;
         Color getBiomeColor() const;
         Color getColor();
-        int32_t getCurrentCivilization() { return civilization; }
+        std::set<uint32_t>& getPopsInCell() { return popsInCell; }
         Vector2 getPos() const { return position; }
         Biome getBiome() const { return this->biome; }
     };

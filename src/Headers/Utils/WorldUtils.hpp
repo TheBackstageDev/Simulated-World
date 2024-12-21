@@ -12,4 +12,5 @@ namespace System_Utils
     float calculateCellCost(Vector2 cell);
 
     Simulation_AI::Civilization* getCiv(uint32_t civID);
+    std::shared_ptr<Simulation_AI::Pop> getPop(uint32_t popID);
 } // namespace System_Utils

@@ -6,6 +6,9 @@ namespace System
     int Time::currentTime{0};
     uint32_t Time::lastEventID{0};
 
+    std::vector<Event> Time::history;
+    std::unordered_map<uint32_t, std::vector<Event>> Time::populationHistory;
+
     Time::Time() 
     {
         logEvent("Let there be Light!");
@@ -19,6 +22,11 @@ namespace System
     {
         Event newEvent{currentTime, event, ++lastEventID};
         history.push_back(newEvent);
+    }
+
+    void Time::logPopEvent(const std::vector<Event>& popHistory, uint32_t id)
+    {
+        populationHistory.emplace(id, std::move(popHistory));
     }
 
     std::string System::Time::getCurrentTimeFormatted()
@@ -35,7 +43,7 @@ namespace System
 
         // Format the date as dd/mm/yyyy
         char dateText[20];
-        sprintf(dateText, "%02d/%02d/%04d", day, month, year);
+        sprintf_s(dateText, "%02d/%02d/%04d", day, month, year);
 
         formattedString = dateText;
         return formattedString;

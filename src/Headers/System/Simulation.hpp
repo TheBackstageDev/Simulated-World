@@ -15,7 +15,7 @@ namespace System
         Interface::InterfaceHandler interfaceHand{};
         Time timeController{};
 
-        System_Inner::ThreadPool AIPool{2};
+        System_Inner::ThreadPool AIPool{1};
 
         void runSimulation();
         void runAISimulation();

@@ -7,6 +7,7 @@
 #include "../src/Headers/Utils/WorldDefinitions.hpp"
 #include "../src/Headers/Utils/WorldUtils.hpp"
 
+#include <memory>
 #include <iostream>
 
 using namespace Simulation_AI;
@@ -44,33 +45,44 @@ namespace System
 
     void Simulation::runAISimulation()
     {
+        std::vector<std::function<void()>> tasks;
         for (auto& [id, pop] : globalPopulation)
         {
-            AIPool.enqueue([&]{ pop.simulate(); });
+            if (pop == nullptr)
+                continue;
+
+            std::function<void()> task = [&pop](){
+                pop->simulate();
+            };
+
+            tasks.push_back(task);
         }
+
+        AIPool.enqueue(tasks);
     }
 
     void Simulation::beginCivilizations()
     {
         Vector2 CellPos = System_Utils::getRealCellMousePosition(System_Utils::cam);
         auto &currentCell = System_Utils::getCell(CellPos);
-        
-        Pop leader("King Adam", POP_DAWN_AGE, currentCell.getPos());
 
-        Civilization dawnCiv(leader, RED, CellPos, POP_DAWN_AMMOUNT, "Adawnia");
-        civilizations.emplace(dawnCiv.getId(), std::move(dawnCiv));
+        std::shared_ptr<Pop> leader = std::make_shared<Pop>("King Adam", POP_DAWN_AGE, currentCell.getPos(), 1, PopGender::Male);
 
-        leader.setLeader(dawnCiv.getId());
-        globalPopulation.emplace(leader.getID(), std::move(leader));
+        Civilization dawnCiv(*leader, RED, CellPos, POP_DAWN_AMMOUNT, "Adawnia");
+
+        leader->setLeader(dawnCiv.getID());
+
+        globalPopulation.emplace(leader->getID(), std::move(leader));
+        civilizations.emplace(dawnCiv.getID(), std::move(dawnCiv));
 
         for (int i = 0; i < POP_DAWN_AMMOUNT - 1; i++)
         {
-            Pop newPop("Johanes Doe", POP_DAWN_AGE, currentCell.getPos(), dawnCiv.getId());
-            globalPopulation.emplace(newPop.getID(), std::move(newPop));
+            std::shared_ptr<Pop> newPop = std::make_shared<Pop>("Johanes Doe", POP_DAWN_AGE, currentCell.getPos(), dawnCiv.getID());
+            globalPopulation.emplace(newPop->getID(), std::move(newPop));
         }
 
         currentCell.updatePopulation(POP_DAWN_AMMOUNT);
-        timeController.logEvent("First Civilization Rises!");
+        timeController.logEvent(TextFormat("First Civilization Rises! %s", dawnCiv.getName().c_str()));
     }
 
     void Simulation::runSimulation()

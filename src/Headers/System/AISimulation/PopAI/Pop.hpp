@@ -5,10 +5,18 @@
 #include "../src/Headers/System/Map/WorldCell.hpp"
 #include "../src/Headers/System/Time.hpp"
 
-#define FOOD_ENERGY 50
+#define ADULT_AGE 18
+#define TEEN_AGE 13
 
 namespace Simulation_AI
 {
+    enum class PopGender
+    {
+        None,
+        Male,
+        Female,
+    };
+
     class Pop
     {
     private:
@@ -16,12 +24,18 @@ namespace Simulation_AI
         uint32_t materialsAmmount{0};
         uint32_t foodAmmount{0};
 
-        //Personalebjh
+        //Personal
         std::string name;
+        PopGender gender;
         char32_t age{0};
+        char32_t max_age;
         uint32_t birthDate;
         World::GridCell* residence{nullptr};
         std::vector<System::Event> history;
+
+        std::vector<uint32_t> children;
+        std::vector<uint32_t> parents{2}; // First will always be the Father, second always the Mother
+        uint32_t partner{0};
         
         uint32_t id;
 
@@ -44,6 +58,10 @@ namespace Simulation_AI
         bool isCellMoveable(World::GridCell &cell);
         Vector2 lookForCell();
         uint32_t lastAgeUpdateTime{0};
+        World::GridCell& getCurrentCell();
+
+        void handleDeath();
+        void handleDeathLogging();
 
         // AI Behaviour
         void move(Vector2 cell);
@@ -52,14 +70,25 @@ namespace Simulation_AI
         void gatherFood();
         void gatherMaterial();
 
+        // Related to Social Interactions
+        void socialize();
+        void reproduce();
+
         //RNG
         void event();
 
         // Civilization Management 
-
+        void handleLeaderDeath();
         void manageCivilization();
         void expandCivilization();
 
+        // Other
+        void addEventToHistory(const std::string event)
+        {
+            System::Event newEvent(System::Time::getCurrentTime(), event, id);
+            history.push_back(newEvent);
+        }
+        
         // AI Flags
 
         //Migration Flags
@@ -67,13 +96,31 @@ namespace Simulation_AI
         bool isNewCellAdequate{false};
 
     public:
-        Pop(std::string name = "John Doe", char32_t age = 0, Vector2 position = {0, 0}, uint32_t civilization = 0);
-        ~Pop() = default;
+        Pop(std::string name = "John Doe", char32_t age = 0, Vector2 position = {0, 0}, uint32_t civilization = 0, PopGender gender = PopGender::None);
+        ~Pop();
 
         void simulate();
 
         //Getters
         std::string getName() const { return name; }
+        std::string getGender() const 
+        {
+            switch (gender)
+            {
+            case PopGender::Male:
+                return "Male";
+            case PopGender::Female:
+                return "Female";
+            default:
+                return "Attack Helicopter Boeing AH-64 Apache";
+                break;
+            }
+        }
+        std::string getPartner() const;
+        uint32_t getPartnerID() const 
+        {
+            return partner;
+        }
         char32_t getAge() const { return age; }
         uint32_t getID() const { return id; }
         uint32_t getFoodAmmount() const { return foodAmmount; }
@@ -88,8 +135,9 @@ namespace Simulation_AI
 
         void setLeader(uint32_t leaderCivilization) 
         { 
-            isLeader = true; 
-            civilization = leaderCivilization; 
+            this->isLeader = true; 
+            this->civilization = leaderCivilization; 
+            this->addEventToHistory("Became the Leader of the Civilization!");
         }
     };
 

@@ -30,6 +30,7 @@ namespace World
     #define UPDATE_RATE 30 // In Days
 
     extern float orbitalPeriod;
+    extern float maxAgeIncrease;
 
     //Simulation Defines
     #define GRAVITATIONAL_CONSTANT 6.67408e-11
@@ -44,5 +45,5 @@ namespace World
     #define POP_DAWN_AGE 18
 
     extern std::unordered_map<uint32_t, Simulation_AI::Civilization> civilizations;
-    extern std::unordered_map<uint32_t, Simulation_AI::Pop> globalPopulation;
+    extern std::unordered_map<uint32_t, std::shared_ptr<Simulation_AI::Pop>> globalPopulation;
 } // namespace System_Utils
