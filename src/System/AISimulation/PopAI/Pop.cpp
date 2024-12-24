@@ -16,9 +16,9 @@ namespace Simulation_AI
         residence->movePop(this->id, true);
 
         std::mt19937 rng(std::random_device{}());
-        std::uniform_int_distribution<int> max_ageRand(25, 55);
+        std::uniform_int_distribution<int> max_ageRand(25, 55 + World::maxAgeIncrease);
 
-        max_age = max_ageRand(rng) + World::maxAgeIncrease;
+        max_age = max_ageRand(rng);
 
         if (gender == PopGender::None) // To Decide now
         {
@@ -62,26 +62,31 @@ namespace Simulation_AI
             this_partner->addEventToHistory("Lost a partner!, " + this->getName());
         }
 
+        if (children.size() != 0)
+        {
+            for (const auto &child : this->children)
+            {
+                auto &childPop = System_Utils::getPop(child);
+
+                childPop->addEventToHistory("Lost a parent!, " + this->getName());
+
+                if (this->gender == PopGender::Male)
+                    childPop->parents.at(0) = 0;
+                else
+                    childPop->parents.at(1) = 0;
+            }
+        }
+
         if (parents.size() != 0)
         {
             for (const auto &parent : this->parents)
             {
+                if (parent == 0)
+                    continue;
+
                 auto &pop = System_Utils::getPop(parent);
                 pop->addEventToHistory("Lost a child!, " + this->getName());
-            }
-        }
-
-        if (children.size() != 0)
-        {
-            for (const auto &children : this->children)
-            {
-                auto &child = System_Utils::getPop(children);
-                child->addEventToHistory("Lost a parent!, " + this->getName());
-
-                if (this->gender == PopGender::Male)
-                    child->parents.at(0) = 0;
-                else
-                    child->parents.at(1) = 0;
+                pop->children.erase(std::remove(pop->children.begin(), pop->children.end(), this->id), pop->children.end());
             }
         }
     }
@@ -111,6 +116,8 @@ namespace Simulation_AI
             handleDeathLogging();
 
             System::Time::logPopEvent(history, id);
+
+            populationIDs.erase(id);
             globalPopulation.erase(id);
         }
     }
@@ -331,7 +338,7 @@ namespace Simulation_AI
             }
         }
 
-        if (partner != 0 && result < 10) 
+        if (partner != 0 && result < 5) 
         {
             reproduce(); 
         }
@@ -353,15 +360,16 @@ namespace Simulation_AI
 
             if (gender == PopGender::Male)
             {
-                child->parents.push_back(this->id);
-                child->parents.push_back(this_Partner->id);
+                child->parents.at(0) = (this->id);
+                child->parents.at(1) = (this_Partner->id);
             }
             else
             {
-                child->parents.push_back(this_Partner->id);
-                child->parents.push_back(this->id);
+                child->parents.at(0) = (this_Partner->id);
+                child->parents.at(1) = (this->id);
             }
 
+            populationIDs.emplace(child->id);
             globalPopulation.emplace(child->id, std::move(child));
             residence->updatePopulation(1);
         }

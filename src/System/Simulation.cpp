@@ -46,16 +46,12 @@ namespace System
     void Simulation::runAISimulation()
     {
         std::vector<std::function<void()>> tasks;
-        for (auto& [id, pop] : globalPopulation)
+        for (auto& id : populationIDs)
         {
-            if (pop == nullptr)
-                continue;
-
-            std::function<void()> task = [&pop](){
-                pop->simulate();
-            };
-
-            tasks.push_back(task);
+            tasks.push_back([=]
+            {
+                globalPopulation[id]->simulate();
+            });
         }
 
         AIPool.enqueue(tasks);
@@ -72,13 +68,16 @@ namespace System
 
         leader->setLeader(dawnCiv.getID());
 
+        populationIDs.emplace(leader->getID());
         globalPopulation.emplace(leader->getID(), std::move(leader));
         civilizations.emplace(dawnCiv.getID(), std::move(dawnCiv));
 
         for (int i = 0; i < POP_DAWN_AMMOUNT - 1; i++)
         {
             std::shared_ptr<Pop> newPop = std::make_shared<Pop>("Johanes Doe", POP_DAWN_AGE, currentCell.getPos(), dawnCiv.getID());
-            globalPopulation.emplace(newPop->getID(), std::move(newPop));
+            uint32_t popID = newPop->getID();
+            globalPopulation.emplace(popID, std::move(newPop));
+            populationIDs.emplace(popID);
         }
 
         currentCell.updatePopulation(POP_DAWN_AMMOUNT);

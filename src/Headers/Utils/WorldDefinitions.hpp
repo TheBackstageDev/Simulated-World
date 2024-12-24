@@ -1,6 +1,7 @@
 #pragma once
 
 #include <unordered_map>
+#include <set>
 #include <memory>
 #include "../src/Headers/System/AISimulation/CivAI/Civilization.hpp"
 #include "../src/Headers/System/AISimulation/PopAI/Pop.hpp"
@@ -45,5 +46,6 @@ namespace World
     #define POP_DAWN_AGE 18
 
     extern std::unordered_map<uint32_t, Simulation_AI::Civilization> civilizations;
+    extern std::set<uint32_t> populationIDs;
     extern std::unordered_map<uint32_t, std::shared_ptr<Simulation_AI::Pop>> globalPopulation;
 } // namespace System_Utils

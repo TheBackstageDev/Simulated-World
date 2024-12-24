@@ -149,7 +149,7 @@ namespace Interface
             }
             textY += 50;
 
-            if (searchedPopID > 0 && World::globalPopulation.find(searchedPopID) != World::globalPopulation.end())
+            if (searchedPopID > 0 && World::populationIDs.find(searchedPopID) != World::populationIDs.end())
             {
                 auto &currentPop = World::globalPopulation.at(searchedPopID);
                 Vector2 currentPosition = currentPop->getPosition();

@@ -25,30 +25,30 @@ namespace Simulation_AI
         uint32_t foodAmmount{0};
 
         //Personal
-        std::string name;
-        PopGender gender;
+        std::string name{"Mr NoName"};
+        PopGender gender{PopGender::None};
         char32_t age{0};
-        char32_t max_age;
-        uint32_t birthDate;
+        char32_t max_age{100};
+        uint32_t birthDate{0};
         World::GridCell* residence{nullptr};
-        std::vector<System::Event> history;
+        std::vector<System::Event> history{};
 
-        std::vector<uint32_t> children;
-        std::vector<uint32_t> parents{2}; // First will always be the Father, second always the Mother
+        std::vector<uint32_t> children{};
+        std::vector<uint32_t> parents{0, 0}; // First will always be the Father, second always the Mother
         uint32_t partner{0};
         
-        uint32_t id;
+        uint32_t id{0};
 
         //Stats
         float max_health{100}; // Will Decrease with wounds or Age
         float health{100};
         float energy{100};
 
-        Vector2 position;
+        Vector2 position{-1, -1};
 
         // Civilization
         bool isLeader{false};
-        uint32_t civilization; // Which civilization does the Pop belong to
+        uint32_t civilization{0}; // Which civilization does the Pop belong to
 
         //Helpers
         void updateHealth(float increment);
