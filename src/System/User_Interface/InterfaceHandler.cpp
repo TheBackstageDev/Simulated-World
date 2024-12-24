@@ -151,7 +151,7 @@ namespace Interface
 
             if (searchedPopID > 0 && World::populationIDs.find(searchedPopID) != World::populationIDs.end())
             {
-                auto &currentPop = World::globalPopulation.at(searchedPopID);
+                auto &currentPop = System_Utils::getPop(searchedPopID);
                 Vector2 currentPosition = currentPop->getPosition();
                 Vector2 residencePosition = currentPop->getResidence()->getPos();
                 DrawText(TextFormat("Person ID: %d", searchedPopID), textX, textY, fontSize, WHITE);

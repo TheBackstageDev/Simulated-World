@@ -48,9 +48,15 @@ namespace System
         std::vector<std::function<void()>> tasks;
         for (auto& id : populationIDs)
         {
+            auto& pop = System_Utils::getPop(id);
+            if (pop == nullptr)
+            {
+                continue;
+            }
+
             tasks.push_back([=]
             {
-                globalPopulation[id]->simulate();
+                pop->simulate();
             });
         }
 
@@ -64,19 +70,19 @@ namespace System
 
         std::shared_ptr<Pop> leader = std::make_shared<Pop>("King Adam", POP_DAWN_AGE, currentCell.getPos(), 1, PopGender::Male);
 
-        Civilization dawnCiv(*leader, RED, CellPos, POP_DAWN_AMMOUNT, "Adawnia");
+        Civilization dawnCiv(leader->getID(), RED, CellPos, POP_DAWN_AMMOUNT, "Adawnia");
 
         leader->setLeader(dawnCiv.getID());
 
         populationIDs.emplace(leader->getID());
-        globalPopulation.emplace(leader->getID(), std::move(leader));
+        globalPopulation.emplace(std::move(leader));
         civilizations.emplace(dawnCiv.getID(), std::move(dawnCiv));
 
         for (int i = 0; i < POP_DAWN_AMMOUNT - 1; i++)
         {
             std::shared_ptr<Pop> newPop = std::make_shared<Pop>("Johanes Doe", POP_DAWN_AGE, currentCell.getPos(), dawnCiv.getID());
             uint32_t popID = newPop->getID();
-            globalPopulation.emplace(popID, std::move(newPop));
+            globalPopulation.emplace(std::move(newPop));
             populationIDs.emplace(popID);
         }
 

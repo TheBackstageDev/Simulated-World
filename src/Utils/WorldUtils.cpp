@@ -110,8 +110,11 @@ namespace System_Utils
 
     std::shared_ptr<Simulation_AI::Pop> System_Utils::getPop(uint32_t popID)
     {
-        if (World::globalPopulation.find(popID) != World::globalPopulation.end())
-            return World::globalPopulation.at(popID);
+        for (const auto &pop : World::globalPopulation)
+        {
+            if (pop->getID() == popID)
+                return pop;
+        }
 
         return nullptr;
     }

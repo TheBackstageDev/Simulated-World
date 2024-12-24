@@ -6,6 +6,8 @@
 #include "../src/Headers/System/Time.hpp"
 #include "../src/Headers/System/AISimulation/PopAI/Pop.hpp"
 
+#include "../src/Headers/System/AISimulation/CivAI/Law.hpp"
+
 enum class GovernmentType
 {
     Monarchy,
@@ -26,9 +28,10 @@ namespace Simulation_AI
         uint32_t size{1}; // 1 since atleast One tile it'll have in the beggining
 
         //Politics
-        Pop& leader;
+        uint32_t leader;
         GovernmentType governmentType;
         Color civColor;
+        std::vector<Law> laws{};
         std::vector<Vector2> cellsOwned{};
 
         //Other
@@ -41,7 +44,7 @@ namespace Simulation_AI
         friend class Pop;
     public:
         Civilization(
-            Pop &leader, 
+            uint32_t leaderID, 
             Color civColor, 
             Vector2 rootCell, 
             uint32_t population = 1, 
@@ -57,16 +60,26 @@ namespace Simulation_AI
         uint32_t getFoodAmmount() const { return foodAmmount; }
         uint32_t getPopulation() const { return population; }
 
-        Pop& getLeader() { return leader; }
+        uint32_t getLeader() { return leader; }
         std::vector<Vector2> getTerritory() { return cellsOwned; }
         Vector2 getCapital() { return cellsOwned[0]; }
         GovernmentType getGovernmentType() { return governmentType; }
 
         //Setters
 
-        void setLeader(Pop &newLeader) { leader = newLeader; }
+        void setLeader(uint32_t id) { leader = id; }
         void incrementFood(uint32_t increment) { foodAmmount += increment; }
         void incrementMaterials(uint32_t increment) { materialsAmmount += increment; }
         void incrementPopulation(uint32_t increment) { population += increment; }
+        void addLaw(const Law &law) { laws.push_back(law); }
+
+        //Actions
+        void applyLaws()
+        {
+            for (const auto& law : laws)
+            {
+                law.applyEffect();
+            }
+        }
     };
 } // namespace Simulation_AI

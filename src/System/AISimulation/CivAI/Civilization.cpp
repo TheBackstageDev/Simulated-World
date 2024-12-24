@@ -6,13 +6,13 @@ namespace Simulation_AI
     static uint32_t lastID{0};
 
     Civilization::Civilization(
-        Pop &leader,
+        uint32_t leaderID,
         Color civColor,
         Vector2 rootCell,
         uint32_t population,
         std::string name,
         GovernmentType governmentType)
-        : leader(leader), civColor(civColor), population(population), id(++lastID), name(name), governmentType(governmentType)
+        : leader(leaderID), civColor(civColor), population(population), id(++lastID), name(name), governmentType(governmentType)
     {
         cellsOwned.push_back(rootCell);
         World::WorldGenerator::getGridCellAtPos(rootCell).setCivilizationOwnership(this->id);

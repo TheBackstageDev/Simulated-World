@@ -45,7 +45,15 @@ namespace World
     #define POP_DAWN_AMMOUNT 100
     #define POP_DAWN_AGE 18
 
+    struct comparePop
+    {
+        bool operator()(const std::shared_ptr<Simulation_AI::Pop> &lhs, const std::shared_ptr<Simulation_AI::Pop> &rhs) const
+        {
+            return lhs->getID() < rhs->getID();
+        }
+    };
+
     extern std::unordered_map<uint32_t, Simulation_AI::Civilization> civilizations;
     extern std::set<uint32_t> populationIDs;
-    extern std::unordered_map<uint32_t, std::shared_ptr<Simulation_AI::Pop>> globalPopulation;
+    extern std::set<std::shared_ptr<Simulation_AI::Pop>, comparePop> globalPopulation;
 } // namespace System_Utils

@@ -10,6 +10,6 @@ namespace World
     float deltaSimulationTime{0.0f};
 
     std::set<uint32_t> populationIDs{};
-    std::unordered_map<uint32_t, std::shared_ptr<Simulation_AI::Pop>> globalPopulation{};
+    std::set<std::shared_ptr<Simulation_AI::Pop>, comparePop> globalPopulation{};
     std::unordered_map<uint32_t, Simulation_AI::Civilization> civilizations{};
 } // namespace World

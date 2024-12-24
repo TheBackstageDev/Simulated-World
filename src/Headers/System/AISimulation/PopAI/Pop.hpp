@@ -17,7 +17,7 @@ namespace Simulation_AI
         Female,
     };
 
-    class Pop
+    class Pop 
     {
     private:
         //Resourcesy
@@ -36,7 +36,7 @@ namespace Simulation_AI
         std::vector<uint32_t> children{};
         std::vector<uint32_t> parents{0, 0}; // First will always be the Father, second always the Mother
         uint32_t partner{0};
-        
+
         uint32_t id{0};
 
         //Stats
@@ -54,6 +54,7 @@ namespace Simulation_AI
         void updateHealth(float increment);
         void updateEnergy(float increment);
         void updateFood(float increment);
+        void updateMaterial(float increment);
         bool isCellAdequate(World::GridCell &cell);
         bool isCellMoveable(World::GridCell &cell);
         Vector2 lookForCell();
@@ -62,6 +63,7 @@ namespace Simulation_AI
 
         void handleDeath();
         void handleDeathLogging();
+        void updateTime();
 
         // AI Behaviour
         void move(Vector2 cell);
@@ -73,6 +75,7 @@ namespace Simulation_AI
         // Related to Social Interactions
         void socialize();
         void reproduce();
+        void haveChild();
 
         //RNG
         void event();
@@ -91,6 +94,9 @@ namespace Simulation_AI
         
         // AI Flags
 
+        uint32_t timePregnant{0};
+        bool isPregnant{false};
+
         //Migration Flags
         bool isLookingForNewResidence{false};
         bool isNewCellAdequate{false};
@@ -103,6 +109,7 @@ namespace Simulation_AI
 
         //Getters
         std::string getName() const { return name; }
+        std::string isPopPregnant() const { return isPregnant ? "Yes" : "No"; }
         std::string getGender() const 
         {
             switch (gender)
