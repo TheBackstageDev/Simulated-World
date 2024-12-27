@@ -64,38 +64,65 @@ namespace System_Utils
         return true;
     }
 
-    float System_Utils::calculateCellCost(Vector2 cell)
+    float System_Utils::calculateCellCost(Vector2 cell, Vector2 center)
     {
         auto &currentCell = WorldGenerator::getGridCellAtPos(cell);
 
         float cost = 0.f;
 
-        uint32_t resourcesAmmount = currentCell.getMaterialsAmmount() + currentCell.getFoodAmmount();
-        cost += 10.f / (resourcesAmmount + 1);
+        // Calculate resource-based cost
+        uint32_t resourcesAmount = currentCell.getMaxResources();
+        cost += resourcesAmount * 0.05f; 
+
+        // Calculate distance-based cost
+        if (center != Vector2{-1, -1})
+        {
+            float distanceFromCenter = Vector2Distance(cell, center);
+            cost += distanceFromCenter * 2.f; 
+        }
+
         cost += currentCell.getElevation() * 0.1f;
 
         switch (currentCell.getBiome())
         {
         case Biome::Grassland:
-            cost += 1.f;
-            break;
-        case Biome::RainForest:
             cost += 5.f;
             break;
+        case Biome::RainForest:
+            cost += 50.f;
+            break;
         case Biome::Desert:
+            cost += 80.f;
+            break;
         case Biome::Mountain:
-            cost += 10.f;
+            cost += 90.f;
             break;
         case Biome::Hill:
-            cost += 7.f;
+            cost += 40.f;
             break;
         case Biome::Forest:
+            cost += 30.f;
+            break;
         case Biome::River:
+            cost += 20.f;
+            break;
         case Biome::Ocean:
-            cost += 2.f;
+            cost += 100.f;
+            break;
+        case Biome::Beach:
+            cost += 10.f;
+            break;
+        case Biome::Tundra:
+            cost += 70.f;
+            break;
+        case Biome::Savanna:
+            cost += 20.f;
+            break;
+        case Biome::Arctic:
+            cost += 90.f;
             break;
         default:
-            cost += 1.f;
+            cost += 10.f;
             break;
         }
 

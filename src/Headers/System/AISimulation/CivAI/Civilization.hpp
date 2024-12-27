@@ -25,7 +25,6 @@ namespace Simulation_AI
 
         //Demographics
         uint32_t population{1}; // 1 since atleast The leader will be living here
-        uint32_t size{1}; // 1 since atleast One tile it'll have in the beggining
 
         //Politics
         uint32_t leader;
@@ -33,6 +32,7 @@ namespace Simulation_AI
         Color civColor;
         std::vector<Law> laws{};
         std::vector<Vector2> cellsOwned{};
+        std::vector<Vector2> borderCells{};
 
         //Other
         std::string name;
@@ -59,8 +59,9 @@ namespace Simulation_AI
         uint32_t getMaterialsAmmount() const { return materialsAmmount; }
         uint32_t getFoodAmmount() const { return foodAmmount; }
         uint32_t getPopulation() const { return population; }
-
         uint32_t getLeader() { return leader; }
+        uint32_t getCivilizationSize() { return cellsOwned.size(); }
+
         std::vector<Vector2> getTerritory() { return cellsOwned; }
         Vector2 getCapital() { return cellsOwned[0]; }
         GovernmentType getGovernmentType() { return governmentType; }

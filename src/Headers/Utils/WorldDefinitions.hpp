@@ -24,7 +24,7 @@ namespace World
     #define ARCTIC_TEMP 0.08f
 
     //GridCell Definitions
-    #define MAX_COST 100.f
+    #define MAX_COST 1000.f
 
     //Planet Defines
     #define SOLAR_CONSTANT 1361.0f // Solar constant in W/m²

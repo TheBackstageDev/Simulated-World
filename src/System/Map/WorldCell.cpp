@@ -445,4 +445,18 @@ namespace World
         }
     }
 
+    std::vector<Vector2> GridCell::getNeighbours()
+    {
+        std::vector<Vector2> neighbours;
+        neighbours.push_back({position.x - 1, position.y});
+        neighbours.push_back({position.x + 1, position.y});
+        neighbours.push_back({position.x, position.y - 1});
+        neighbours.push_back({position.x, position.y + 1});
+        neighbours.push_back({position.x - 1, position.y - 1});
+        neighbours.push_back({position.x + 1, position.y - 1});
+        neighbours.push_back({position.x - 1, position.y + 1});
+        neighbours.push_back({position.x + 1, position.y + 1});
+
+        return neighbours;
+    }
 } // namespace World

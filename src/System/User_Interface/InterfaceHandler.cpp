@@ -254,6 +254,7 @@ namespace Interface
             if (searchedCivID > 0 && World::civilizations.find(searchedCivID) != World::civilizations.end())
             {
                 auto &currentCiv = World::civilizations.at(searchedCivID);
+                auto &currentLeader = System_Utils::getPop(currentCiv.getLeader());
                 DrawText(TextFormat("Civ ID: %d", searchedCivID), textX, textY, fontSize, WHITE);
                 textY += fontSize + 10;
                 DrawText(TextFormat("Civ Name: %s", currentCiv.getName().c_str()), textX, textY, fontSize, WHITE);
@@ -265,6 +266,8 @@ namespace Interface
                 DrawText(TextFormat("Civ Food: %i", currentCiv.getFoodAmmount()), textX, textY, fontSize, WHITE);
                 textY += fontSize + 10;
                 DrawText(TextFormat("Civ Materials: %i", currentCiv.getMaterialsAmmount()), textX, textY, fontSize, WHITE);
+                textY += fontSize + 10;
+                DrawText(TextFormat("Civ Leader: %s, ID: %i", currentLeader == nullptr ? "None" : currentLeader->getName().c_str(), currentCiv.getLeader()), textX, textY, fontSize, WHITE);
             }
         }
     }
@@ -406,6 +409,7 @@ namespace Interface
 
             DrawText(TextFormat("Civilization: %s", selectedCell.getCurrentCivilization() == -1 ? "None" : civilizations.at(selectedCell.getCurrentCivilization()).getName().c_str()), cellInfoArea.x + cellInfoArea.width / 2, cellInfoArea.y + fontSize, fontSize, RAYWHITE);
             DrawText(TextFormat("Population: %i", selectedCell.getPopulation()), cellInfoArea.x + cellInfoArea.width / 2, cellInfoArea.y + 10 + fontSize * 2, fontSize, RAYWHITE);
+            DrawText(TextFormat("Cost: %.2f", System_Utils::calculateCellCost(selectedCell.getPos())), cellInfoArea.x + cellInfoArea.width / 2, cellInfoArea.y + 20 + fontSize * 3, fontSize, RAYWHITE);
         }
     }
 

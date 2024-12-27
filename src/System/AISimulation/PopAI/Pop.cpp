@@ -1,11 +1,10 @@
 #include "../src/Headers/System/AISimulation/PopAI/Pop.hpp"
 #include "../src/Headers/Utils/WorldUtils.hpp"
 
-#include <cmath>
+#include <raymath.h>
 #include <random>
 #include <cassert>
 #include <mutex>
-#include <iostream>
 
 namespace Simulation_AI
 {
@@ -60,7 +59,13 @@ namespace Simulation_AI
             {
                 auto &childPop = System_Utils::getPop(child);
 
-                if (childPop->age >= ADULT_AGE && childPop->getGender() == "Male")
+                if (childPop == nullptr)
+                {
+                    this->children.erase(std::remove(this->children.begin(), this->children.end(), child), this->children.end());
+                    continue;
+                }
+
+                if (childPop->age >= TEEN_AGE && childPop->getGender() == "Male")
                 {
                     childPop->setLeader(civilization);
                     civ->setLeader(childPop->getID());
@@ -77,34 +82,42 @@ namespace Simulation_AI
             auto &this_partner = System_Utils::getPop(this->partner);
             this_partner->partner = 0;
             this_partner->addEventToHistory("Lost a partner!, " + this->getName());
+            partner = 0;
         }
 
-        if (children.size() != 0)
+        for (const auto &child : this->children)
         {
-            for (const auto &child : this->children)
+            auto &childPop = System_Utils::getPop(child);
+
+            if (childPop == nullptr)
             {
-                auto &childPop = System_Utils::getPop(child);
-
-                childPop->addEventToHistory("Lost a parent!, " + this->getName());
-
-                if (this->gender == PopGender::Male)
-                    childPop->parents.at(0) = 0;
-                else
-                    childPop->parents.at(1) = 0;
+                this->children.erase(std::remove(this->children.begin(), this->children.end(), child), this->children.end());
+                continue;
             }
+
+            childPop->addEventToHistory("Lost a parent!, " + this->getName());
+
+            if (this->gender == PopGender::Male)
+                childPop->parents.at(0) = 0;
+            else
+                childPop->parents.at(1) = 0;
         }
 
-        if (parents.size() != 0)
+        for (const auto &parent : this->parents)
         {
-            for (const auto &parent : this->parents)
-            {
-                if (parent == 0)
-                    continue;
+            if (parent == 0)
+                continue;
 
-                auto &pop = System_Utils::getPop(parent);
-                pop->addEventToHistory("Lost a child!, " + this->getName());
-                pop->children.erase(std::remove(pop->children.begin(), pop->children.end(), this->id), pop->children.end());
+            auto &pop = System_Utils::getPop(parent);
+
+            if (pop == nullptr)
+            {
+                this->parents.at(std::find(this->parents.begin(), this->parents.end(), parent) - this->parents.begin()) = 0;
+                continue;
             }
+
+            pop->addEventToHistory("Lost a child!, " + this->getName());
+            pop->children.erase(std::remove(pop->children.begin(), pop->children.end(), this->id), pop->children.end());
         }
     }
 
@@ -116,8 +129,6 @@ namespace Simulation_AI
             {
                 residence->updatePopulation(-1);
                 getCurrentCell().movePop(id, false);
-
-                this->residence = nullptr;
             }
             else
             {
@@ -128,17 +139,20 @@ namespace Simulation_AI
             civ->incrementPopulation(-1);
 
             if (isLeader)
+            {
                 handleLeaderDeath();
+                isLeader = false; 
+            }
 
             handleDeathLogging();
 
             System::Time::logPopEvent(history, id);
 
             populationIDs.erase(id);
-            auto it = std::find_if(globalPopulation.begin(), globalPopulation.end(), [this](const std::shared_ptr<Pop>& pop) {
-                return pop->id == this->id;
-            });
-            if (it != globalPopulation.end()) {
+            auto it = std::find_if(globalPopulation.begin(), globalPopulation.end(), [this](const std::shared_ptr<Pop> &pop)
+                                   { return pop->id == this->id; });
+            if (it != globalPopulation.end())
+            {
                 globalPopulation.erase(it);
             }
         }
@@ -230,9 +244,6 @@ namespace Simulation_AI
 
     void Pop::move(Vector2 cell)
     {
-        std::mutex mtx;
-        std::lock_guard<std::mutex> lock(mtx);
-
         auto &oldCell = getCurrentCell();
         oldCell.movePop(id, false);
 
@@ -241,7 +252,7 @@ namespace Simulation_AI
 
         currentCell.movePop(id, true);
 
-        updateEnergy(-5.f);
+        updateEnergy(-10.f);
 
         isCellAdequate(currentCell);
     }
@@ -263,9 +274,12 @@ namespace Simulation_AI
         if (partner != 0)
         {
             auto &this_partner = System_Utils::getPop(this->partner);
-            this_partner->residence->updatePopulation(-1);
-            this_partner->residence = this->residence;
-            residence->updatePopulation(+1);
+            if (this_partner->residence != residence)
+            {
+                this_partner->residence->updatePopulation(-1);
+                this_partner->residence = this->residence;
+                residence->updatePopulation(+1);
+            }
         }
         // Resets Flags
         isNewCellAdequate = false;
@@ -417,6 +431,8 @@ namespace Simulation_AI
                 isPregnant = true;
                 timePregnant = 0;
             }
+
+            updateEnergy(-20.f);
         }
     }
 
@@ -428,26 +444,35 @@ namespace Simulation_AI
         {
             auto &this_Partner = System_Utils::getPop(partner);
 
+            if (this_Partner == nullptr)
+            {
+                partner = 0;
+                return;
+            }
+
             addEventToHistory("Had a child with " + this_Partner->getName() + ", the child is: " + child->getName());
             this_Partner->addEventToHistory("Had a child with " + this->getName() + ", the child is: " + child->getName());
             this_Partner->children.push_back(child->id);
 
             child->parents.at(0) = (this_Partner->id);
             child->parents.at(1) = (this->id);
-        } 
+        }
         else
         {
             addEventToHistory("Had a child being a widow, the child is: " + child->getName());
 
             child->parents.at(1) = (this->id);
         }
-
-
         this->children.push_back(child->id);
         populationIDs.emplace(child->id);
         globalPopulation.emplace(std::move(child));
 
+        auto *civ = System_Utils::getCiv(civilization);
+
+        civ->incrementPopulation(1);
         residence->updatePopulation(1);
+
+        updateEnergy(-10.f);
     }
 
     // RNG
@@ -515,14 +540,26 @@ namespace Simulation_AI
     {
         auto civ = System_Utils::getCiv(civilization);
 
-        Vector2 newCellPos = lookForCell();
-        auto &newCell = System_Utils::getCell(newCellPos);
-        float cellCost = System_Utils::calculateCellCost(newCellPos);
+        GridCell *bestCell = nullptr;
+        float bestCellScore = std::numeric_limits<float>::max();
 
-        if (isCellMoveable(newCell) && newCell.getCurrentCivilization() == -1 && cellCost < civ->getMaterialsAmmount())
+        for (const auto &borderCellPos : civ->borderCells)
         {
-            civ->expand(newCellPos);
-            civ->incrementMaterials((uint32_t)-cellCost);
+            auto &newCell = System_Utils::getCell(borderCellPos);
+            float cellCost = System_Utils::calculateCellCost(borderCellPos, civ->getCapital());
+            float cellScore = cellCost - newCell.getMaxResources(); // Lower score is better
+
+            if (isCellMoveable(newCell) && newCell.getCurrentCivilization() == -1 && cellScore < bestCellScore && cellCost < civ->getMaterialsAmmount())
+            {
+                bestCell = &newCell;
+                bestCellScore = cellScore;
+            }
+        }
+
+        if (bestCell != nullptr)
+        {
+            civ->expand(bestCell->getPos());
+            civ->incrementMaterials((uint32_t)-System_Utils::calculateCellCost(bestCell->getPos(), civ->getCapital()));
         }
     }
 
@@ -556,7 +593,7 @@ namespace Simulation_AI
         updateEnergy(-10.f); // Daily Energy Loss
         updateTime();
 
-        auto* civ = System_Utils::getCiv(civilization);
+        auto *civ = System_Utils::getCiv(civilization);
 
         if (energy < 40.f || health < max_health * 0.75f)
         {
@@ -588,7 +625,7 @@ namespace Simulation_AI
             gatherFood();
         }
 
-        if (civ->getMaterialsAmmount() < 1000 && energy > 50.0f)
+        if (civ->getMaterialsAmmount() < 1000 && energy > 50.0f && !isPregnant)
         {
             gatherMaterial();
         }

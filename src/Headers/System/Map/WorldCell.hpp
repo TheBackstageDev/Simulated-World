@@ -4,6 +4,7 @@
 #include <string>
 #include <raymath.h>
 #include <set>
+#include <vector>
 
 namespace World
 {
@@ -83,7 +84,7 @@ namespace World
             this->MaterialsAmmount = (uint32_t)Clamp((float)MaterialsAmmount, 0u, static_cast<uint32_t>(floorf((float)MaxResourcesAmmount * 0.75f)));
         }
         void setCivilizationOwnership(uint32_t id) { civilization = id; }
-        void updatePopulation(uint32_t increment) { population += increment; if (population < 0) population = 0; }
+        void updatePopulation(uint32_t increment) { population += increment; population = (uint32_t)Clamp((float)population, 0u, sizeof(uint32_t)); }
         void setBiome(Biome newBiome) { this->biome = newBiome; }
 
         //Getters
@@ -106,6 +107,7 @@ namespace World
         Color getColor();
         std::set<uint32_t>& getPopsInCell() { return popsInCell; }
         Vector2 getPos() const { return position; }
+        std::vector<Vector2> getNeighbours();
         Biome getBiome() const { return this->biome; }
     };
 

@@ -14,7 +14,7 @@ namespace Simulation_AI
         GovernmentType governmentType)
         : leader(leaderID), civColor(civColor), population(population), id(++lastID), name(name), governmentType(governmentType)
     {
-        cellsOwned.push_back(rootCell);
+        expand(rootCell);
         World::WorldGenerator::getGridCellAtPos(rootCell).setCivilizationOwnership(this->id);
     }
 
@@ -24,5 +24,22 @@ namespace Simulation_AI
 
         cellsOwned.push_back(cell);
         currentCell.setCivilizationOwnership(this->id);
+
+        borderCells.erase(std::remove(borderCells.begin(), borderCells.end(), cell), borderCells.end());
+
+        auto &neighbours = currentCell.getNeighbours();
+
+        for (const auto& neighbour : neighbours)
+        {
+            if (std::find(cellsOwned.begin(), cellsOwned.end(), neighbour) != cellsOwned.end())
+            {
+                continue;
+            }
+
+            if (std::find(borderCells.begin(), borderCells.end(), neighbour) == borderCells.end())
+            {
+                borderCells.push_back(neighbour);
+            }
+        }
     }
 } // namespace Simulation_AI
