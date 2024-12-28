@@ -27,8 +27,8 @@
 *.lib
 
 #folders
-./Debug
-./build
+*./Debug
+*./build
 
 # Executables
 *.exe
