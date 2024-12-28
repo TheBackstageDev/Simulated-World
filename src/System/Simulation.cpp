@@ -68,19 +68,25 @@ namespace System
         Vector2 CellPos = System_Utils::getRealCellMousePosition(System_Utils::cam);
         auto &currentCell = System_Utils::getCell(CellPos);
 
-        std::shared_ptr<Pop> leader = std::make_shared<Pop>("King Adam", POP_DAWN_AGE, currentCell.getPos(), 1, PopGender::Male);
-
+        std::shared_ptr<Pop> leader = std::make_shared<Pop>("Adam Godson", POP_DAWN_AGE, currentCell.getPos(), 1, PopGender::Male);
+        std::shared_ptr<Pop> queen = std::make_shared<Pop>("Eve Godson", POP_DAWN_AGE, currentCell.getPos(), 1, PopGender::Female);
+        
         Civilization dawnCiv(leader->getID(), RED, CellPos, POP_DAWN_AMMOUNT, "Adawnia");
 
         leader->setLeader(dawnCiv.getID());
+        leader->setPartner(queen->getID());
+        queen->setPartner(leader->getID());
 
         populationIDs.emplace(leader->getID());
+        populationIDs.emplace(queen->getID());
         globalPopulation.emplace(std::move(leader));
+        globalPopulation.emplace(std::move(queen));
         civilizations.emplace(dawnCiv.getID(), std::move(dawnCiv));
 
-        for (int i = 0; i < POP_DAWN_AMMOUNT - 1; i++)
+        for (int i = 0; i < POP_DAWN_AMMOUNT - 2; i++)
         {
             std::shared_ptr<Pop> newPop = std::make_shared<Pop>("Johanes Doe", POP_DAWN_AGE, currentCell.getPos(), dawnCiv.getID());
+            newPop->createNewName("Adam Godson", "Eve Godson", true);
             uint32_t popID = newPop->getID();
             globalPopulation.emplace(std::move(newPop));
             populationIDs.emplace(popID);

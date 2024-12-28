@@ -8,6 +8,8 @@
 #define ADULT_AGE 18
 #define TEEN_AGE 13
 
+#define DEFAULT_NAME "Mr Nobody"
+
 namespace Simulation_AI
 {
     enum class PopGender
@@ -25,7 +27,7 @@ namespace Simulation_AI
         uint32_t foodAmmount{0};
 
         //Personal
-        std::string name{"Mr NoName"};
+        std::string name{DEFAULT_NAME};
         PopGender gender{PopGender::None};
         char32_t age{0};
         char32_t max_age{100};
@@ -86,6 +88,8 @@ namespace Simulation_AI
         void expandCivilization();
 
         // Other
+        void nameGenerator(std::string fatherName, std::string motherName, bool newSurname);
+
         void addEventToHistory(const std::string event)
         {
             System::Event newEvent(System::Time::getCurrentTime(), event, id);
@@ -123,7 +127,7 @@ namespace Simulation_AI
                 break;
             }
         }
-        std::string getPartner() const;
+        std::string getPartner();
         uint32_t getPartnerID() const 
         {
             return partner;
@@ -139,7 +143,8 @@ namespace Simulation_AI
         std::vector<System::Event> getPersonalHistory() const { return history; }
 
         //Setters
-
+        void createNewName(std::string fatherName, std::string motherName, bool newSurname = false) { nameGenerator(fatherName, motherName, newSurname); }
+        void setPartner(uint32_t partner) { this->partner = partner; }
         void setLeader(uint32_t leaderCivilization) 
         { 
             this->isLeader = true; 

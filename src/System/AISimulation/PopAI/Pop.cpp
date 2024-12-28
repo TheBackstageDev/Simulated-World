@@ -30,7 +30,7 @@ namespace Simulation_AI
             this->gender = gender;
         }
 
-        if (this->gender == PopGender::Female)
+        if (this->gender == PopGender::Female && name == DEFAULT_NAME)
             this->name = "Jane doe";
 
         addEventToHistory("Has been bringed into Existence!");
@@ -38,17 +38,65 @@ namespace Simulation_AI
 
     Pop::~Pop() {}
 
-    std::string Pop::getPartner() const
+    const std::vector<std::string> surnames{"Chattillon" "Viegas", "Smith", "Johnson", "Williams", "Silva", "Brown", "Jones", "Garcia", "Miller", "Davis", "Rodriguez", "Martinez", "Martinez", "Hernandez", "Lopez", "Gonzalez", "Wilson", "Anderson", "Thomas", "Taylor", "Moore", "Jackson"};
+    const std::vector<std::string> maleNames{"Jailson", "Martin", "Jean", "Denis", "Raphael", "Gabriel", "Mowsar", "Hamid", "Turpal", "Hamza", "John", "Michael", "David", "James", "Robert", "William", "Charles", "Thomas", "Christopher", "Daniel", "Matthew", "Anthony", "Mark", "Donald", "Steven", "Paul", "Andrew", "Joshua", "Kenneth", "Kevin"};
+    const std::vector<std::string> femaleNames{"Lisa", "Leticia", "Aurora", "Sofia", "Alexandra", "Chichi", "Mai", "Mary", "Patricia", "Jennifer", "Linda", "Elizabeth", "Barbara", "Susan", "Jessica", "Sarah", "Karen", "Nancy", "Margaret", "Lisa", "Betty", "Dorothy", "Sandra", "Ashley", "Kimberly", "Donna", "Emily"};
+
+    void Pop::nameGenerator(std::string fatherName, std::string motherName, bool newSurname)
+    {
+        std::mt19937 rng(std::random_device{}());
+        std::string childName;
+
+        if (gender == PopGender::Male)
+        {
+            std::uniform_int_distribution<int> randomNameDist(0, maleNames.size() - 1);
+            childName = maleNames[randomNameDist(rng)];
+        }
+        else
+        {
+            std::uniform_int_distribution<int> randomNameDist(0, femaleNames.size() - 1);
+            childName = femaleNames[randomNameDist(rng)];
+        }
+
+        std::string surname;
+        if (newSurname)
+        {
+            std::uniform_int_distribution<int> randomSurnameDist(0, surnames.size() - 1);
+            surname = surnames[randomSurnameDist(rng)];
+        } 
+        else 
+        {
+            std::uniform_int_distribution<int> parentSurnameDist(0, 1);
+            if (parentSurnameDist(rng) == 0)
+            {
+                surname = fatherName.substr(fatherName.find_last_of(' ') + 1);
+            }
+            else
+            {
+                surname = motherName.substr(motherName.find_last_of(' ') + 1);
+            }
+        }
+
+        this->name = childName + " " + surname;
+    }
+
+    std::string Pop::getPartner()
     {
         if (partner != 0)
         {
-            auto &partner = System_Utils::getPop(this->partner);
-            return partner->getName();
+            auto &this_partner = System_Utils::getPop(this->partner);
+
+            if (this_partner == nullptr)
+            {
+                this->partner = 0;
+                return "None";
+            }
+
+            return this_partner->getName();
         }
 
         return "None";
     }
-
     void Pop::handleLeaderDeath()
     {
         auto *civ = System_Utils::getCiv(civilization);
@@ -65,16 +113,26 @@ namespace Simulation_AI
                     continue;
                 }
 
-                if (childPop->age >= TEEN_AGE && childPop->getGender() == "Male")
+                if (childPop->getGender() == "Male")
                 {
                     childPop->setLeader(civilization);
                     civ->setLeader(childPop->getID());
                     break;
                 }
             }
+
+            if (civ->getLeader() == this->id && partner != 0)
+            {
+                auto& partnerPop = System_Utils::getPop(partner);
+                civ->setLeader(partner);
+                partnerPop->setLeader(civilization);
+            }
+            else
+            {
+                civ->setLeader(0);
+            }
         }
     }
-
     void Pop::handleDeathLogging()
     {
         if (partner != 0)
@@ -120,7 +178,6 @@ namespace Simulation_AI
             pop->children.erase(std::remove(pop->children.begin(), pop->children.end(), this->id), pop->children.end());
         }
     }
-
     void Pop::handleDeath()
     {
         if (health <= 0 || age > max_age)
@@ -157,7 +214,6 @@ namespace Simulation_AI
             }
         }
     }
-
     void Pop::updateHealth(float increment)
     {
         health += increment;
@@ -188,7 +244,6 @@ namespace Simulation_AI
 
         materialsAmmount += increment - ammountTaxed;
     }
-
     Vector2 Pop::lookForCell()
     {
         std::mt19937 rng(std::random_device{}());
@@ -201,12 +256,10 @@ namespace Simulation_AI
 
         return {currentCellPos.x + randXoffset, currentCellPos.y + randYoffset};
     }
-
     World::GridCell &Pop::getCurrentCell()
     {
         return System_Utils::getCell(position);
     }
-
     bool Pop::isCellMoveable(GridCell &cell)
     {
         if (cell.getPos().x != residence->getPos().x || cell.getPos().y != residence->getPos().y)
@@ -221,7 +274,6 @@ namespace Simulation_AI
 
         return false;
     }
-
     bool Pop::isCellAdequate(GridCell &cell)
     {
         // Check if the cell is not the current residence
@@ -410,7 +462,7 @@ namespace Simulation_AI
             }
         }
 
-        if (partner != 0 && result < 100)
+        if (partner != 0 && result < 200 && age >= ADULT_AGE)
         {
             reproduce();
         }
@@ -418,19 +470,10 @@ namespace Simulation_AI
 
     void Pop::reproduce()
     {
-        if (energy > 50.f && health > 50.f && !isPregnant)
+        if (energy > 50.f && health > 50.f && !isPregnant && gender == PopGender::Female)
         {
-            if (this->gender == PopGender::Male)
-            {
-                auto &partner = System_Utils::getPop(this->partner);
-                partner->isPregnant = true;
-                partner->timePregnant = 0;
-            }
-            else
-            {
-                isPregnant = true;
-                timePregnant = 0;
-            }
+            isPregnant = true;
+            timePregnant = 0;
 
             updateEnergy(-20.f);
         }
@@ -456,12 +499,15 @@ namespace Simulation_AI
 
             child->parents.at(0) = (this_Partner->id);
             child->parents.at(1) = (this->id);
+
+            child->createNewName(this->name, this_Partner->name);
         }
         else
         {
             addEventToHistory("Had a child being a widow, the child is: " + child->getName());
 
             child->parents.at(1) = (this->id);
+            child->createNewName(this->name, this->name); //sets own surname
         }
         this->children.push_back(child->id);
         populationIDs.emplace(child->id);

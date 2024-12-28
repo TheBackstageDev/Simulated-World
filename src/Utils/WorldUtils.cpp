@@ -77,7 +77,7 @@ namespace System_Utils
         // Calculate distance-based cost
         if (center != Vector2{-1, -1})
         {
-            float distanceFromCenter = Vector2Distance(cell, center);
+            float distanceFromCenter = Vector2DistanceSqr(cell, center);
             cost += distanceFromCenter * 2.f; 
         }
 
